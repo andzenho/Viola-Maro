@@ -141,6 +141,16 @@ body.modal-open { overflow: hidden; }
   color: #8A2B2B;
 }
 
+/* поле-приманка: убрано из потока, из табуляции и из озвучки */
+.hp {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
 #form-submit[disabled] {
   opacity: .45;
   cursor: not-allowed;

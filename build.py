@@ -11,7 +11,10 @@
 
 Выход: site/ — семь страниц, ноль внешних запросов.
 
-Запуск:  python3 build.py
+Запуск:
+  python3 build.py                          сборка под свой домен
+  python3 build.py --base /Viola-Maro       сборка под подпуть (GitHub Pages)
+  python3 build.py --noindex                запретить индексацию (превью)
 """
 
 import base64
@@ -42,6 +45,27 @@ DOCS = [
 ]
 
 DOC_URL = {slug: "/" + url for slug, url, _ in DOCS}
+
+# Все адреса внутри страниц пишутся от корня: так требуют правовые документы
+# («/offer», «/privacy» — они названы в тексте оферты и в чекбоксах).
+# На GitHub Pages сайт живёт в подпапке /Viola-Maro/, поэтому перед выдачей
+# адреса получают префикс. На своём домене BASE пустой и ничего не меняется.
+BASE = ""
+NOINDEX = False
+
+ABS_ROOTS = ["assets/"] + [url for _s, url, _t in DOCS]
+
+
+def apply_base(text):
+    """Проставляет префикс подпути всем корневым адресам в готовой странице."""
+    if not BASE:
+        return text
+    text = text.replace('href="/"', 'href="%s/"' % BASE)
+    for root in ABS_ROOTS:
+        text = text.replace('"/' + root, '"%s/%s' % (BASE, root))   # href, src
+        text = text.replace(" /" + root, " %s/%s" % (BASE, root))   # записи srcset
+        text = text.replace("(/" + root, "(%s/%s" % (BASE, root))   # url() в CSS
+    return text
 
 
 # ─────────────────────────────────────────────────────────── данные недель ──
@@ -137,7 +161,7 @@ def read(path):
 def write(path, text):
     os.makedirs(os.path.dirname(path), exist_ok=True)
     with open(path, "w", encoding="utf-8") as f:
-        f.write(text)
+        f.write(apply_base(text))
 
 
 def find_block(text, tag, start=0):
@@ -392,6 +416,8 @@ COOKIE_JS = """
 
 
 def head(title, description, css_path, extra=""):
+    if NOINDEX:
+        extra = '<meta name="robots" content="noindex, nofollow">\n' + extra
     return """<!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -524,6 +550,15 @@ def build_landing():
     if form.count(must) != 2:
         raise ValueError("ожидалось две обязательные галки, найдено %d" % form.count(must))
     form = form.replace(must, must + '<span class="cb-err" hidden></span>')
+
+    # приманка для ботов: поле не видно и не читается экранным диктором,
+    # заполнить его может только робот, который разбирает форму по разметке
+    honeypot = ('<div class="hp" aria-hidden="true">'
+                '<label>Не заполняйте это поле'
+                '<input type="text" name="website" tabindex="-1" autocomplete="off">'
+                "</label></div>")
+    form = form.replace('<label style="display: flex; flex-direction: column; gap: 8px;">',
+                        honeypot + '<label style="display: flex; flex-direction: column; gap: 8px;">', 1)
 
     form = ('<div id="lead-modal" class="modal" role="dialog" aria-modal="true" '
             'aria-labelledby="lead-title" hidden>' + form + "</div>")
@@ -688,10 +723,32 @@ def build_favicon():
 
 # ─────────────────────────────────────────────────────────────────── main ──
 
+def parse_args(argv):
+    global BASE, NOINDEX
+    i = 0
+    while i < len(argv):
+        a = argv[i]
+        if a == "--base":
+            i += 1
+            BASE = "/" + argv[i].strip("/")
+        elif a.startswith("--base="):
+            BASE = "/" + a.split("=", 1)[1].strip("/")
+        elif a == "--noindex":
+            NOINDEX = True
+        else:
+            sys.exit("неизвестный аргумент: %s" % a)
+        i += 1
+
+
 def main():
+    parse_args(sys.argv[1:])
     if os.path.isdir(OUT):
         shutil.rmtree(OUT)
     print("Сборка сайта → site/")
+    if BASE:
+        print("  подпуть: %s" % BASE)
+    if NOINDEX:
+        print("  индексация запрещена")
     copy_fonts()
     build_images()
     build_landing()          # заполняет HOVER_RULES

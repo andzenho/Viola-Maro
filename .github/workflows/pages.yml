@@ -1,0 +1,53 @@
+name: Публикация на GitHub Pages
+
+# Превью-сборка. Живёт по адресу вида
+#   https://andzenho.github.io/Viola-Maro/
+# Поэтому собирается с префиксом подпути и с запретом индексации: пока не
+# заполнены почтовый адрес ИП и не куплен домен, правовым страницам нечего
+# делать в поиске. Для боевого домена сборка идёт без обоих флагов.
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Установить Pillow
+        run: pip install --quiet pillow
+
+      - name: Собрать сайт
+        run: python3 build.py --base /Viola-Maro --noindex
+
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

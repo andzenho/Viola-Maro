@@ -7,14 +7,19 @@
   /* ─────────────────────────────────────────────────── настройка ──
      Заполняется один раз перед публикацией.
 
-     LEAD_ENDPOINT — адрес, куда уходит заявка (POST, JSON).
+     LEAD_ENDPOINT — адрес веб-приложения Apps Script, которое кладёт
+       заявку в Google Таблицу. Код и инструкция — в
+       integrations/google-sheets/. Вид: https://script.google.com/…/exec
        Пока пусто, форма не делает вид, что заявка принята: она
        проверяет согласия и отправляет человека в службу заботы.
+
+     FORM_SECRET — та же строка, что SECRET в Code.gs. Отсекает ботов.
 
      PAY_URLS — прямые ссылки на оплату. Если адрес указан, кнопка
        ведёт на него; если пусто — открывается форма заявки. */
 
   var LEAD_ENDPOINT = '';
+  var FORM_SECRET = 'ЗАМЕНИТЕ-НА-СВОЮ-СЛУЧАЙНУЮ-СТРОКУ';
 
   var PAY_URLS = {
     'Самостоятельный — оплата целиком': '',
@@ -180,7 +185,11 @@
       return;
     }
 
+    var honey = modal.querySelector('[name="website"]');
+
     var payload = {
+      secret: FORM_SECRET,
+      website: honey ? honey.value : '',   // приманка: человек её не видит
       name: name,
       phone: phone,
       telegram: tg,
@@ -189,7 +198,8 @@
       accept_pd: boxes.accept_pd.checked,
       accept_ads: boxes.accept_ads.checked,
       consent_ts: new Date().toISOString(),
-      page: window.location.href
+      page: window.location.href,
+      ua: navigator.userAgent
     };
     Object.keys(DOC_VERSIONS).forEach(function (k) { payload[k] = DOC_VERSIONS[k]; });
 
@@ -204,12 +214,18 @@
     submit.disabled = true;
     hide(errBox);
 
+    /* text/plain, а не application/json: так запрос считается «простым»
+       и браузер не шлёт предварительный OPTIONS, на который Apps Script
+       отвечать не умеет. Тело при этом остаётся JSON. */
     fetch(LEAD_ENDPOINT, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
       body: JSON.stringify(payload)
     }).then(function (res) {
-      if (!res.ok) throw new Error('HTTP ' + res.status);
+      return res.json();
+    }).then(function (body) {
+      /* Apps Script всегда отвечает 200, результат лежит в теле. */
+      if (!body || body.ok !== true) throw new Error(body && body.error);
       hide(errBox);
       show(sentBox);
     }).catch(function () {
