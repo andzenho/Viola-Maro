@@ -457,12 +457,34 @@ def build_images():
             r.save(p, **kw)
             made.append(p)
 
-    # телефон — вертикальный кроп 3:4, портрет остаётся в кадре
-    ch = H
-    cw = int(ch * 3 / 4)
-    crop = im.crop((W - cw - 40, 0, W - 40, ch))
-    for w in (750, 560):
-        r = crop.resize((w, round(crop.size[1] * w / crop.size[0])), Image.LANCZOS)
+    # Телефон. Экран телефона вдвое уже, чем высок, а исходник — горизонтальный
+    # кадр с сидящим человеком: любой честный кроп упирается портретом в самый
+    # верх, и заголовок ложится на лицо.
+    #
+    # Поэтому кадр надставляется сверху. Верхняя строка фотографии — ровный
+    # тёмный градиент без деталей, её и растягиваем вверх с затуханием к
+    # чёрному. Шов приходится ровно на неё же, поэтому не виден, а портрет
+    # уезжает в нижние две трети — заголовку остаётся чистый фон.
+    # Размер надставки посчитан, а не подобран. На первом экране текст стоит
+    # двумя блоками — шапка с названием сверху и обещание с кнопкой снизу, —
+    # между ними остаётся свободная полоса от 22% до 53% высоты. Надставка
+    # подобрана так, чтобы лицо попадало в эту полосу: голова начинается на
+    # 28% и заканчивается на 47%. Доля не зависит от размера экрана, пока
+    # кадр выше экрана по пропорции, то есть на всех телефонах.
+    cw = int(H * 3 / 4)
+    crop = im.crop((W - cw - 40, 0, W - 40, H))
+    ext_h = 250
+    row0 = crop.crop((0, 0, cw, 1))
+    top = Image.new("RGB", (cw, ext_h))
+    for i in range(ext_h):
+        k = 0.72 + 0.28 * (i / (ext_h - 1))     # 0.72 наверху → ровно 1.0 на шве
+        top.paste(row0.point(lambda v, k=k: int(v * k)), (0, i))
+    mob = Image.new("RGB", (cw, H + ext_h))
+    mob.paste(top, (0, 0))
+    mob.paste(crop, (0, ext_h))
+
+    for w in (705, 500):
+        r = mob.resize((w, round(mob.size[1] * w / mob.size[0])), Image.LANCZOS)
         for ext, kw in (("webp", {"quality": 82, "method": 6}), ("jpg", {"quality": 82, "optimize": True, "progressive": True})):
             p = os.path.join(outdir, "hero-mob-%d.%s" % (w, ext))
             r.save(p, **kw)
@@ -474,10 +496,10 @@ def build_images():
 
 HERO_PICTURE = """<picture>
           <source media="(max-width: 760px)" type="image/webp"
-                  srcset="/assets/img/hero-mob-560.webp 560w, /assets/img/hero-mob-750.webp 750w"
+                  srcset="/assets/img/hero-mob-500.webp 500w, /assets/img/hero-mob-705.webp 705w"
                   sizes="100vw">
           <source media="(max-width: 760px)" type="image/jpeg"
-                  srcset="/assets/img/hero-mob-560.jpg 560w, /assets/img/hero-mob-750.jpg 750w"
+                  srcset="/assets/img/hero-mob-500.jpg 500w, /assets/img/hero-mob-705.jpg 705w"
                   sizes="100vw">
           <source type="image/webp"
                   srcset="/assets/img/hero-1200.webp 1200w, /assets/img/hero-1672.webp 1672w"
