@@ -18,8 +18,8 @@
      PAY_URLS — прямые ссылки на оплату. Если адрес указан, кнопка
        ведёт на него; если пусто — открывается форма заявки. */
 
-  var LEAD_ENDPOINT = '';
-  var FORM_SECRET = 'ЗАМЕНИТЕ-НА-СВОЮ-СЛУЧАЙНУЮ-СТРОКУ';
+  var LEAD_ENDPOINT = 'https://script.google.com/macros/s/AKfycbzoZdsZ2KFXhNbpEO2C3jbXZyM9TRCgWzwFSTi4IkkaboVaffA8EHIIjaehpfJGZWI-hw/exec';
+  var FORM_SECRET = 'PxlGXL9bQSjc0dHcLoiCZJZWtNdfv9D8yY9SHBuJ';
 
   var PAY_URLS = {
     'Самостоятельный — оплата целиком': '',
