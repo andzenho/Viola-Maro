@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="ru"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Подвал сайта — превью</title>
+<style>body{margin:0;background:#fff;font-family:-apple-system,'Segoe UI',Roboto,Arial,sans-serif}
+.demo-hint{max-width:1140px;margin:0 auto;padding:2rem 1.5rem;color:#666;font-size:.9rem}</style>
+</head><body>
+<p class="demo-hint">Превью подвала. Плейсхолдеры в фигурных скобках заменяются перед публикацией.</p>
+<footer class="site-footer">
+  <div class="footer-top">
+
+    <div class="footer-col">
+      <p class="footer-org">Организатор программ Виолы&nbsp;Маро</p>
+      <p class="footer-legal">
+        ИП Нижевясова Анна Станиславовна<br>
+        ОГРНИП 321695200039136<br>
+        ИНН 690503942107<br>
+        Зарегистрирована {{налоговый орган}}<br>
+        Адрес для корреспонденции:<br>{{почтовый адрес}}
+      </p>
+    </div>
+
+    <div class="footer-col">
+      <p class="footer-label">
+        <span class="footer-ico" aria-hidden="true">✉</span> e-mail:
+      </p>
+      <a href="mailto:care@{{домен}}">care@{{домен}}</a>
+    </div>
+
+    <div class="footer-col">
+      <p class="footer-label">
+        <span class="footer-ico" aria-hidden="true">✈</span> Служба заботы в Telegram:
+      </p>
+      <a href="https://t.me/violamarohelper" target="_blank" rel="noopener">@violamarohelper</a>
+      <p class="footer-hours">{{пн–пт, 10:00–19:00 МСК}}</p>
+    </div>
+
+    <nav class="footer-col footer-docs" aria-label="Правовые документы">
+      <a href="/offer" target="_blank" rel="noopener">Публичная оферта</a>
+      <a href="/offer-prilozhenie" target="_blank" rel="noopener">Приложение № 1 к оферте</a>
+      <a href="/privacy" target="_blank" rel="noopener">Политика обработки персональных данных</a>
+      <a href="/consent" target="_blank" rel="noopener">Согласие на обработку персональных данных</a>
+      <a href="/consent-ads" target="_blank" rel="noopener">Условия рассылки</a>
+      <a href="/terms" target="_blank" rel="noopener">Пользовательское соглашение</a>
+    </nav>
+
+  </div>
+
+  <p class="footer-disclaimer">
+    Информация на сайте носит информационно-просветительский характер,
+    не является медицинской услугой и не заменяет консультацию специалиста. 18+
+  </p>
+
+  <p class="footer-copy">
+    © Нижевясова А. С., 2026. Все права защищены. Любое использование или
+    копирование материалов сайта, элементов дизайна и оформления допускается
+    только с письменного разрешения правообладателя и со ссылкой на источник.
+  </p>
+
+  <p class="footer-note">* Meta признана экстремистской организацией в России</p>
+</footer>
+
+<style>
+.site-footer {
+  background: #0a0a0a;
+  color: #e8e8e8;
+  padding: 3.5rem 1.5rem 2.5rem;
+  font-size: .95rem;
+  line-height: 1.6;
+}
+.footer-top {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr 1.2fr 1.2fr;
+  gap: 2.5rem;
+  max-width: 1140px;
+  margin: 0 auto;
+}
+.footer-col { min-width: 0; }
+.footer-org { margin: 0 0 .6rem; font-weight: 600; color: #fff; }
+.footer-legal { margin: 0; color: #cfcfcf; }
+.footer-label { margin: 0 0 .35rem; font-weight: 600; }
+.footer-ico {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.5rem; height: 1.5rem;
+  margin-right: .4rem;
+  border-radius: 50%;
+  background: #fff; color: #0a0a0a;
+  font-size: .8rem;
+  vertical-align: middle;
+}
+.footer-hours { margin: .5rem 0 0; color: #9a9a9a; font-size: .875rem; }
+.footer-docs { display: flex; flex-direction: column; gap: .5rem; }
+.site-footer a { color: #e8e8e8; text-decoration: underline; text-underline-offset: .2em; }
+.site-footer a:hover { color: #fff; }
+.site-footer a:focus-visible { outline: 2px solid #fff; outline-offset: 3px; border-radius: 2px; }
+.footer-disclaimer,
+.footer-copy,
+.footer-note {
+  max-width: 900px;
+  margin: 0 auto;
+  text-align: center;
+  color: #9a9a9a;
+}
+.footer-disclaimer { margin-top: 3rem; font-size: .9rem; color: #cfcfcf; }
+.footer-copy { margin-top: 1.5rem; font-size: .82rem; }
+.footer-note { margin-top: 1.25rem; font-size: .8rem; }
+
+@media (max-width: 900px) {
+  .footer-top { grid-template-columns: 1fr 1fr; gap: 2rem; }
+}
+@media (max-width: 560px) {
+  .site-footer { padding: 2.5rem 1.25rem 2rem; }
+  .footer-top { grid-template-columns: 1fr; gap: 1.75rem; }
+  .footer-disclaimer, .footer-copy, .footer-note { text-align: left; }
+}
+</style>
+</body></html>

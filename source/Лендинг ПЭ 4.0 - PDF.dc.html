@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./image-slot.js"></script>
+<script src="./doc-page.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400..700&amp;family=Prata&amp;display=swap" rel="stylesheet">
+<style>
+  body { margin: 0; background: #F7F2EA; color: #2E2521; font-family: 'Golos Text', system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; font-size: 26.4px; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+  a { color: #3B2E28; text-decoration: none; }
+  a:hover { color: #A3835F; }
+  *, *::before, *::after { box-sizing: border-box; }
+  doc-page { display: block; padding: 0 !important; background: #241C18 !important; min-width: 0 !important; }
+  [data-hero-mobile-photo] { display: none; }
+  [data-week-card] { grid-template-columns: 1fr !important; }
+  [data-week-rail-line] { display: none; }
+  [data-week-card], [data-rail-item], [data-tariff-card], h2, h3 { break-inside: avoid; }
+  [data-screen-label="10 Вопросы и ответы"] > div > div,
+  [data-screen-label="11 Финальный призыв"] > div { break-inside: avoid; }
+  h2, h3 { break-after: avoid; }
+</style>
+</helmet>
+
+<doc-page width="794px" height="1123px" margin="0">
+<div data-screen-label="01 Первый экран" style="background: linear-gradient(160deg, #4A3A31 0%, #3B2E28 45%, #241C18 100%); color: #F6F0E8; padding: 0;">
+  <div style="width: 100%; margin: 0 auto; display: flex; flex-direction: column;">
+    <div data-hero-stage="" style="position: relative; overflow: hidden; height: 1123px;">
+      <div data-hero-photo="" style="position: absolute; inset: 0;">
+        <image-slot id="viola-hero-wide" shape="rect" fit="cover" src="assets/viola-hero.png" placeholder="Виола сидя, тёплый мокко-фон"></image-slot>
+        <image-slot id="viola-hero-mobile" data-hero-mobile-photo="" shape="rect" fit="cover" src="assets/viola-hero.png" placeholder="Вертикальное фото Виолы для телефона"></image-slot>
+      </div>
+      <div data-hero-veil="" style="position: absolute; inset: 0; background: linear-gradient(100deg, rgba(30,23,19,.94) 0%, rgba(30,23,19,.86) 26%, rgba(30,23,19,.55) 46%, rgba(30,23,19,0) 66%); pointer-events: none;"></div>
+      <div data-hero-veil="" style="position: absolute; inset: 0; background: linear-gradient(to top, rgba(36,28,24,.88) 0%, rgba(36,28,24,.5) 28%, rgba(36,28,24,0) 56%); pointer-events: none;"></div>
+      <div data-hero-copy="" style="position: absolute; inset: 0; width: min(1240px, 100%); margin: 0 auto; display: flex; flex-direction: column; justify-content: space-between; padding: clamp(26px, 39.7px, 60px) clamp(20px, 35.7px, 56px) clamp(24px, 31.8px, 48px); pointer-events: none;">
+        <div style="max-width: min(80%, 700px);">
+          <div style="font-size: 19.8px; letter-spacing: .2em; text-transform: uppercase; color: #C9A87F; line-height: 1.5;">6-недельный практикум для&nbsp;эмпатов от&nbsp;Виолы Маро</div>
+          <h1 style="font-family: 'Prata', Georgia, serif; font-weight: 400; letter-spacing: -.01em; font-size: 68px; line-height: 1.04; margin: 18px 0 0; text-wrap: balance; text-shadow: 0 2px 28px rgba(30,22,18,.55);">Прикладная<br>эмпатия</h1>
+        </div>
+        <div style="display: flex; flex-direction: column; align-items: flex-start; gap: clamp(16px, 20.6px, 24px); max-width: min(92%, 620px);">
+          <p style="margin: 0; max-width: min(78%, 660px); font-family: 'Golos Text', system-ui, sans-serif; font-weight: 500; letter-spacing: -.01em; font-size: 41px; line-height: 1.25; color: #F6F0E8; text-shadow: 0 2px 22px rgba(30,22,18,.85);">Научитесь пользоваться своей эмпатией во&nbsp;всех сферах жизни</p>
+          <p style="margin: 0; width: fit-content; max-width: min(82%, 560px); font-size: 25.1px; font-weight: 500; line-height: 1.45; color: #F6F0E8; background: rgba(30,23,19,.62); backdrop-filter: blur(8px); border-left: 2px solid #C9A87F; border-radius: 0 8px 8px 0; padding: 14px 18px 14px 16px;">Полностью обновлённая программа с&nbsp;упором на&nbsp;практику и&nbsp;применение в&nbsp;реальных жизненных ситуациях</p>
+          <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 18px 24px;">
+            <a href="#tarify" style="pointer-events: auto; display: inline-flex; white-space: nowrap; flex: 0 0 auto; flex: 0 0 auto; align-items: center; gap: 14px; background: linear-gradient(180deg, #F0DCBB 0%, #D9BC92 52%, #C29A6C 100%); color: #2A211C; text-decoration: none; font-weight: 700; font-size: 27.8px; letter-spacing: .01em; padding: 19px 26px 19px 40px; border-radius: 999px; box-shadow: 0 18px 40px -14px rgba(0,0,0,.8), 0 0 0 1px rgba(240,220,187,.35), 0 0 0 10px rgba(201,168,127,.12), inset 0 1px 0 rgba(255,255,255,.6); transition: transform .2s ease, box-shadow .2s ease, filter .2s ease;" style-hover="transform: translateY(-3px); filter: brightness(1.05); box-shadow: 0 24px 48px -14px rgba(0,0,0,.85), 0 0 0 1px rgba(240,220,187,.5), 0 0 0 14px rgba(201,168,127,.18), inset 0 1px 0 rgba(255,255,255,.7);" style-active="transform: translateY(-1px);">Забронировать место<span style="display: inline-flex; align-items: center; justify-content: center; width: 30px; height: 30px; border-radius: 50%; background: rgba(42,33,28,.9); color: #F0DCBB; font-size: 19.8px; line-height: 1;">→</span></a>
+            <div style="display: inline-flex; white-space: nowrap; flex: 0 0 auto; flex: 0 0 auto; align-items: center; gap: 10px; padding: 11px 18px; border-radius: 999px; background: rgba(246,240,232,.1); border: 1px solid rgba(246,240,232,.3); backdrop-filter: blur(6px);">
+              <span style="width: 7px; height: 7px; border-radius: 50%; background: #C9A87F; box-shadow: 0 0 0 4px rgba(201,168,127,.25);"></span>
+              <span style="font-size: 19.8px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: #F6F0E8;">Старт 1 октября</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div data-screen-label="02 Зачем мне это" style="background: radial-gradient(120% 80% at 12% 0%, #FFFBF5 0%, rgba(255,251,245,0) 60%), radial-gradient(90% 70% at 100% 100%, #F0E2CE 0%, rgba(240,226,206,0) 65%), linear-gradient(180deg, #FBF7F1 0%, #F3EBE0 100%); padding: clamp(56px, 63.5px, 100px) clamp(14px, 31.8px, 40px);">
+  <div style="max-width: 820px; margin: 0 auto; display: flex; flex-direction: column; gap: clamp(26px, 31.8px, 36px); align-items: flex-start;">
+    <p style="margin: 0; font-weight: 700; font-size: 52px; line-height: 1.15; letter-spacing: -.025em; color: #2E2521;">Эмпатия&nbsp;— это способность.<br>У&nbsp;вас она есть.</p>
+    <p style="margin: 0; font-size: 34px; font-weight: 600; line-height: 1.35; color: #8A5A2B;">Но пользоваться ей вас <span style="background: linear-gradient(180deg, rgba(201,168,127,0) 62%, rgba(201,168,127,.42) 62%); padding: 0 2px;">никто не&nbsp;учил</span>.</p>
+    <div style="width: 100%; max-width: 820px; height: 2px; border-radius: 2px; background: linear-gradient(90deg, #C9A87F 0%, #E4DACD 45%, rgba(228,218,205,0) 100%);"></div>
+    <div style="display: flex; flex-direction: column; gap: 20px; max-width: 820px; width: 100%;">
+      <p style="margin: 0; font-size: 30px; line-height: 1.5;">Этому практикум и&nbsp;учит. Шесть недель, и&nbsp;каждая берёт одну сферу вашей жизни. Начинаем с&nbsp;вас самих.</p>
+      <div style="display: flex; flex-direction: column; gap: 8px;">
+        <div style="display: flex; align-items: center; gap: 14px; background: linear-gradient(160deg, #4A392F, #2E2420); border: 1px solid #33271F; box-shadow: 0 8px 20px -12px rgba(43,33,28,.6), inset 0 1px 0 rgba(255,255,255,.1); border-radius: 999px; padding: 13px 22px; color: #F6F0E8;">
+          <span style="display: inline-flex; align-items: center; justify-content: center; width: 30px; height: 30px; border-radius: 50%; background: rgba(246,240,232,.14); color: #F6F0E8; font-size: 25.7px; font-weight: 700; flex: none;">1</span>
+          <span style="display: inline-flex; color: #C9A87F;"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" style="flex: none; opacity: .75;"><circle cx="12" cy="8" r="3.4"></circle><path d="M5.5 19.5c.9-3.3 3.4-5 6.5-5s5.6 1.7 6.5 5"></path></svg></span>
+          <span style="font-size: 31.9px; font-weight: 600; line-height: 1.3;">Вы сами</span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 14px; background: linear-gradient(180deg, #FFFFFF 0%, #FBF6EE 100%); border: 1px solid #E9DFD2; border-radius: 999px; padding: 13px 22px; color: #3B2E28; box-shadow: 0 1px 1px rgba(60,48,40,.03), 0 10px 22px -16px rgba(60,48,40,.35);">
+          <span style="display: inline-flex; align-items: center; justify-content: center; width: 30px; height: 30px; border-radius: 50%; background: linear-gradient(160deg, #F6EFE5, #EBDECB); color: #8A5A2B; font-size: 25.7px; font-weight: 700; flex: none;">2</span>
+          <span style="display: inline-flex; color: #A3835F;"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" style="flex: none; opacity: .75;"><circle cx="9" cy="9" r="3"></circle><circle cx="16.5" cy="12" r="2.4"></circle><path d="M3.5 19c.7-2.8 2.8-4.3 5.5-4.3M13 19c.3-1.9 1.6-2.9 3.5-2.9s3.2 1 3.5 2.9"></path></svg></span>
+          <span style="font-size: 31.9px; font-weight: 500; line-height: 1.3;">Отношения и&nbsp;границы</span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 14px; background: linear-gradient(180deg, #FFFFFF 0%, #FBF6EE 100%); border: 1px solid #E9DFD2; border-radius: 999px; padding: 13px 22px; color: #3B2E28; box-shadow: 0 1px 1px rgba(60,48,40,.03), 0 10px 22px -16px rgba(60,48,40,.35);">
+          <span style="display: inline-flex; align-items: center; justify-content: center; width: 30px; height: 30px; border-radius: 50%; background: linear-gradient(160deg, #F6EFE5, #EBDECB); color: #8A5A2B; font-size: 25.7px; font-weight: 700; flex: none;">3</span>
+          <span style="display: inline-flex; color: #A3835F;"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" style="flex: none; opacity: .75;"><path d="M12 20s-6.5-3.9-6.5-8.4A3.9 3.9 0 0 1 12 9a3.9 3.9 0 0 1 6.5 2.6C18.5 16.1 12 20 12 20z"></path></svg></span>
+          <span style="font-size: 31.9px; font-weight: 500; line-height: 1.3;">Дети и&nbsp;родители</span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 14px; background: linear-gradient(180deg, #FFFFFF 0%, #FBF6EE 100%); border: 1px solid #E9DFD2; border-radius: 999px; padding: 13px 22px; color: #3B2E28; box-shadow: 0 1px 1px rgba(60,48,40,.03), 0 10px 22px -16px rgba(60,48,40,.35);">
+          <span style="display: inline-flex; align-items: center; justify-content: center; width: 30px; height: 30px; border-radius: 50%; background: linear-gradient(160deg, #F6EFE5, #EBDECB); color: #8A5A2B; font-size: 25.7px; font-weight: 700; flex: none;">4</span>
+          <span style="display: inline-flex; color: #A3835F;"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" style="flex: none; opacity: .75;"><circle cx="12" cy="5" r="2.2"></circle><path d="M12 8v7M8 10.5h8M9.5 20l2.5-5 2.5 5"></path></svg></span>
+          <span style="font-size: 31.9px; font-weight: 500; line-height: 1.3;">Тело и&nbsp;психосоматика</span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 14px; background: linear-gradient(180deg, #FFFFFF 0%, #FBF6EE 100%); border: 1px solid #E9DFD2; border-radius: 999px; padding: 13px 22px; color: #3B2E28; box-shadow: 0 1px 1px rgba(60,48,40,.03), 0 10px 22px -16px rgba(60,48,40,.35);">
+          <span style="display: inline-flex; align-items: center; justify-content: center; width: 30px; height: 30px; border-radius: 50%; background: linear-gradient(160deg, #F6EFE5, #EBDECB); color: #8A5A2B; font-size: 25.7px; font-weight: 700; flex: none;">5</span>
+          <span style="display: inline-flex; color: #A3835F;"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" style="flex: none; opacity: .75;"><path d="M12 3.5l2.5 5.2 5.5.8-4 3.9 1 5.6-5-2.7-5 2.7 1-5.6-4-3.9 5.5-.8z"></path></svg></span>
+          <span style="font-size: 31.9px; font-weight: 500; line-height: 1.3;">Своё место и&nbsp;реализация</span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 14px; background: linear-gradient(180deg, #FFFFFF 0%, #FBF6EE 100%); border: 1px solid #E9DFD2; border-radius: 999px; padding: 13px 22px; color: #3B2E28; box-shadow: 0 1px 1px rgba(60,48,40,.03), 0 10px 22px -16px rgba(60,48,40,.35);">
+          <span style="display: inline-flex; align-items: center; justify-content: center; width: 30px; height: 30px; border-radius: 50%; background: linear-gradient(160deg, #F6EFE5, #EBDECB); color: #8A5A2B; font-size: 25.7px; font-weight: 700; flex: none;">6</span>
+          <span style="display: inline-flex; color: #A3835F;"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" style="flex: none; opacity: .75;"><circle cx="12" cy="12" r="8.2"></circle><path d="M14.5 9.3c-.6-.8-1.5-1.2-2.6-1.2-1.5 0-2.4.8-2.4 1.8 0 2.5 5 1.3 5 3.9 0 1.1-1 2-2.6 2-1.2 0-2.1-.4-2.7-1.2M12 6.6v10.8"></path></svg></span>
+          <span style="font-size: 31.9px; font-weight: 500; line-height: 1.3;">Деньги</span>
+        </div>
+      </div>
+      <div style="display: flex; gap: 18px; align-items: flex-start; background: linear-gradient(135deg, #FFF9F0 0%, #F6EADA 100%); border: 1px solid #E4D3BC; border-radius: 14px; box-shadow: 0 1px 2px rgba(60,48,40,.04), 0 16px 34px -22px rgba(120,86,50,.45), inset 0 1px 0 rgba(255,255,255,.7); padding: 22px 24px;">
+        <span style="display: inline-flex; align-items: center; justify-content: center; width: 64px; height: 64px; border-radius: 50%; background: linear-gradient(160deg, #4A392F, #2B211C); color: #F0DDBE; font-size: 30px; font-weight: 700; letter-spacing: -.02em; flex: none; box-shadow: 0 10px 22px -12px rgba(43,33,28,.7), inset 0 1px 0 rgba(255,255,255,.14);">18</span>
+        <p style="margin: 0; font-size: 28px; line-height: 1.5; color: #5C5149;"><b style="color: #2E2521;">техник, по&nbsp;три на&nbsp;каждую неделю.</b> Каждая техника про&nbsp;конкретную ситуацию: что делать, когда она уже происходит.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div data-screen-label="03 Что нового" style="background: radial-gradient(100% 70% at 85% 0%, #FBF4E9 0%, rgba(251,244,233,0) 55%), linear-gradient(180deg, #F2E9DD 0%, #E9DECD 100%); padding: clamp(56px, 63.5px, 100px) clamp(14px, 31.8px, 40px);">
+  <div style="max-width: 100%; margin: 0 auto; display: flex; flex-direction: column; gap: clamp(26px, 27.0px, 38px);">
+    <div style="display: flex; flex-direction: column; gap: 18px;">
+      <h2 style="font-weight: 700; font-size: 52px; line-height: 1.1; letter-spacing: -.025em; margin: 0; max-width: 24ch; text-wrap: balance; color: #2E2521;">Что нового по&nbsp;сравнению с&nbsp;прошлыми потоками</h2>
+      <p style="margin: 0; max-width: 62ch; font-size: 30px; line-height: 1.55; color: #5C5149;">Практикум пересобран полностью. Это не&nbsp;повтор и&nbsp;не&nbsp;сокращённая версия того, что было.</p>
+    </div>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 14px; align-items: stretch;">
+      <div style="background: linear-gradient(180deg, #FFFFFF 0%, #FBF5EC 100%); border: 1px solid #E7DBCA; border-top: 3px solid #C9A87F; border-radius: 14px; box-shadow: 0 1px 2px rgba(60,48,40,.04), 0 22px 42px -26px rgba(60,48,40,.45); display: flex; flex-direction: column; gap: 12px; padding: clamp(26px, 23.8px, 34px);">
+        <h3 style="margin: 0; font-size: 33px; font-weight: 700; letter-spacing: -.02em; line-height: 1.25;">Программа собрана заново.</h3>
+        <p style="margin: 0; font-size: 27px; line-height: 1.55; color: #5C5149;">Шесть новых лекций под&nbsp;то, что Виола считает самым рабочим для&nbsp;эмпатов сегодня, и&nbsp;целиком на&nbsp;практике: 18&nbsp;техник, по&nbsp;три на&nbsp;каждую неделю.</p>
+      </div>
+      <div style="background: linear-gradient(180deg, #FFFFFF 0%, #FBF5EC 100%); border: 1px solid #E7DBCA; border-top: 3px solid #C9A87F; border-radius: 14px; box-shadow: 0 1px 2px rgba(60,48,40,.04), 0 22px 42px -26px rgba(60,48,40,.45); display: flex; flex-direction: column; gap: 12px; padding: clamp(26px, 23.8px, 34px);">
+        <h3 style="margin: 0; font-size: 33px; font-weight: 700; letter-spacing: -.02em; line-height: 1.25;">Ваш вопрос разбирают каждую неделю.</h3>
+        <p style="margin: 0; font-size: 27px; line-height: 1.55; color: #5C5149;">Поток делится на&nbsp;группы по&nbsp;двадцать человек. Вы&nbsp;задаёте вопрос и&nbsp;получаете ответ Виолы, команда следит, чтобы без&nbsp;ответа не&nbsp;остался никто. <span style="white-space: nowrap;">(В&nbsp;тарифе «С&nbsp;Виолой».)</span></p>
+      </div>
+    </div>
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; align-items: stretch;">
+        <div style="background: linear-gradient(180deg, #FFFFFF 0%, #F9F2E8 100%); border: 1px solid #E7DBCA; border-radius: 14px; box-shadow: 0 1px 2px rgba(60,48,40,.04), 0 16px 32px -24px rgba(60,48,40,.42); display: flex; flex-direction: column; padding: clamp(20px, 19.1px, 26px); gap: 0;">
+          <p style="margin: 0; font-size: 26px; line-height: 1.5; color: #5C5149;"><b style="color: #2E2521; font-weight: 700;">Психосоматика у&nbsp;эмпата.</b> Темы не&nbsp;было ни&nbsp;в&nbsp;одном прошлом потоке.</p>
+        </div>
+        <div style="background: linear-gradient(180deg, #FFFFFF 0%, #F9F2E8 100%); border: 1px solid #E7DBCA; border-radius: 14px; box-shadow: 0 1px 2px rgba(60,48,40,.04), 0 16px 32px -24px rgba(60,48,40,.42); display: flex; flex-direction: column; padding: clamp(20px, 19.1px, 26px); gap: 0;">
+          <p style="margin: 0; font-size: 26px; line-height: 1.5; color: #5C5149;"><b style="color: #2E2521; font-weight: 700;">Эмпат-родители и&nbsp;эмпат-дети.</b> Этой темы тоже не&nbsp;было.</p>
+        </div>
+        <div style="grid-column: span 2; background: linear-gradient(180deg, #FFFFFF 0%, #F9F2E8 100%); border: 1px solid #E7DBCA; border-radius: 14px; box-shadow: 0 1px 2px rgba(60,48,40,.04), 0 16px 32px -24px rgba(60,48,40,.42); display: flex; flex-direction: column; padding: clamp(20px, 19.1px, 26px); gap: 0;">
+          <p style="margin: 0; font-size: 26px; line-height: 1.5; color: #5C5149;"><b style="color: #2E2521; font-weight: 700;">Доступ навсегда.</b> Раньше он&nbsp;был ограничен по&nbsp;времени.</p>
+        </div>
+    </div>
+    <div style="background: linear-gradient(135deg, #FFF9F0 0%, #F3E6D3 100%); border: 1px solid #E4D3BC; border-radius: 16px; box-shadow: 0 1px 2px rgba(60,48,40,.04), 0 24px 46px -28px rgba(120,86,50,.5), inset 0 1px 0 rgba(255,255,255,.7); display: flex; flex-direction: row; flex-wrap: wrap; gap: clamp(18px, 23.8px, 40px); padding: clamp(24px, 23.8px, 32px);">
+      <h3 style="margin: 0; flex: 1 1 260px; font-size: 31px; font-weight: 700; letter-spacing: -.02em; line-height: 1.25;">Материалы, которых раньше не&nbsp;было</h3>
+      <div style="flex: 2 1 340px; display: flex; flex-direction: column; gap: 12px; font-size: 26px; line-height: 1.5; color: #5C5149;"><div style="display: grid; grid-template-columns: auto 1fr; gap: 10px; align-items: start;"><span style="display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; margin-top: 5px; border-radius: 50%; background: linear-gradient(160deg, #4A392F, #2B211C); color: #E9C98F; flex: none;"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12.5l5 5 10-11"></path></svg></span><span>карта техник эмпата на&nbsp;все шесть сфер</span></div><div style="display: grid; grid-template-columns: auto 1fr; gap: 10px; align-items: start;"><span style="display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; margin-top: 5px; border-radius: 50%; background: linear-gradient(160deg, #4A392F, #2B211C); color: #E9C98F; flex: none;"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12.5l5 5 10-11"></path></svg></span><span>глубокий разбор вас как&nbsp;эмпата с&nbsp;личной PDF-методичкой</span></div><div style="display: grid; grid-template-columns: auto 1fr; gap: 10px; align-items: start;"><span style="display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; margin-top: 5px; border-radius: 50%; background: linear-gradient(160deg, #4A392F, #2B211C); color: #E9C98F; flex: none;"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12.5l5 5 10-11"></path></svg></span><span>большая методичка потока по&nbsp;итогам, собранная из&nbsp;вопросов участников</span></div><div style="display: grid; grid-template-columns: auto 1fr; gap: 10px; align-items: start;"><span style="display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; margin-top: 5px; border-radius: 50%; background: linear-gradient(160deg, #4A392F, #2B211C); color: #E9C98F; flex: none;"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12.5l5 5 10-11"></path></svg></span><span>аудиомедитация на&nbsp;изобилие</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div data-screen-label="04 Программа шесть недель" style="background: linear-gradient(180deg, #FBF7F1 0%, #F4EDE3 100%); padding: clamp(56px, 63.5px, 100px) clamp(14px, 31.8px, 40px);">
+  <div style="max-width: 980px; margin: 0 auto; display: flex; flex-direction: column; gap: 30px;">
+    <h2 style="font-family: 'Golos Text', system-ui, sans-serif; font-weight: 700; letter-spacing: -.025em; font-size: 52px; line-height: 1.1; margin: 0; text-wrap: balance;">Шесть недель. Одна неделя — одна сфера вашей жизни</h2>
+    <div style="display: flex; flex-wrap: wrap; gap: 12px 26px; font-size: 22.5px; color: #5C5149;">
+      <span style="white-space: nowrap;"><b style="font-size: 29.1px; color: #8A5A2B;">6</b> лекций</span>
+      <span style="white-space: nowrap;"><b style="font-size: 29.1px; color: #8A5A2B;">18</b> техник</span>
+      <span style="white-space: nowrap;"><b style="font-size: 29.1px; color: #8A5A2B;">7</b> разборов&nbsp;вопросов</span>
+      <span style="white-space: nowrap;"><b style="font-size: 29.1px; color: #8A5A2B;">∞</b> доступ навсегда</span>
+    </div>
+        <div style="background: linear-gradient(160deg, #F1E8DA, #E7DAC8); border-radius: 10px; box-shadow: inset 0 1px 0 rgba(255,255,255,.5); padding: 26px 28px; font-size: 28px; line-height: 1.55;">
+      Каждую неделю вы&nbsp;получаете:<br>
+      — <b>лекцию Виолы в&nbsp;прямом эфире</b>, в&nbsp;конце она разбирает ваши вопросы<br>
+      — <b>три прикладных техники недели (всего 18 на программе)</b><br>
+      — <b>практические задания</b><br>
+      — <b>запись и&nbsp;PDF-конспект к&nbsp;лекции</b><br>
+      
+    </div>
+    <sc-for list="{{ weeks }}" as="w" hint-placeholder-count="6">
+      <div data-week-card="" style="display: grid; grid-template-columns: minmax(240px, 5fr) 6fr; background: linear-gradient(180deg, #FFFFFF 0%, #FDFAF6 100%); border: 1px solid #E9DFD2; border-radius: 14px; box-shadow: 0 1px 2px rgba(60,48,40,.04), 0 12px 30px -18px rgba(60,48,40,.28); overflow: hidden;">
+        <div style="background: linear-gradient(160deg, #F4ECE1, #EFE4D5); padding: clamp(24px, 23.8px, 34px); display: flex; flex-direction: column; gap: 14px;">
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <span style="display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; border-radius: 50%; background: #3B2E28; color: #F6F0E8; flex: none;">{{ w.icon }}</span>
+            <span style="font-size: 22px; font-weight: 700; letter-spacing: .14em; color: #8A5A2B; white-space: nowrap;">{{ w.label }}</span>
+          </div>
+          <h3 style="margin: 0; font-size: 34px; font-weight: 700; letter-spacing: -.025em; line-height: 1.18;">{{ w.title }}</h3>
+          <p style="margin: 0; font-size: 25px; line-height: 1.45; color: #6B5F55; font-style: italic;">{{ w.quote }}</p>
+        </div>
+        <div style="padding: clamp(24px, 23.8px, 34px); display: flex; flex-direction: column; gap: 18px;">
+          <p style="margin: 0; font-size: 28px; line-height: 1.5; font-weight: 500;">{{ w.lead }}</p>
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <span style="background: linear-gradient(160deg, #4A392F, #2B211C); color: #F6F0E8; border-radius: 999px; box-shadow: 0 8px 18px -10px rgba(43,33,28,.6); padding: 6px 14px; font-size: 19.8px; font-weight: 700; letter-spacing: .04em; white-space: nowrap;">3 ТЕХНИКИ</span>
+            <span style="flex: 1; height: 1px; background: #E4DACD;"></span>
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 12px;">
+            <sc-for list="{{ w.items }}" as="t" hint-placeholder-count="3">
+              <div style="display: grid; grid-template-columns: 30px 1fr; gap: 12px; align-items: start;">
+                <span style="display: inline-flex; align-items: center; justify-content: center; width: 30px; height: 30px; border-radius: 9px; background: linear-gradient(160deg, #F6EFE5, #EBDECB); color: #8A5A2B; font-size: 19.8px; font-weight: 700;">{{ t.i }}</span>
+                <span style="font-size: 23.8px; line-height: 1.45; color: #5C5149;">{{ t.text }}</span>
+              </div>
+            </sc-for>
+          </div>
+          <sc-if value="{{ w.note }}" hint-placeholder-val="{{ false }}">
+            <p style="margin: 0; color: #7D7167; font-size: 19.8px; font-style: italic;">{{ w.note }}</p>
+          </sc-if>
+        </div>
+      </div>
+    </sc-for>
+    <p style="margin: 0; color: #5C5149;">К&nbsp;каждой лекции Виола готовится отдельно. Внутри — то, что&nbsp;она <b>сегодня</b> считает самым рабочим для&nbsp;эмпатов.</p>
+    <p style="margin: 0; color: #5C5149;">Ролики в&nbsp;YouTube, Инстаграме и&nbsp;TikTok Виола делает для&nbsp;широкой аудитории — там про&nbsp;людей вообще. Здесь всё собрано только под&nbsp;эмпатов.</p>
+    <a href="#tarify" style="align-self: center; background: linear-gradient(160deg, #4A392F 0%, #2B211C 100%); color: #F6F0E8; text-decoration: none; box-shadow: 0 10px 26px -12px rgba(43,33,28,.65), inset 0 1px 0 rgba(255,255,255,.12); font-weight: 600; font-size: 23.8px; padding: 16px 40px; border-radius: 999px; box-shadow: 0 8px 22px -8px rgba(59,46,40,.5);" style-hover="filter: brightness(1.1);">Забронировать место</a>
+  </div>
+</div>
+
+<div data-screen-label="05 Финальный мастер-класс" style="background: linear-gradient(160deg, #4A3A31 0%, #3B2E28 55%, #241C18 100%); color: #F6F0E8; padding: clamp(56px, 63.5px, 100px) clamp(14px, 31.8px, 40px);">
+  <div style="max-width: 900px; margin: 0 auto; display: flex; flex-direction: column; gap: 26px; align-items: flex-start;">
+    <div style="display: inline-flex; align-items: center; gap: 10px; padding: 9px 18px; border-radius: 999px; background: rgba(246,240,232,.1); border: 1px solid rgba(246,240,232,.16);">
+      <span style="width: 7px; height: 7px; border-radius: 50%; background: #C9A87F; box-shadow: 0 0 0 4px rgba(201,168,127,.25);"></span>
+      <span style="font-size: 20px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: #F6F0E8;">После шести недель</span>
+    </div>
+    <h2 style="margin: 0; font-weight: 700; letter-spacing: -.025em; font-size: 52px; line-height: 1.12; text-wrap: balance;">Большой мастер-класс в&nbsp;финале</h2>
+    <p style="margin: 0; font-size: 30px; line-height: 1.5; color: #E6DCCF; max-width: 46ch;">Итогом программы будет большой мастер-класс, на&nbsp;котором Виола в&nbsp;прямом эфире будет разбирать ваши вопросы.</p>
+  </div>
+</div>
+
+<div id="tarify" data-screen-label="06 Тарифы" style="background: linear-gradient(180deg, #F5EFE6 0%, #EFE6DA 100%); padding: clamp(56px, 63.5px, 100px) clamp(14px, 31.8px, 40px);">
+  <div style="max-width: 100%; margin: 0 auto; display: flex; flex-direction: column; gap: 32px;">
+    <h2 style="font-family: 'Golos Text', system-ui, sans-serif; font-weight: 700; letter-spacing: -.025em; font-size: 52px; line-height: 1.1; margin: 0; text-align: center;">Тарифы</h2>
+    <div style="display: grid; grid-template-columns: 1fr; gap: 24px; align-items: start;">
+      <div data-tariff-card="" style="background: linear-gradient(180deg, #FFFFFF 0%, #FDFAF6 100%); border: 1px solid #E9DFD2; border-radius: 14px; box-shadow: 0 1px 2px rgba(60,48,40,.04), 0 14px 32px -20px rgba(60,48,40,.32); padding: clamp(24px, 31.8px, 36px); display: flex; flex-direction: column; gap: 16px; position: relative;">
+        <h3 style="font-weight: 700; letter-spacing: -.02em; font-size: 40.1px; margin: 0;">Самостоятельный</h3>
+        <p style="margin: 0; font-size: 28.6px; line-height: 1.45; color: #5C5149;">Весь метод и&nbsp;все техники. Самостоятельное прохождение.</p>
+        <div style="border-top: 1px solid #E4DACD; padding-top: 16px; display: flex; flex-direction: column; gap: 8px;">
+          <div style="font-size: 23.9px; letter-spacing: .14em; text-transform: uppercase; color: #A3835F; margin-bottom: 2px;">Программа</div>
+          <div style="display: grid; grid-template-columns: 22px 1fr; gap: 10px; align-items: start; font-size: 24.6px; line-height: 1.35; color: #5C5149;">
+            <span style="color: #A3835F;">—</span><span>Неделя 1. Фигура эмпата</span>
+          </div>
+          <div style="display: grid; grid-template-columns: 22px 1fr; gap: 10px; align-items: start; font-size: 24.6px; line-height: 1.35; color: #5C5149;">
+            <span style="color: #A3835F;">—</span><span>Неделя 2. Эмпат и отношения с людьми</span>
+          </div>
+          <div style="display: grid; grid-template-columns: 22px 1fr; gap: 10px; align-items: start; font-size: 24.6px; line-height: 1.35; color: #5C5149;">
+            <span style="color: #A3835F;">—</span><span>Неделя 3. Эмпат-родители и эмпат-дети</span>
+          </div>
+          <div style="display: grid; grid-template-columns: 22px 1fr; gap: 10px; align-items: start; font-size: 24.6px; line-height: 1.35; color: #5C5149;">
+            <span style="color: #A3835F;">—</span><span>Неделя 4. Психосоматика у эмпата</span>
+          </div>
+          <div style="display: grid; grid-template-columns: 22px 1fr; gap: 10px; align-items: start; font-size: 24.6px; line-height: 1.35; color: #5C5149;">
+            <span style="color: #A3835F;">—</span><span>Неделя 5. Самореализация людей с повышенной чувствительностью</span>
+          </div>
+          <div style="display: grid; grid-template-columns: 22px 1fr; gap: 10px; align-items: start; font-size: 24.6px; line-height: 1.35; color: #5C5149;">
+            <span style="color: #A3835F;">—</span><span>Неделя 6. Психология наполненности и деньги</span>
+          </div>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 9px;">
+          <div style="display: grid; grid-template-columns: 22px 1fr; gap: 10px; align-items: start; font-size: 24.6px; line-height: 1.35;">
+            <span style="display: inline-flex; margin-top: 1px; color: #5A7A55;"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12.5l5 5 10-11"></path></svg></span>
+            <span style="color: #2E2521;">18 техник эмпата, по три на неделю</span>
+          </div>
+          <div style="display: grid; grid-template-columns: 22px 1fr; gap: 10px; align-items: start; font-size: 24.6px; line-height: 1.35;">
+            <span style="display: inline-flex; margin-top: 1px; color: #5A7A55;"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12.5l5 5 10-11"></path></svg></span>
+            <span style="color: #2E2521;">Задание после каждой лекции</span>
+          </div>
+          <div style="display: grid; grid-template-columns: 22px 1fr; gap: 10px; align-items: start; font-size: 24.6px; line-height: 1.35;">
+            <span style="display: inline-flex; margin-top: 1px; color: #5A7A55;"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12.5l5 5 10-11"></path></svg></span>
+            <span style="color: #2E2521;">Запись и PDF-конспект</span>
+          </div>
+          <div style="display: grid; grid-template-columns: 22px 1fr; gap: 10px; align-items: start; font-size: 24.6px; line-height: 1.35;">
+            <span style="display: inline-flex; margin-top: 1px; color: #5A7A55;"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12.5l5 5 10-11"></path></svg></span>
+            <span style="color: #2E2521;">Аудиомедитация на изобилие</span>
+          </div>
+          <div style="display: grid; grid-template-columns: 22px 1fr; gap: 10px; align-items: start; font-size: 24.6px; line-height: 1.35;">
+            <span style="display: inline-flex; margin-top: 1px; color: #5A7A55;"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12.5l5 5 10-11"></path></svg></span>
+            <span style="color: #2E2521;">Доступ навсегда</span>
+          </div>
+        </div>
+        <div style="height: 1px; background: linear-gradient(90deg, #C9A87F, rgba(228,218,205,.2));"></div>
+        <div style="display: flex; flex-direction: column; gap: 9px;">
+          <div style="display: grid; grid-template-columns: 22px 1fr; gap: 10px; align-items: start; font-size: 24.6px; line-height: 1.35;">
+            <span style="display: inline-flex; margin-top: 1px; color: #C9A87F;"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"></path></svg></span>
+            <span style="color: #9A9088; text-decoration: line-through; text-decoration-color: #C9A87F; text-decoration-thickness: 1.5px;">Вопрос Виоле на аудиоразбор</span>
+          </div>
+          <div style="display: grid; grid-template-columns: 22px 1fr; gap: 10px; align-items: start; font-size: 24.6px; line-height: 1.35;">
+            <span style="display: inline-flex; margin-top: 1px; color: #C9A87F;"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"></path></svg></span>
+            <span style="color: #9A9088; text-decoration: line-through; text-decoration-color: #C9A87F; text-decoration-thickness: 1.5px;">Вопросы и ответы в конце лекции</span>
+          </div>
+          <div style="display: grid; grid-template-columns: 22px 1fr; gap: 10px; align-items: start; font-size: 24.6px; line-height: 1.35;">
+            <span style="display: inline-flex; margin-top: 1px; color: #C9A87F;"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"></path></svg></span>
+            <span style="color: #9A9088; text-decoration: line-through; text-decoration-color: #C9A87F; text-decoration-thickness: 1.5px;">Мастер-класс в прямом эфире с ответами Виолы</span>
+          </div>
+          <div style="display: grid; grid-template-columns: 22px 1fr; gap: 10px; align-items: start; font-size: 24.6px; line-height: 1.35;">
+            <span style="display: inline-flex; margin-top: 1px; color: #C9A87F;"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"></path></svg></span>
+            <span style="color: #9A9088; text-decoration: line-through; text-decoration-color: #C9A87F; text-decoration-thickness: 1.5px;">Участие в финальной встрече</span>
+          </div>
+          <div style="display: grid; grid-template-columns: 22px 1fr; gap: 10px; align-items: start; font-size: 24.6px; line-height: 1.35;">
+            <span style="display: inline-flex; margin-top: 1px; color: #C9A87F;"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"></path></svg></span>
+            <span style="color: #9A9088; text-decoration: line-through; text-decoration-color: #C9A87F; text-decoration-thickness: 1.5px;">Разбор вас как эмпата, личный PDF</span>
+          </div>
+          <div style="display: grid; grid-template-columns: 22px 1fr; gap: 10px; align-items: start; font-size: 24.6px; line-height: 1.35;">
+            <span style="display: inline-flex; margin-top: 1px; color: #C9A87F;"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"></path></svg></span>
+            <span style="color: #9A9088; text-decoration: line-through; text-decoration-color: #C9A87F; text-decoration-thickness: 1.5px;">Чат потока</span>
+          </div>
+          <div style="display: grid; grid-template-columns: 22px 1fr; gap: 10px; align-items: start; font-size: 24.6px; line-height: 1.35;">
+            <span style="display: inline-flex; margin-top: 1px; color: #C9A87F;"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"></path></svg></span>
+            <span style="color: #9A9088; text-decoration: line-through; text-decoration-color: #C9A87F; text-decoration-thickness: 1.5px;">Большая методичка по итогам</span>
+          </div>
+        </div>
+        <p style="margin: 0; color: #7D7167; font-size: 24.6px;">Мест без ограничений, рассрочка есть</p>
+        <div style="border-top: 1px solid #E4DACD; padding-top: 16px; display: flex; flex-direction: column; gap: 9px;">
+          <div style="display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap;">
+            <span style="font-weight: 700; font-size: 57.1px; line-height: 1; letter-spacing: -.02em; color: #2E2521;">14&nbsp;900&nbsp;₽</span>
+            <span style="font-size: 28.5px; color: #9A9088; text-decoration: line-through; text-decoration-color: #C9A87F;">22&nbsp;900&nbsp;₽</span>
+          </div>
+          <div style="font-size: 25.4px; color: #5C5149;">$179&nbsp;/ €149</div>
+          <div style="font-size: 23.8px; color: #7D7167;">сейчас, до 4&nbsp;сентября. С&nbsp;5&nbsp;сентября&nbsp;— <span style="white-space: nowrap;">17&nbsp;900&nbsp;₽</span></div>
+        </div>
+        <a href="{{ payBasic }}" style="display: block; text-align: center; background: linear-gradient(160deg, #4A392F 0%, #2B211C 100%); color: #F6F0E8; text-decoration: none; box-shadow: 0 10px 26px -12px rgba(43,33,28,.65), inset 0 1px 0 rgba(255,255,255,.12); font-weight: 600; font-size: 27px; padding: 16px 20px; border-radius: 999px;" style-hover="filter: brightness(1.1);">Забронировать место</a>
+      </div>
+      <div data-tariff-card="" style="background: linear-gradient(180deg, #FFFFFF 0%, #FBF5EC 100%); border: 2px solid #3B2E28; border-radius: 14px; box-shadow: 0 20px 44px -22px rgba(59,46,40,.5); padding: clamp(24px, 31.8px, 36px); display: flex; flex-direction: column; gap: 16px; position: relative;">
+        <div style="position: absolute; top: -14px; left: 50%; transform: translateX(-50%); background: linear-gradient(160deg, #4A392F, #2B211C); color: #F6F0E8; font-size: 22px; letter-spacing: .16em; text-transform: uppercase; padding: 6px 18px; border-radius: 999px; white-space: nowrap; box-shadow: 0 8px 18px -10px rgba(43,33,28,.7);">Рекомендуем</div>
+        <h3 style="font-weight: 700; letter-spacing: -.02em; font-size: 40.1px; margin: 0;">С Виолой</h3>
+        <p style="margin: 0; font-size: 28.6px; line-height: 1.45; color: #5C5149;">Всё то&nbsp;же самое&nbsp;— и&nbsp;Виола отвечает на&nbsp;ваши вопросы.</p>
+        <div style="border-top: 1px solid #E4DACD; padding-top: 16px; display: flex; flex-direction: column; gap: 8px;">
+          <div style="font-size: 23.9px; letter-spacing: .14em; text-transform: uppercase; color: #A3835F; margin-bottom: 2px;">Программа</div>
+          <div style="display: grid; grid-template-columns: 22px 1fr; gap: 10px; align-items: start; font-size: 24.6px; line-height: 1.35; color: #5C5149;">
+            <span style="color: #A3835F;">—</span><span>Неделя 1. Фигура эмпата</span>
+          </div>
+          <div style="display: grid; grid-template-columns: 22px 1fr; gap: 10px; align-items: start; font-size: 24.6px; line-height: 1.35; color: #5C5149;">
+            <span style="color: #A3835F;">—</span><span>Неделя 2. Эмпат и отношения с людьми</span>
+          </div>
+          <div style="display: grid; grid-template-columns: 22px 1fr; gap: 10px; align-items: start; font-size: 24.6px; line-height: 1.35; color: #5C5149;">
+            <span style="color: #A3835F;">—</span><span>Неделя 3. Эмпат-родители и эмпат-дети</span>
+          </div>
+          <div style="display: grid; grid-template-columns: 22px 1fr; gap: 10px; align-items: start; font-size: 24.6px; line-height: 1.35; color: #5C5149;">
+            <span style="color: #A3835F;">—</span><span>Неделя 4. Психосоматика у эмпата</span>
+          </div>
+          <div style="display: grid; grid-template-columns: 22px 1fr; gap: 10px; align-items: start; font-size: 24.6px; line-height: 1.35; color: #5C5149;">
+            <span style="color: #A3835F;">—</span><span>Неделя 5. Самореализация людей с повышенной чувствительностью</span>
+          </div>
+          <div style="display: grid; grid-template-columns: 22px 1fr; gap: 10px; align-items: start; font-size: 24.6px; line-height: 1.35; color: #5C5149;">
+            <span style="color: #A3835F;">—</span><span>Неделя 6. Психология наполненности и деньги</span>
+          </div>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 9px;">
+          <div style="display: grid; grid-template-columns: 22px 1fr; gap: 10px; align-items: start; font-size: 24.6px; line-height: 1.35;">
+            <span style="display: inline-flex; margin-top: 1px; color: #5A7A55;"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12.5l5 5 10-11"></path></svg></span>
+            <span style="color: #2E2521;">18 техник эмпата, по три на неделю</span>
+          </div>
+          <div style="display: grid; grid-template-columns: 22px 1fr; gap: 10px; align-items: start; font-size: 24.6px; line-height: 1.35;">
+            <span style="display: inline-flex; margin-top: 1px; color: #5A7A55;"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12.5l5 5 10-11"></path></svg></span>
+            <span style="color: #2E2521;">Задание после каждой лекции</span>
+          </div>
+          <div style="display: grid; grid-template-columns: 22px 1fr; gap: 10px; align-items: start; font-size: 24.6px; line-height: 1.35;">
+            <span style="display: inline-flex; margin-top: 1px; color: #5A7A55;"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12.5l5 5 10-11"></path></svg></span>
+            <span style="color: #2E2521;">Запись и PDF-конспект</span>
+          </div>
+          <div style="display: grid; grid-template-columns: 22px 1fr; gap: 10px; align-items: start; font-size: 24.6px; line-height: 1.35;">
+            <span style="display: inline-flex; margin-top: 1px; color: #5A7A55;"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12.5l5 5 10-11"></path></svg></span>
+            <span style="color: #2E2521;">Аудиомедитация на изобилие</span>
+          </div>
+          <div style="display: grid; grid-template-columns: 22px 1fr; gap: 10px; align-items: start; font-size: 24.6px; line-height: 1.35;">
+            <span style="display: inline-flex; margin-top: 1px; color: #5A7A55;"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12.5l5 5 10-11"></path></svg></span>
+            <span style="color: #2E2521;">Доступ навсегда</span>
+          </div>
+        </div>
+        <div style="height: 1px; background: linear-gradient(90deg, #C9A87F, rgba(228,218,205,.2));"></div>
+        <div style="display: flex; flex-direction: column; gap: 9px;">
+          <div style="display: grid; grid-template-columns: 22px 1fr; gap: 10px; align-items: start; font-size: 24.6px; line-height: 1.35;">
+            <span style="display: inline-flex; margin-top: 1px; color: #5A7A55;"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12.5l5 5 10-11"></path></svg></span>
+            <span style="color: #2E2521;">Вопрос Виоле на аудиоразбор</span>
+          </div>
+          <div style="display: grid; grid-template-columns: 22px 1fr; gap: 10px; align-items: start; font-size: 24.6px; line-height: 1.35;">
+            <span style="display: inline-flex; margin-top: 1px; color: #5A7A55;"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12.5l5 5 10-11"></path></svg></span>
+            <span style="color: #2E2521;">Вопросы и ответы в конце лекции</span>
+          </div>
+          <div style="display: grid; grid-template-columns: 22px 1fr; gap: 10px; align-items: start; font-size: 24.6px; line-height: 1.35;">
+            <span style="display: inline-flex; margin-top: 1px; color: #5A7A55;"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12.5l5 5 10-11"></path></svg></span>
+            <span style="color: #2E2521;">Мастер-класс в прямом эфире с ответами Виолы</span>
+          </div>
+          <div style="display: grid; grid-template-columns: 22px 1fr; gap: 10px; align-items: start; font-size: 24.6px; line-height: 1.35;">
+            <span style="display: inline-flex; margin-top: 1px; color: #5A7A55;"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12.5l5 5 10-11"></path></svg></span>
+            <span style="color: #2E2521;">Участие в финальной встрече</span>
+          </div>
+          <div style="display: grid; grid-template-columns: 22px 1fr; gap: 10px; align-items: start; font-size: 24.6px; line-height: 1.35;">
+            <span style="display: inline-flex; margin-top: 1px; color: #5A7A55;"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12.5l5 5 10-11"></path></svg></span>
+            <span style="color: #2E2521;">Разбор вас как эмпата, личный PDF</span>
+          </div>
+          <div style="display: grid; grid-template-columns: 22px 1fr; gap: 10px; align-items: start; font-size: 24.6px; line-height: 1.35;">
+            <span style="display: inline-flex; margin-top: 1px; color: #5A7A55;"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12.5l5 5 10-11"></path></svg></span>
+            <span style="color: #2E2521;">Чат потока</span>
+          </div>
+          <div style="display: grid; grid-template-columns: 22px 1fr; gap: 10px; align-items: start; font-size: 24.6px; line-height: 1.35;">
+            <span style="display: inline-flex; margin-top: 1px; color: #5A7A55;"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12.5l5 5 10-11"></path></svg></span>
+            <span style="color: #2E2521;">Большая методичка по итогам</span>
+          </div>
+        </div>
+        <p style="margin: 0; color: #7D7167; font-size: 24.6px;">Мест: 50, рассрочка есть</p>
+        <div style="border-top: 1px solid #E4DACD; padding-top: 16px; display: flex; flex-direction: column; gap: 9px;">
+          <div style="display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap;">
+            <span style="font-weight: 700; font-size: 57.1px; line-height: 1; letter-spacing: -.02em; color: #2E2521;">29&nbsp;900&nbsp;₽</span>
+            <span style="font-size: 28.5px; color: #9A9088; text-decoration: line-through; text-decoration-color: #C9A87F;">44&nbsp;900&nbsp;₽</span>
+          </div>
+          <div style="font-size: 25.4px; color: #5C5149;">$359 / €299</div>
+          <div style="font-size: 23.8px; color: #7D7167;">сейчас, до 4&nbsp;сентября. С&nbsp;5&nbsp;сентября&nbsp;— <span style="white-space: nowrap;">34&nbsp;900&nbsp;₽</span></div>
+        </div>
+        <a href="{{ payFull }}" style="display: block; text-align: center; background: linear-gradient(160deg, #4A392F 0%, #2B211C 100%); color: #F6F0E8; text-decoration: none; box-shadow: 0 10px 26px -12px rgba(43,33,28,.65), inset 0 1px 0 rgba(255,255,255,.12); font-weight: 600; font-size: 27px; padding: 16px 20px; border-radius: 999px;" style-hover="filter: brightness(1.1);">Забронировать место</a>
+      </div>
+    </div>
+    <div style="max-width: 760px; align-self: center; display: flex; flex-direction: column; gap: 12px; text-align: center; color: #5C5149;">
+      <p style="margin: 0; font-size: 25.4px;">Цены в&nbsp;долларах и&nbsp;евро справочные: оплата идёт в&nbsp;рублях по&nbsp;курсу на&nbsp;день оплаты.</p>
+    </div>
+  </div>
+</div>
+
+<div data-screen-label="11 Финальный призыв" style="background: linear-gradient(180deg, #F4EDE3 0%, #EBE0D1 100%); color: #2E2521; padding: clamp(64px, 71.5px, 120px) clamp(14px, 31.8px, 40px);">
+  <div style="max-width: 640px; margin: 0 auto; display: flex; flex-direction: column; gap: 22px; text-align: center; align-items: center;">
+    <div style="font-size: 18.3px; letter-spacing: .18em; text-transform: uppercase; color: #7D7167;">Как&nbsp;попасть</div>
+    <h2 style="font-family: 'Golos Text', system-ui, sans-serif; font-weight: 700; letter-spacing: -.025em; font-size: 52px; line-height: 1.1; margin: 0; text-wrap: balance;">Первый поток стартует 1&nbsp;октября</h2>
+    <p style="margin: 0; color: #5C5149; font-size: 25.1px;">В&nbsp;«Полном» пятьдесят мест. Оплатить можно сразу или&nbsp;в&nbsp;рассрочку, частями. Хотите, забронирую вам место?</p>
+    <a href="#tarify" style="align-self: center; display: inline-flex; white-space: nowrap; align-items: center; gap: 12px; background: linear-gradient(160deg, #4A392F 0%, #2B211C 100%); color: #F6F0E8; text-decoration: none; box-shadow: 0 10px 26px -12px rgba(43,33,28,.65), inset 0 1px 0 rgba(255,255,255,.12); font-weight: 600; font-size: 22.5px; padding: 16px 34px; border-radius: 999px;; font-size: 23.8px; padding: 18px 40px" style-hover="background: #2E2521;">Забронировать место<span style="display: inline-flex; align-items: center; justify-content: center; width: 26px; height: 26px; border-radius: 50%; background: rgba(246,240,232,.16); font-size: 19.8px;">→</span></a>
+    <p style="margin: 0; color: #7D7167; font-size: 19.8px;">Цена предзаписи действует до&nbsp;4 сентября</p>
+  </div>
+</div>
+</doc-page>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;payUrlBasic&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;#&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Оплата&quot;},&quot;payUrlFull&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;#&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Оплата&quot;},&quot;contactUrl&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;https://t.me/violamaro1&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Оплата&quot;}}">
+class Component extends DCLogic {
+  componentDidMount() {
+    // one continuous page: grow the sheet to the full content height
+    const fit = () => {
+      const dp = document.querySelector('doc-page');
+      if (!dp) return;
+      let h = 0;
+      for (const el of dp.children) if (el.getAttribute && !el.hasAttribute('slot')) h += el.getBoundingClientRect().height;
+      h = Math.ceil(h);
+      if (h > 1200 && String(dp.getAttribute('height')) !== h + 'px') dp.setAttribute('height', h + 'px');
+    };
+    setTimeout(fit, 400);
+    setTimeout(fit, 1600);
+    window.addEventListener('beforeprint', fit);
+  }
+  ico(paths) {
+    return React.createElement('svg', { viewBox: '0 0 24 24', width: 20, height: 20, fill: 'none', stroke: 'currentColor', strokeWidth: 1.7, strokeLinecap: 'round', strokeLinejoin: 'round' },
+      paths.map((d, i) => d.c
+        ? React.createElement('circle', { key: i, cx: d.c[0], cy: d.c[1], r: d.c[2] })
+        : React.createElement('path', { key: i, d: d })));
+  }
+  renderVals() {
+    const V = {
+      payBasic: this.props.payUrlBasic ?? "#",
+      payFull: this.props.payUrlFull ?? "#",
+      contact: this.props.contactUrl ?? "https://t.me/violamaro1",
+      weeks: [
+        { n: "1", title: "Фигура эмпата", q: "Кто я такой? Это дар или со мной что-то не так?",
+          lead: "Эмпатия как суперсила. Эмпатия — это природный интеллект, который нужно развивать и использовать. Эмпатия как основа внутренней самоценности. Психология плюс духовность равняется эмпатия.",
+          tricks: "— как отличить эмпатию от слияния и созависимости\n— упражнения на распознавание своего эмпатического канала\n— формирование новой самоидентификации: «Я — эмпат, и это моя сила»",
+          body: "Эмпат — это не «слишком чувствительный человек», а носитель особого вида интеллекта. Этот природный интеллект чаще всего остаётся нераспознанным и поэтому работает не в полную силу. Когда эмпатия осознаётся и развивается, она становится основой внутренней самоценности: вы перестаёте обесценивать свою чувствительность и начинаете опираться на неё как на ресурс.",
+          note: "" },
+        { n: "2", title: "Эмпат и отношения с людьми", q: "Почему мной пользуются? Как отказать и не чувствовать себя виноватым? Почему на работе больше всех достаётся мне?",
+          lead: "Выход из детской зависимой позиции, позиции жертвы — в созидательную позицию взрослого. Осознанность и личные границы: формирование личного поля защиты от манипуляций эго-зависимых и токсичных людей.",
+          tricks: "— распознавание признаков токсичного взаимодействия\n— техники быстрого возвращения в себя после контакта\n— формирование внутреннего взрослого, который умеет говорить «нет» без чувства вины",
+          body: "Разбираем весь круг, а он у всех разный: партнёр, друзья, сёстры и братья, коллеги и начальство. Механизм один, а сцены разные — и там, где вы годами работаете за спасибо, и там, где чужие задачи оказываются на вашем столе. Ключевой переход — в созидательную позицию взрослого: я выбираю, с кем и на каких условиях быть в контакте.",
+          note: "" },
+        { n: "3", title: "Эмпат-родители и эмпат-дети", q: "Как быть опорой родным и жить при этом свою жизнь? Мой ребёнок эмпат — что ему нужно?",
+          lead: "Как воспитывать своих детей с повышенной чувствительностью и как сепарироваться от опыта детско-родительских отношений. Баланс внутренних и внешних ролей — родители, дети, взрослые.",
+          tricks: "— особенности воспитания высокочувствительных детей\n— практики внутренней сепарации\n— карта внутренних ролей: где я сейчас — Ребёнок, Родитель или Взрослый",
+          body: "Эмпат-родитель часто либо чрезмерно защищает чувствительного ребёнка, либо бессознательно повторяет болезненные сценарии. Параллельно идёт внутренняя сепарация от собственного детско-родительского опыта — только после неё появляется возможность удерживать здоровый баланс ролей: быть родителем снаружи и взрослым внутри.",
+          note: "" },
+        { n: "4", title: "Психосоматика у эмпата", q: "Почему у меня всё время что-то болит, а врачи ничего не находят?",
+          lead: "Формирование психосоматики: этапы и механизмы. Язык психосоматики и как определить её формирование на первых этапах. Области проявления психосоматики.",
+          tricks: "— карта тела: какая эмоция в какую зону уходит\n— признаки начинающейся психосоматики\n— простые телесные практики возвращения контакта с собой",
+          body: "У эмпатов психосоматика развивается быстрее, потому что тело становится хранилищем невыраженных эмоций — своих и чужих. Навык распознавания на ранних этапах позволяет остановить процесс до хронической формы. Разбираем основные области проявления: дыхание, пищеварение, кожа, опорно-двигательный аппарат, иммунитет и другие.",
+          note: "Практикум не заменяет обследование и лечение у врача." },
+        { n: "5", title: "Самореализация людей с повышенной чувствительностью", q: "Как найти своё место? Внутри богато, а снаружи будто всё слишком грубо.",
+          lead: "Как совместить духовное и социальное. Проявленность вовне и раскрытие себя внутри.",
+          tricks: "— поиск своих ниш и форматов самовыражения\n— баланс уединения и социальной активности\n— практики безопасной проявленности",
+          body: "Для эмпата самореализация часто становится точкой напряжения: внутренний мир богат, а внешний кажется слишком грубым. Проявленность вовне — это не «стать как все», а выражать чувствительность в формах, которые мир может принять. Только в этом двустороннем движении возникает устойчивая самореализация.",
+          note: "" },
+        { n: "6", title: "Психология наполненности и деньги", q: "Почему я не могу удержать деньги? В чём моя ценность?",
+          lead: "Психология наполненности как фундамент жизненного изобилия — в отношениях, в финансах и не только. Состояние наполненности и ресурсности как фундамент благополучия.",
+          tricks: "— диагностика: зарабатываю я из наполненности или из дефицита\n— как отличить денежную мотивацию из пустоты от мотивации из полноты\n— практики возвращения в ресурсность перед финансовыми решениями",
+          body: "Финансовое благополучие эмпата начинается не с вопроса «как заработать больше», а с того, насколько вы уже наполнены внутри. Когда появляется устойчивая наполненность и ресурсность, исчезает голодная энергия, появляется внутренняя ценность, меняется поле притяжения и деньги начинают удерживаться.",
+          note: "" }
+      ],
+      faq: [
+        { q: "А если я пропущу лекцию?", a: "Ничего не потеряете. Запись и PDF-конспект остаются у вас навсегда, открыть их можно когда удобно и из любой точки мира. Многие проходят поток в записи целиком." },
+        { q: "У меня Telegram открывается только с VPN. Я смогу участвовать?", a: "Да. Ни одна часть практикума не требует быть на связи в конкретную минуту: всё, что идёт вживую, публикуется в записи сразу после, и открыть её можно когда получится." },
+        { q: "Я не покупаю картой в интернете. Что делать?", a: "Напишите нам, подберём другой способ. На странице оплаты видно, какие данные мы запрашиваем и какие не запрашиваем никогда. После оплаты приходит чек, а по запросу — сертификат и подтверждение для налоговой. Оплата из-за рубежа работает." },
+        { q: "Мой вопрос точно разберут?", a: "Да, каждую неделю. Это и есть причина, по которой мест в «С Виолой» пятьдесят, а не больше." },
+        { q: "Можно спрашивать, не рассказывая свою историю целиком?", a: "Можно и нужно. Формулируйте общими чертами — Виола видит, что стоит за вопросом, и отвечает на то, что там на самом деле." },
+        { q: "А если во время работы станет тяжело?", a: "Так бывает, и об этом лучше знать заранее: когда начинаешь разбирать то, что годами лежало нетронутым, какое-то время может быть неспокойно. Темп здесь ваш, никто не подгоняет. Практикум не заменяет очную психотерапию — если сейчас у вас острое состояние, сначала стоит опереться на своего специалиста." },
+        { q: "Успею ли я за шесть недель, если у меня работа и семья?", a: "Одна лекция в неделю, задание и три техники. Смотреть можно в записи, доступ остаётся навсегда, так что догнать пропущенное реально в любой момент." }
+      ]
+    };
+    const ICONS = [
+      [{c:[12,8,3.4]}, 'M5.5 19.5c.9-3.3 3.4-5 6.5-5s5.6 1.7 6.5 5'],
+      [{c:[9,9,3]}, {c:[16.5,12,2.4]}, 'M3.5 19c.7-2.8 2.8-4.3 5.5-4.3M13 19c.3-1.9 1.6-2.9 3.5-2.9s3.2 1 3.5 2.9'],
+      ['M12 20s-6.5-3.9-6.5-8.4A3.9 3.9 0 0 1 12 9a3.9 3.9 0 0 1 6.5 2.6C18.5 16.1 12 20 12 20z'],
+      [{c:[12,5,2.2]}, 'M12 8v7M8 10.5h8M9.5 20l2.5-5 2.5 5'],
+      ['M12 3.5l2.5 5.2 5.5.8-4 3.9 1 5.6-5-2.7-5 2.7 1-5.6-4-3.9 5.5-.8z'],
+      [{c:[12,12,8.2]}, 'M14.5 9.3c-.6-.8-1.5-1.2-2.6-1.2-1.5 0-2.4.8-2.4 1.8 0 2.5 5 1.3 5 3.9 0 1.1-1 2-2.6 2-1.2 0-2.1-.4-2.7-1.2M12 6.6v10.8']
+    ];
+    V.weeks = V.weeks.map((w, idx) => ({
+      ...w,
+      icon: this.ico(ICONS[idx] || ICONS[0]),
+      label: 'НЕДЕЛЯ\u00A0' + w.n,
+      quote: '«' + w.q + '»',
+      items: String(w.tricks).split('\n').filter(Boolean).map((t, i) => ({ i: i + 1, text: t.replace(/^—\s*/, '') }))
+    }));
+    return V;
+  }
+}
+</script>
+</body>
+</html>

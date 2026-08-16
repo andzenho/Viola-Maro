@@ -1,0 +1,14 @@
+# Исходные архивы — их содержимое уже распаковано в репозиторий
+*.zip
+*.7z
+
+# Скриншоты итераций из DesignCraft: 26 МБ истории правок, для сборки не нужны.
+# Бриф оставляем — на него ссылается README.
+source/uploads/*
+!source/uploads/lendingpromtgotovyy.md
+
+# Служебное
+.DS_Store
+.playwright-mcp/
+*.pyc
+__pycache__/
