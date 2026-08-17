@@ -37,8 +37,8 @@ EMAIL = "mg.ananizh@gmail.com"
 
 # Телефонный кадр режется из того же снимка, что и десктопный: одно фото
 # на оба экрана, иначе на десктопе одно выражение лица, а на телефоне другое.
-MOBILE_CROP_X = 819      # левее портрета — полоса пустого фона под текст
-MOBILE_EXT = 250         # надставка сверху, чтобы лицо попало между блоками текста
+MOBILE_CROP_X = 710      # левее портрета — полоса пустого фона под текст
+MOBILE_EXT_BOTTOM = 400  # надставка снизу: поднимает портрет и расширяет кадр
 
 DOCS = [
     ("oferta", "offer", "Публичная оферта"),
@@ -479,18 +479,25 @@ def build_images():
     crop = im.crop((MOBILE_CROP_X, 0, W, H))
     cw = crop.width
 
-    # Сверху кадр надставляется: верхняя строка фотографии — ровный тёмный
-    # градиент без деталей, её и растягиваем вверх с затуханием. Шов приходится
-    # на неё же и не виден. Надставка задаёт вертикаль: портрет уезжает вниз,
-    # и лицо попадает в свободную полосу между заголовком и обещанием.
-    row0 = crop.crop((0, 0, cw, 1))
-    top = Image.new("RGB", (cw, MOBILE_EXT))
-    for i in range(MOBILE_EXT):
-        k = 0.72 + 0.28 * (i / (MOBILE_EXT - 1))    # 0.72 наверху → ровно 1.0 на шве
-        top.paste(row0.point(lambda v, k=k: int(v * k)), (0, i))
-    mob = Image.new("RGB", (cw, H + MOBILE_EXT))
-    mob.paste(top, (0, 0))
-    mob.paste(crop, (0, MOBILE_EXT))
+    # Кадр надставляется СНИЗУ, а не сверху, и это принципиально.
+    #
+    # Экран телефона вдвое уже, чем высок, поэтому вертикальный кусок кадра
+    # обрезается по бокам. Чем кадр выше, тем меньше масштаб — и тем шире
+    # полоса исходника попадает в экран. Надставка снизу разом делает два
+    # дела: портрет поднимается (его доля от высоты падает) и в кадр входит
+    # больше фона слева, так что сама Виола уезжает вправо. Надставка сверху
+    # первое из этих действий выполняла наоборот — опускала портрет.
+    #
+    # Низ кадра закрыт плотной вуалью и кнопками, поэтому растянутая нижняя
+    # строка туда и уходит: её не видно.
+    rowN = crop.crop((0, H - 1, cw, H))
+    bottom = Image.new("RGB", (cw, MOBILE_EXT_BOTTOM))
+    for i in range(MOBILE_EXT_BOTTOM):
+        k = 1.0 - 0.45 * (i / (MOBILE_EXT_BOTTOM - 1))   # ровно 1.0 на шве → темнее вниз
+        bottom.paste(rowN.point(lambda v, k=k: int(v * k)), (0, i))
+    mob = Image.new("RGB", (cw, H + MOBILE_EXT_BOTTOM))
+    mob.paste(crop, (0, 0))
+    mob.paste(bottom, (0, H))
 
     save(mob, "hero-mob", (cw, 620))
 
@@ -798,6 +805,48 @@ def build_favicon():
     write(os.path.join(OUT, "assets", "favicon.svg"), FAVICON)
 
 
+# ──────────────────────────────────────────────────── версии файлов ──
+#
+# Имена картинок и стилей не меняются от сборки к сборке, поэтому браузер
+# продолжает показывать сохранённую копию — новое фото до человека просто
+# не доезжает. К каждой ссылке на файл дописывается короткий хеш его
+# содержимого: меняется файл — меняется адрес — кэш обновляется сам.
+
+def add_cache_busting():
+    digests = {}
+
+    def digest(rel):
+        if rel not in digests:
+            path = os.path.join(OUT, rel.lstrip("/"))
+            if not os.path.isfile(path):
+                return None
+            with open(path, "rb") as f:
+                digests[rel] = hashlib.md5(f.read()).hexdigest()[:8]
+        return digests[rel]
+
+    ref = re.compile(r"/assets/[\w./-]+\.(?:css|js|webp|jpg|png|svg)")
+
+    def stamp(m):
+        rel = m.group(0)
+        if BASE and rel.startswith(BASE):
+            rel = rel[len(BASE):]
+        d = digest(rel)
+        return m.group(0) if d is None else "%s?v=%s" % (m.group(0), d)
+
+    n = 0
+    for dirpath, _dirs, files in os.walk(OUT):
+        for name in files:
+            if not name.endswith(".html"):
+                continue
+            path = os.path.join(dirpath, name)
+            with open(path, encoding="utf-8") as f:
+                html = f.read()
+            with open(path, "w", encoding="utf-8") as f:
+                f.write(ref.sub(stamp, html))
+            n += 1
+    print("  версии файлов проставлены в %d страницах" % n)
+
+
 # ─────────────────────────────────────────────────────────────────── main ──
 
 def parse_args(argv):
@@ -833,6 +882,7 @@ def main():
     build_css()              # поэтому идёт после
     build_js()
     build_favicon()
+    add_cache_busting()
 
     total = 0
     for dirpath, _dirs, files in os.walk(OUT):
