@@ -285,9 +285,15 @@
   var phone = window.matchMedia('(max-width: 760px)');
   var pinnedWidth = null;
 
+  /* Исходная высота задана инлайном прямо в разметке. Снять её нельзя —
+     вместе с ней исчезнет и высота первого экрана на десктопе, он схлопнется
+     в ноль. Поэтому запоминаем строку и возвращаем её, когда выходим
+     за телефонную ширину. */
+  var original = stage.style.height;
+
   function pin() {
     if (!phone.matches) {
-      stage.style.removeProperty('height');
+      stage.style.setProperty('height', original);
       pinnedWidth = null;
       return;
     }

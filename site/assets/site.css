@@ -140,7 +140,18 @@ img, picture, svg { max-width: 100%; }
      в левых двух третях, справа остаётся видна сама Виола. Кегль заголовка
      чуть меньше исходного — иначе в узкой колонке он ломается на обрубки. */
   [data-hero-copy] > div:first-child { max-width: 100% !important; }
-  [data-hero-copy] h1 { max-width: 76% !important; }
+  /* Кадр без надставок ставит Виолу крупно, и хвост заголовка проходит
+     по подсвеченным волосам — фон там даёт 1.65:1. Притемнять кадр не
+     будем: плотная тень у самих букв держит контраст, не трогая портрет. */
+  [data-hero-copy] h1 {
+    max-width: 76% !important;
+    text-shadow: 0 1px 2px rgba(18, 12, 8, .95), 0 2px 12px rgba(18, 12, 8, .9),
+                 0 6px 30px rgba(18, 12, 8, .85) !important;
+  }
+  /* Плашка лежит на ней же — своя подложка делается плотнее. */
+  [data-hero-copy] > div:last-child > p:nth-child(2) {
+    background: rgba(24, 18, 14, .82) !important;
+  }
   [data-hero-copy] > div:last-child { max-width: 100% !important; }
   [data-hero-copy] h1 { font-size: 40px !important; }
   [data-hero-copy] > div:first-child > div:first-child { font-size: 13px !important; }
