@@ -489,19 +489,27 @@ def build_images():
     crop = im.crop((MOBILE_CROP_X, 0, W, H))
     cw = crop.width
 
-    # Надставки строятся из крайних строк фотографии: сверху это ровный
-    # тёмный градиент без деталей, снизу — низ кресла. Шов приходится ровно
-    # на исходную строку, поэтому не виден. Нижняя треть кадра всё равно
-    # закрыта вуалью и кнопками, там растяжка не читается.
-    def stretch(row, height, k0, k1):
-        band = Image.new("RGB", (cw, height))
-        for i in range(height):
-            k = k0 + (k1 - k0) * (i / (height - 1))
-            band.paste(row.point(lambda v, k=k: int(v * k)), (0, i))
-        return band
+    # Надставка сверху — из верхней строки фотографии: там ровный тёмный
+    # градиент без деталей, растянуть его вверх незаметно.
+    #
+    # Снизу так не выходит: последняя строка — это ноги и кресло, и растянутая
+    # вниз она читается как размазанные полосы. Поэтому низ не растягивается,
+    # а гаснет: строка быстро уходит в тёмный фон страницы и дальше идёт ровная
+    # заливка. Кадр выглядит уходящим в темноту, а не оборванным.
+    GROUND = (36, 28, 24)          # #241C18 — тёмный тон первого экрана
 
-    top = stretch(crop.crop((0, 0, cw, 1)), MOBILE_EXT_TOP, 0.72, 1.0)
-    bottom = stretch(crop.crop((0, H - 1, cw, H)), MOBILE_EXT_BOTTOM, 1.0, 0.55)
+    top = Image.new("RGB", (cw, MOBILE_EXT_TOP))
+    row0 = crop.crop((0, 0, cw, 1))
+    for i in range(MOBILE_EXT_TOP):
+        k = 0.72 + 0.28 * (i / (MOBILE_EXT_TOP - 1))
+        top.paste(row0.point(lambda v, k=k: int(v * k)), (0, i))
+
+    rowN = crop.crop((0, H - 1, cw, H))
+    ground = Image.new("RGB", (cw, 1), GROUND)
+    bottom = Image.new("RGB", (cw, MOBILE_EXT_BOTTOM))
+    for i in range(MOBILE_EXT_BOTTOM):
+        t = min(1.0, (i / MOBILE_EXT_BOTTOM) / 0.35)      # к 35% уже сплошной фон
+        bottom.paste(Image.blend(rowN, ground, t), (0, i))
 
     mob = Image.new("RGB", (cw, MOBILE_EXT_TOP + H + MOBILE_EXT_BOTTOM))
     mob.paste(top, (0, 0))

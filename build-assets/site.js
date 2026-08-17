@@ -264,3 +264,47 @@
 
   syncSubmit();
 })();
+
+/* ─────────────────────── первый экран: высота не пляшет при скролле ──
+   Высота задана в долях экрана, а на телефоне экран «дышит»: при скролле
+   прячется адресная строка, высота растёт, кадр внутри пересчитывается —
+   и портрет заметно наезжает. Единица svh это чинит, но её не знают
+   старые iOS и встроенные браузеры мессенджеров, а именно оттуда чаще
+   всего и открывают ссылку.
+
+   Поэтому высота считается один раз при загрузке и прибивается в пикселях.
+   Пересчёт — только когда меняется ШИРИНА, то есть при повороте экрана:
+   изменение одной высоты и есть та самая уехавшая адресная строка. */
+
+(function () {
+  'use strict';
+
+  var stage = document.querySelector('[data-hero-stage]');
+  if (!stage || !window.matchMedia) return;
+
+  var phone = window.matchMedia('(max-width: 760px)');
+  var pinnedWidth = null;
+
+  function pin() {
+    if (!phone.matches) {
+      stage.style.removeProperty('height');
+      pinnedWidth = null;
+      return;
+    }
+    var h = Math.min(Math.max(window.innerHeight * 0.94, 600), 960);
+    stage.style.setProperty('height', Math.round(h) + 'px', 'important');
+    pinnedWidth = window.innerWidth;
+  }
+
+  pin();
+
+  window.addEventListener('resize', function () {
+    if (window.innerWidth !== pinnedWidth) pin();
+  });
+
+  window.addEventListener('orientationchange', function () {
+    setTimeout(pin, 250);            // размеры устаканиваются не сразу
+  });
+
+  if (phone.addEventListener) phone.addEventListener('change', pin);
+})();
