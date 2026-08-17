@@ -15,17 +15,16 @@
 
      FORM_SECRET — та же строка, что SECRET в Code.gs. Отсекает ботов.
 
-     PAY_URLS — прямые ссылки на оплату. Если адрес указан, кнопка
-       ведёт на него; если пусто — открывается форма заявки. */
+     PAY_URLS — страницы оплаты GetPlatinum, по одной на тариф. И прямая
+       оплата, и рассрочка ведут на ту же страницу: способ человек выбирает
+       уже там. Переход происходит после того, как согласия записаны. */
 
   var LEAD_ENDPOINT = 'https://script.google.com/macros/s/AKfycbzoZdsZ2KFXhNbpEO2C3jbXZyM9TRCgWzwFSTi4IkkaboVaffA8EHIIjaehpfJGZWI-hw/exec';
   var FORM_SECRET = 'PxlGXL9bQSjc0dHcLoiCZJZWtNdfv9D8yY9SHBuJ';
 
   var PAY_URLS = {
-    'Самостоятельный — оплата целиком': '',
-    'Самостоятельный — в рассрочку': '',
-    'С Виолой — оплата целиком': '',
-    'С Виолой — в рассрочку': ''
+    basic: 'https://anny-nizh.getplatinum.ru/payment/JQqAJkS',
+    full:  'https://anny-nizh.getplatinum.ru/payment/ppgQJJ7'
   };
 
   var SUPPORT_TG = 'https://t.me/violamarohelper';
@@ -63,12 +62,13 @@
   };
 
   var CB_MESSAGES = {
-    accept_offer: 'Без принятия оферты заявку оформить нельзя',
-    accept_pd: 'Без согласия на обработку данных заявку оформить нельзя'
+    accept_offer: 'Без принятия оферты оплата невозможна',
+    accept_pd: 'Без согласия на обработку данных оплата невозможна'
   };
 
   var lastTrigger = null;
   var currentPlan = '';
+  var currentPay = '';
 
   function errorFor(box) {
     var row = box.closest('label');
@@ -113,8 +113,9 @@
     hide(sentBox);
   }
 
-  function openModal(plan, trigger) {
+  function openModal(plan, payKey, trigger) {
     currentPlan = plan;
+    currentPay = payKey || '';
     lastTrigger = trigger || null;
     if (planLabel) planLabel.textContent = plan;
     hide(errBox);
@@ -160,10 +161,8 @@
 
   Array.prototype.forEach.call(document.querySelectorAll('[data-open-form]'), function (btn) {
     btn.addEventListener('click', function () {
-      var plan = btn.getAttribute('data-open-form');
-      var direct = PAY_URLS[plan];
-      if (direct) { window.location.href = direct; return; }
-      openModal(plan, btn);
+      openModal(btn.getAttribute('data-open-form'),
+                btn.getAttribute('data-pay'), btn);
     });
   });
 
@@ -203,11 +202,27 @@
     };
     Object.keys(DOC_VERSIONS).forEach(function (k) { payload[k] = DOC_VERSIONS[k]; });
 
+    /* Переход на оплату. Согласия пишутся до платежа — так требует
+       раздел 3 правового ТЗ: акцепт оферты должен быть зафиксирован
+       раньше, чем человек расстался с деньгами. */
+    function goToPayment() {
+      var url = PAY_URLS[currentPay];
+      if (!url) {
+        fail('Не нашли страницу оплаты для этого тарифа. Напишите нам в Telegram: ' + SUPPORT_TG);
+        syncSubmit();
+        return;
+      }
+      hide(errBox);
+      show(sentBox);
+      window.location.href = url;
+    }
+
     if (!LEAD_ENDPOINT) {
-      /* Приём заявок ещё не подключён — ничего не обещаем.
-         Заполните LEAD_ENDPOINT выше, и этот путь исчезнет. */
-      fail('Приём заявок на сайте ещё не подключён. Напишите нам в Telegram — ' +
-        'ответим и поможем оформить оплату или рассрочку: ' + SUPPORT_TG);
+      /* Запись согласий не подключена. Продажу не блокируем, но и молча
+         терять акцепт нельзя — поэтому уходим на оплату, оставив след
+         в консоли. Заполните LEAD_ENDPOINT, и эта ветка исчезнет. */
+      console.warn('LEAD_ENDPOINT не задан: согласие не записано');
+      goToPayment();
       return;
     }
 
@@ -226,12 +241,24 @@
     }).then(function (body) {
       /* Apps Script всегда отвечает 200, результат лежит в теле. */
       if (!body || body.ok !== true) throw new Error(body && body.error);
-      hide(errBox);
-      show(sentBox);
+      goToPayment();
     }).catch(function () {
-      fail('Не удалось отправить заявку. Напишите нам в Telegram: ' + SUPPORT_TG);
-    }).then(function () {
+      /* Записать не вышло. Продажу не блокируем: даём уйти на оплату
+         вручную, но об этом говорим прямо, а не делаем вид, что всё цело. */
       syncSubmit();
+      var url = PAY_URLS[currentPay] || SUPPORT_TG;
+      if (errText) {
+        errText.textContent = 'Не удалось сохранить ваши данные. ';
+        var a = document.createElement('a');
+        a.href = url;
+        a.textContent = 'Перейти к оплате';
+        a.style.color = 'inherit';
+        errText.appendChild(a);
+        errText.appendChild(document.createTextNode(
+          ' — или напишите нам в Telegram: ' + SUPPORT_TG));
+      }
+      show(errBox);
+      hide(sentBox);
     });
   });
 
