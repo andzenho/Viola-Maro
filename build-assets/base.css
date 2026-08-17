@@ -76,7 +76,7 @@ img, picture, svg { max-width: 100%; }
    тогда полоса ложится под текстовую колонку, а портрет уходит к правому
    краю и остаётся видимым целиком. */
 @media (max-width: 760px) {
-  [data-hero-photo] img { object-position: 100% 50%; }
+  [data-hero-photo] img { object-position: 0% 50%; }
 }
 
 /* Нижний текст на телефоне ложится на портрет, поэтому вуаль снизу поднята

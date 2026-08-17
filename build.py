@@ -35,8 +35,10 @@ OUT = os.path.join(ROOT, "site")
 TG = "https://t.me/violamarohelper"
 EMAIL = "mg.ananizh@gmail.com"
 
-# Вертикальный портрет из той же съёмки — исходник первого экрана на телефоне.
-MOBILE_SRC = "ChatGPT Image 15 авг. 2026 г., 07_55_58.png"
+# Телефонный кадр режется из того же снимка, что и десктопный: одно фото
+# на оба экрана, иначе на десктопе одно выражение лица, а на телефоне другое.
+MOBILE_CROP_X = 819      # левее портрета — полоса пустого фона под текст
+MOBILE_EXT = 250         # надставка сверху, чтобы лицо попало между блоками текста
 
 DOCS = [
     ("oferta", "offer", "Публичная оферта"),
@@ -471,31 +473,26 @@ def build_images():
     # десктоп — исходный горизонтальный кадр
     save(im, "hero", (1672, 1200))
 
-    # Телефон берёт другой исходник — вертикальный портрет из той же съёмки.
-    # Он и по композиции нужный (Виола справа, слева пустой фон под текст),
-    # и по разрешению заметно больше горизонтального: 1086×1448 против
-    # кропа 853×941, который приходилось растягивать на высокий экран.
-    vert = Image.open(os.path.join(SRC, "uploads", MOBILE_SRC)).convert("RGB")
-    vw, vh = vert.size
+    # Телефон. Кадр горизонтальный, а экран вдвое уже, чем высок, поэтому
+    # из снимка режется вертикальная часть — от MOBILE_CROP_X до правого края.
+    # Слева в ней остаётся полоса пустого фона: на неё ложится текст.
+    crop = im.crop((MOBILE_CROP_X, 0, W, H))
+    cw = crop.width
 
-    # Кадр всё равно шире экрана телефона по пропорции, поэтому надставляется
-    # сверху: верхняя строка фотографии — ровный тёмный градиент без деталей,
-    # её и растягиваем вверх с затуханием. Шов приходится на неё же и не виден.
-    #
-    # Размер надставки задаёт вертикаль. Текст стоит двумя блоками — шапка
-    # сверху, обещание с кнопкой снизу, — между ними свободная полоса, и лицо
-    # должно попасть в неё. 80 px дают голову с 23%, подбородок на 46%.
-    ext_h = 80
-    row0 = vert.crop((0, 0, vw, 1))
-    top = Image.new("RGB", (vw, ext_h))
-    for i in range(ext_h):
-        k = 0.72 + 0.28 * (i / (ext_h - 1))     # 0.72 наверху → ровно 1.0 на шве
+    # Сверху кадр надставляется: верхняя строка фотографии — ровный тёмный
+    # градиент без деталей, её и растягиваем вверх с затуханием. Шов приходится
+    # на неё же и не виден. Надставка задаёт вертикаль: портрет уезжает вниз,
+    # и лицо попадает в свободную полосу между заголовком и обещанием.
+    row0 = crop.crop((0, 0, cw, 1))
+    top = Image.new("RGB", (cw, MOBILE_EXT))
+    for i in range(MOBILE_EXT):
+        k = 0.72 + 0.28 * (i / (MOBILE_EXT - 1))    # 0.72 наверху → ровно 1.0 на шве
         top.paste(row0.point(lambda v, k=k: int(v * k)), (0, i))
-    mob = Image.new("RGB", (vw, vh + ext_h))
+    mob = Image.new("RGB", (cw, H + MOBILE_EXT))
     mob.paste(top, (0, 0))
-    mob.paste(vert, (0, ext_h))
+    mob.paste(crop, (0, MOBILE_EXT))
 
-    save(mob, "hero-mob", (vw, 760))
+    save(mob, "hero-mob", (cw, 620))
 
     total = sum(os.path.getsize(p) for p in made)
     print("  картинки: %d файлов, %.0f КБ" % (len(made), total / 1024))
@@ -503,10 +500,10 @@ def build_images():
 
 HERO_PICTURE = """<picture>
           <source media="(max-width: 760px)" type="image/webp"
-                  srcset="/assets/img/hero-mob-760.webp 760w, /assets/img/hero-mob-1086.webp 1086w"
+                  srcset="/assets/img/hero-mob-620.webp 620w, /assets/img/hero-mob-853.webp 853w"
                   sizes="100vw">
           <source media="(max-width: 760px)" type="image/jpeg"
-                  srcset="/assets/img/hero-mob-760.jpg 760w, /assets/img/hero-mob-1086.jpg 1086w"
+                  srcset="/assets/img/hero-mob-620.jpg 620w, /assets/img/hero-mob-853.jpg 853w"
                   sizes="100vw">
           <source type="image/webp"
                   srcset="/assets/img/hero-1200.webp 1200w, /assets/img/hero-1672.webp 1672w"
@@ -637,7 +634,20 @@ def build_landing():
         tpl = tpl.replace('onClick="{{ %s }}"' % var,
                           'data-open-form="%s" data-pay="%s"' % (label, key))
 
-    tpl = tpl.replace("{{ contactUrl }}", TG).replace("{{ contact }}", TG)
+    # «Оформить рассрочку» ведёт к тарифам, а не в поддержку: рассрочка
+    # оформляется на той же странице оплаты, что и прямой платёж, но сначала
+    # человек должен выбрать тариф. Заодно снимаем target="_blank" —
+    # это якорь на своей же странице, новая вкладка тут ни к чему.
+    inst = re.search(r'<a href="\{\{ contactUrl \}\}"[^>]*>', tpl)
+    if not inst:
+        raise ValueError("не найдена кнопка «Оформить рассрочку»")
+    fixed = (inst.group(0)
+             .replace('href="{{ contactUrl }}"', 'href="#tarify"')
+             .replace(' target="_blank"', '')
+             .replace(' rel="noopener"', ''))
+    tpl = tpl[:inst.start()] + fixed + tpl[inst.end():]
+
+    tpl = tpl.replace("{{ contact }}", TG)
 
     # <br> внутри h1 не даёт пробела при копировании и в выдаче
     tpl = tpl.replace("Прикладная<br>эмпатия", "Прикладная <br>эмпатия", 1)
