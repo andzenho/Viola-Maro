@@ -446,6 +446,7 @@ def head(title, description, css_path, extra=""):
 # ─────────────────────────────────────────────────────────────── картинки ──
 
 def build_images():
+    global MOBILE_WIDTHS, DESKTOP_WIDTHS
     from PIL import Image, ImageFilter
     src = os.path.join(SRC, "assets", "viola-hero.png")
     outdir = os.path.join(OUT, "assets", "img")
@@ -471,7 +472,8 @@ def build_images():
 
     made = []
     # десктоп — исходный горизонтальный кадр
-    save(im, "hero", (1672, 1200))
+    DESKTOP_WIDTHS = (1200, 1672)
+    save(im, "hero", DESKTOP_WIDTHS)
 
     # Телефон. Кадр горизонтальный, а экран вдвое уже, чем высок, поэтому
     # из снимка режется вертикальная часть — от MOBILE_CROP_X до правого края.
@@ -499,29 +501,49 @@ def build_images():
     mob.paste(crop, (0, 0))
     mob.paste(bottom, (0, H))
 
-    save(mob, "hero-mob", (cw, 620))
+    MOBILE_WIDTHS = (620, cw)
+    save(mob, "hero-mob", MOBILE_WIDTHS)
 
     total = sum(os.path.getsize(p) for p in made)
     print("  картинки: %d файлов, %.0f КБ" % (len(made), total / 1024))
 
 
-HERO_PICTURE = """<picture>
+# Ширины подставляются те, что реально собраны: они зависят от кропа,
+# а зашитые руками разъезжались с ним и давали 404 на первом экране.
+MOBILE_WIDTHS = ()
+DESKTOP_WIDTHS = ()
+
+
+def hero_picture():
+    mob_lo, mob_hi = sorted(MOBILE_WIDTHS)
+    dsk_lo, dsk_hi = sorted(DESKTOP_WIDTHS)
+
+    def src(name, ext, lo, hi):
+        return ('/assets/img/%s-%d.%s %dw, /assets/img/%s-%d.%s %dw'
+                % (name, lo, ext, lo, name, hi, ext, hi))
+
+    return """<picture>
           <source media="(max-width: 760px)" type="image/webp"
-                  srcset="/assets/img/hero-mob-620.webp 620w, /assets/img/hero-mob-853.webp 853w"
+                  srcset="%s"
                   sizes="100vw">
           <source media="(max-width: 760px)" type="image/jpeg"
-                  srcset="/assets/img/hero-mob-620.jpg 620w, /assets/img/hero-mob-853.jpg 853w"
+                  srcset="%s"
                   sizes="100vw">
           <source type="image/webp"
-                  srcset="/assets/img/hero-1200.webp 1200w, /assets/img/hero-1672.webp 1672w"
+                  srcset="%s"
                   sizes="100vw">
-          <img src="/assets/img/hero-1672.jpg"
-               srcset="/assets/img/hero-1200.jpg 1200w, /assets/img/hero-1672.jpg 1672w"
+          <img src="/assets/img/hero-%d.jpg"
+               srcset="%s"
                sizes="100vw"
                alt="Виола Маро сидит в кресле"
                width="1672" height="941"
                fetchpriority="high" decoding="async">
-        </picture>"""
+        </picture>""" % (
+        src("hero-mob", "webp", mob_lo, mob_hi),
+        src("hero-mob", "jpg", mob_lo, mob_hi),
+        src("hero", "webp", dsk_lo, dsk_hi),
+        dsk_hi,
+        src("hero", "jpg", dsk_lo, dsk_hi))
 
 
 # ──────────────────────────────────────────────────────────────── лендинг ──
@@ -537,7 +559,7 @@ def build_landing():
     tpl = re.sub(
         r'<div data-hero-photo="" style="[^"]*">.*?</div>',
         lambda m: '<div data-hero-photo="" style="position: absolute; inset: 0;">\n        '
-                  + HERO_PICTURE + "\n      </div>",
+                  + hero_picture() + "\n      </div>",
         tpl, count=1, flags=re.S)
 
     # ── модальная форма: React-состояние → обычный <dialog>-подобный блок ──
@@ -814,6 +836,7 @@ def build_favicon():
 
 def add_cache_busting():
     digests = {}
+    missing = set()
 
     def digest(rel):
         if rel not in digests:
@@ -831,7 +854,10 @@ def add_cache_busting():
         if BASE and rel.startswith(BASE):
             rel = rel[len(BASE):]
         d = digest(rel)
-        return m.group(0) if d is None else "%s?v=%s" % (m.group(0), d)
+        if d is None:
+            missing.add(rel)          # файла нет — это битая ссылка, не мелочь
+            return m.group(0)
+        return "%s?v=%s" % (m.group(0), d)
 
     n = 0
     for dirpath, _dirs, files in os.walk(OUT):
@@ -844,6 +870,9 @@ def add_cache_busting():
             with open(path, "w", encoding="utf-8") as f:
                 f.write(ref.sub(stamp, html))
             n += 1
+    if missing:
+        raise ValueError("страницы ссылаются на несуществующие файлы: %s"
+                         % ", ".join(sorted(missing)))
     print("  версии файлов проставлены в %d страницах" % n)
 
 
