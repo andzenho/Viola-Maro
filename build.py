@@ -455,7 +455,9 @@ def build_images():
     W, H = im.size
 
     def save(img, name, widths):
+        lo, hi = sorted(widths)
         for w in widths:
+            suffix = "-sm" if w == lo else ""
             if img.width == w:
                 r = img
             else:
@@ -466,7 +468,7 @@ def build_images():
             for ext, kw in (("webp", {"quality": 90, "method": 6}),
                             ("jpg", {"quality": 88, "optimize": True, "progressive": True,
                                      "subsampling": 0})):
-                p = os.path.join(outdir, "%s-%d.%s" % (name, w, ext))
+                p = os.path.join(outdir, "%s%s.%s" % (name, suffix, ext))
                 r.save(p, **kw)
                 made.append(p)
 
@@ -519,8 +521,8 @@ def hero_picture():
     dsk_lo, dsk_hi = sorted(DESKTOP_WIDTHS)
 
     def src(name, ext, lo, hi):
-        return ('/assets/img/%s-%d.%s %dw, /assets/img/%s-%d.%s %dw'
-                % (name, lo, ext, lo, name, hi, ext, hi))
+        return ('/assets/img/%s-sm.%s %dw, /assets/img/%s.%s %dw'
+                % (name, ext, lo, name, ext, hi))
 
     return """<picture>
           <source media="(max-width: 760px)" type="image/webp"
@@ -532,7 +534,7 @@ def hero_picture():
           <source type="image/webp"
                   srcset="%s"
                   sizes="100vw">
-          <img src="/assets/img/hero-%d.jpg"
+          <img src="/assets/img/hero.jpg"
                srcset="%s"
                sizes="100vw"
                alt="Виола Маро сидит в кресле"
@@ -542,7 +544,6 @@ def hero_picture():
         src("hero-mob", "webp", mob_lo, mob_hi),
         src("hero-mob", "jpg", mob_lo, mob_hi),
         src("hero", "webp", dsk_lo, dsk_hi),
-        dsk_hi,
         src("hero", "jpg", dsk_lo, dsk_hi))
 
 
