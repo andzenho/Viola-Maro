@@ -35,6 +35,9 @@ OUT = os.path.join(ROOT, "site")
 TG = "https://t.me/violamarohelper"
 EMAIL = "mg.ananizh@gmail.com"
 
+# Вертикальный портрет из той же съёмки — исходник первого экрана на телефоне.
+MOBILE_SRC = "ChatGPT Image 15 авг. 2026 г., 07_55_58.png"
+
 DOCS = [
     ("oferta", "offer", "Публичная оферта"),
     ("prilozhenie-1", "offer-prilozhenie", "Приложение № 1 к Публичной оферте"),
@@ -441,54 +444,62 @@ def head(title, description, css_path, extra=""):
 # ─────────────────────────────────────────────────────────────── картинки ──
 
 def build_images():
-    from PIL import Image
+    from PIL import Image, ImageFilter
     src = os.path.join(SRC, "assets", "viola-hero.png")
     outdir = os.path.join(OUT, "assets", "img")
     os.makedirs(outdir, exist_ok=True)
     im = Image.open(src).convert("RGB")
     W, H = im.size
 
+    def save(img, name, widths):
+        for w in widths:
+            if img.width == w:
+                r = img
+            else:
+                r = img.resize((w, round(img.height * w / img.width)), Image.LANCZOS)
+                # уменьшение всегда мылит; слабая нерезкая маска возвращает
+                # кромку глаз и волос, не давая ореолов на ровном фоне
+                r = r.filter(ImageFilter.UnsharpMask(radius=1.0, percent=55, threshold=3))
+            for ext, kw in (("webp", {"quality": 90, "method": 6}),
+                            ("jpg", {"quality": 88, "optimize": True, "progressive": True,
+                                     "subsampling": 0})):
+                p = os.path.join(outdir, "%s-%d.%s" % (name, w, ext))
+                r.save(p, **kw)
+                made.append(p)
+
     made = []
     # десктоп — исходный горизонтальный кадр
-    for w in (1672, 1200):
-        r = im.resize((w, round(H * w / W)), Image.LANCZOS)
-        for ext, kw in (("webp", {"quality": 82, "method": 6}), ("jpg", {"quality": 82, "optimize": True, "progressive": True})):
-            p = os.path.join(outdir, "hero-%d.%s" % (w, ext))
-            r.save(p, **kw)
-            made.append(p)
+    save(im, "hero", (1672, 1200))
 
-    # Телефон. Экран телефона вдвое уже, чем высок, а исходник — горизонтальный
-    # кадр с сидящим человеком: любой честный кроп упирается портретом в самый
-    # верх, и заголовок ложится на лицо.
+    # Телефон берёт другой исходник — вертикальный портрет из той же съёмки.
+    # Он и по композиции нужный (Виола справа, слева пустой фон под текст),
+    # и по разрешению заметно больше горизонтального: 1086×1448 против
+    # кропа 853×941, который приходилось растягивать на высокий экран.
+    vert = Image.open(os.path.join(SRC, "uploads", MOBILE_SRC)).convert("RGB")
+    vw, vh = vert.size
+
+    # Кадр всё равно шире экрана телефона по пропорции, поэтому надставляется
+    # сверху: верхняя строка фотографии — ровный тёмный градиент без деталей,
+    # её и растягиваем вверх с затуханием. Шов приходится на неё же и не виден.
     #
-    # Поэтому кадр надставляется сверху. Верхняя строка фотографии — ровный
-    # тёмный градиент без деталей, её и растягиваем вверх с затуханием к
-    # чёрному. Шов приходится ровно на неё же, поэтому не виден, а портрет
-    # уезжает в нижние две трети — заголовку остаётся чистый фон.
-    # Размер надставки посчитан, а не подобран. На первом экране текст стоит
-    # двумя блоками — шапка с названием сверху и обещание с кнопкой снизу, —
-    # между ними остаётся свободная полоса от 22% до 53% высоты. Надставка
-    # подобрана так, чтобы лицо попадало в эту полосу: голова начинается на
-    # 28% и заканчивается на 47%. Доля не зависит от размера экрана, пока
-    # кадр выше экрана по пропорции, то есть на всех телефонах.
-    cw = int(H * 3 / 4)
-    crop = im.crop((W - cw - 40, 0, W - 40, H))
-    ext_h = 250
-    row0 = crop.crop((0, 0, cw, 1))
-    top = Image.new("RGB", (cw, ext_h))
+    # Размер надставки задаёт вертикаль. Текст стоит двумя блоками — шапка
+    # сверху, обещание с кнопкой снизу, — между ними свободная полоса, и лицо
+    # должно попасть в неё. 80 px дают голову с 23% высоты кадра, подбородок
+    # на 46% — обещание начинается на 47,5% и до лица уже не достаёт.
+    ext_h = 80
+    row0 = vert.crop((0, 0, vw, 1))
+    top = Image.new("RGB", (vw, ext_h))
     for i in range(ext_h):
         k = 0.72 + 0.28 * (i / (ext_h - 1))     # 0.72 наверху → ровно 1.0 на шве
         top.paste(row0.point(lambda v, k=k: int(v * k)), (0, i))
-    mob = Image.new("RGB", (cw, H + ext_h))
+    mob = Image.new("RGB", (vw, vh + ext_h))
     mob.paste(top, (0, 0))
-    mob.paste(crop, (0, ext_h))
+    mob.paste(vert, (0, ext_h))
 
-    for w in (705, 500):
-        r = mob.resize((w, round(mob.size[1] * w / mob.size[0])), Image.LANCZOS)
-        for ext, kw in (("webp", {"quality": 82, "method": 6}), ("jpg", {"quality": 82, "optimize": True, "progressive": True})):
-            p = os.path.join(outdir, "hero-mob-%d.%s" % (w, ext))
-            r.save(p, **kw)
-            made.append(p)
+    # Кадр остаётся шире экрана, лишнее срезается слева — вместе с
+    # object-position: 100% это оставляет слева полосу пустого фона под текст,
+    # а портрет прижимает к правому краю.
+    save(mob, "hero-mob", (vw, 760))
 
     total = sum(os.path.getsize(p) for p in made)
     print("  картинки: %d файлов, %.0f КБ" % (len(made), total / 1024))
@@ -496,10 +507,10 @@ def build_images():
 
 HERO_PICTURE = """<picture>
           <source media="(max-width: 760px)" type="image/webp"
-                  srcset="/assets/img/hero-mob-500.webp 500w, /assets/img/hero-mob-705.webp 705w"
+                  srcset="/assets/img/hero-mob-760.webp 760w, /assets/img/hero-mob-1086.webp 1086w"
                   sizes="100vw">
           <source media="(max-width: 760px)" type="image/jpeg"
-                  srcset="/assets/img/hero-mob-500.jpg 500w, /assets/img/hero-mob-705.jpg 705w"
+                  srcset="/assets/img/hero-mob-760.jpg 760w, /assets/img/hero-mob-1086.jpg 1086w"
                   sizes="100vw">
           <source type="image/webp"
                   srcset="/assets/img/hero-1200.webp 1200w, /assets/img/hero-1672.webp 1672w"
@@ -598,6 +609,9 @@ def build_landing():
 
     # <br> внутри h1 не даёт пробела при копировании и в выдаче
     tpl = tpl.replace("Прикладная<br>эмпатия", "Прикладная <br>эмпатия", 1)
+
+    # надзаголовок первого экрана: имя не должно разрываться по строкам
+    tpl = tpl.replace("от\u00a0Виолы Маро", "от\u00a0Виолы\u00a0Маро")
 
     # ── сноска про Meta у самого упоминания (требование правового ТЗ) ──────
     if tpl.count("Инстаграме") != 1:
