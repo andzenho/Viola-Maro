@@ -22,6 +22,10 @@
 
   python3 build.py --mode pre --out dist --cname pre.viola-maro.ru
   python3 build.py --out dist/pay --base /pay --docs-root
+
+Куски для вставки в блок T123 Тильды:
+
+  python3 build.py --mode pre --out tilda-src --tilda tilda
 """
 
 import base64
@@ -86,6 +90,9 @@ DOCS_ROOT = False
 # Своё имя домена для GitHub Pages: без этого файла он обслуживает
 # только адрес вида имя.github.io.
 CNAME = ""
+
+# Куда положить куски для вставки в блок T123 Тильды.
+TILDA_OUT = ""
 
 # Два сайта из одного шаблона. "pay" — продажа с тарифами и оплатой,
 # "pre" — предзапись: без цен, с блоком «что даёт предзапись» и заявкой
@@ -1323,10 +1330,178 @@ def add_cache_busting():
     print("  версии файлов проставлены в %d страницах" % n)
 
 
+# ──────────────────────────────────────────────── сборка под Тильду ──
+#
+# Тильда даёт вставить произвольный HTML в блок T123, но страница вокруг
+# уже своя: свои стили, свои шрифты, свой контейнер. Поэтому кусок для
+# вставки готовится иначе, чем обычная страница.
+#
+# Три отличия:
+#   1. Стили ограничены обёрткой .vm — иначе правила на body, html и *
+#      уедут в вёрстку Тильды, а её правила придут в нашу.
+#   2. Шрифты и картинки зашиты в сам кусок: путей /assets на Тильде нет.
+#   3. Ни <html>, ни <head> — только содержимое. Заголовок страницы
+#      и описание заводятся в настройках страницы Тильды.
+
+TILDA_SCOPE = "vm"
+
+VM_WIDTH_JS = """
+/* Точная ширина окна без полосы прокрутки — для выхода блока на всю ширину
+   изнутри контейнера Тильды. 100vw для этого не годится: она полосу считает. */
+(function () {
+  var root = document.documentElement;
+  function set() { root.style.setProperty('--vm-vw', root.clientWidth + 'px'); }
+  set();
+  addEventListener('resize', set);
+  addEventListener('orientationchange', function () { setTimeout(set, 250); });
+})();
+"""
+
+
+def _data_uri(path, mime):
+    with open(path, "rb") as f:
+        return "data:%s;base64,%s" % (mime, base64.b64encode(f.read()).decode())
+
+
+def _scope_css(css, scope):
+    """Приписывает каждому селектору обёртку.
+
+    Правила на html и body становятся правилами на саму обёртку: внутри
+    Тильды у нас нет своего body, его роль играет .vm.
+    """
+    out = []
+    i = 0
+    while i < len(css):
+        if css[i] == "@":
+            # @font-face и @media: первый оставляем как есть, во второй заходим
+            head_end = css.index("{", i)
+            at = css[i:head_end].strip()
+            depth, j = 1, head_end + 1
+            while depth:
+                if css[j] == "{":
+                    depth += 1
+                elif css[j] == "}":
+                    depth -= 1
+                j += 1
+            body = css[head_end + 1:j - 1]
+            if at.startswith("@media") or at.startswith("@supports"):
+                out.append("%s{%s}" % (at, _scope_css(body, scope)))
+            else:
+                out.append("%s{%s}" % (at, body))
+            i = j
+            continue
+
+        brace = css.find("{", i)
+        if brace == -1:
+            break
+        close = css.index("}", brace)
+        sels = css[i:brace].strip()
+        decls = css[brace + 1:close].strip()
+        i = close + 1
+        if not sels:
+            continue
+
+        fixed = []
+        for sel in sels.split(","):
+            sel = sel.strip()
+            if not sel:
+                continue
+            if sel in ("html", "body"):
+                fixed.append("." + scope)
+            elif sel.startswith("body."):
+                fixed.append(".%s%s" % (scope, sel[4:]))
+            elif sel.startswith("html "):
+                fixed.append(".%s %s" % (scope, sel[5:]))
+            elif sel.startswith("*"):
+                fixed.append(".%s%s" % (scope, sel[1:]))
+                fixed.append(".%s *%s" % (scope, sel[1:]))
+            else:
+                fixed.append(".%s %s" % (scope, sel))
+        out.append("%s{%s}" % (",".join(fixed), decls))
+    return "".join(out)
+
+
+def build_tilda(src_dir, out_dir):
+    """Из готовых страниц делает куски для вставки в блок T123."""
+    shutil.rmtree(out_dir, ignore_errors=True)
+    os.makedirs(out_dir, exist_ok=True)
+
+    css = read(os.path.join(src_dir, "assets", "site.css"))
+    js = read(os.path.join(src_dir, "assets", "site.js"))
+
+    # шрифты внутрь стилей
+    fonts = 0
+    for name in sorted(os.listdir(os.path.join(src_dir, "assets", "fonts"))):
+        uri = _data_uri(os.path.join(src_dir, "assets", "fonts", name), "font/woff2")
+        css = css.replace("url(/assets/fonts/%s)" % name, "url(%s)" % uri)
+        fonts += 1
+
+    css = _scope_css(css, TILDA_SCOPE)
+
+    # Блок Тильды может лежать внутри её колонки с ограниченной шириной,
+    # и тогда первый экран получает поля по бокам вместо края в край.
+    # Приём стандартный: растянуть обёртку на ширину окна и вытянуть её
+    # назад отрицательным отступом. Если блок и так во всю ширину,
+    # отступ выходит нулевым и ничего не меняется.
+    # Правило идёт последним намеренно: body{margin:0} из общих стилей
+    # превращается в .vm{margin:0} и обнулило бы отрицательный отступ,
+    # стой оно после. Ширина берётся не из 100vw — эта единица считает
+    # и полосу прокрутки, давая лишний горизонтальный скролл; точную
+    # ширину без полосы подставляет скрипт.
+    css = css + (".%s{width:var(--vm-vw,100vw);max-width:var(--vm-vw,100vw);"
+                 "margin-left:calc(50%% - var(--vm-vw,100vw)/2);}" % TILDA_SCOPE)
+
+    made = []
+    for dirpath, _dirs, files in os.walk(src_dir):
+        if "index.html" not in files:
+            continue
+        rel = os.path.relpath(dirpath, src_dir)
+        html = read(os.path.join(dirpath, "index.html"))
+
+        body = html[html.index("<body>") + len("<body>"):html.rindex("</body>")]
+        body = re.sub(r'<a class="skip".*?</a>\s*', "", body, flags=re.S)
+        body = re.sub(r'<script src="[^"]*"></script>\s*', "", body)
+
+        # Внутрь куска идёт только WebP и только по одному размеру на кадр:
+        # JPEG-запаска и мелкие варианты удваивали вес, а base64 и так
+        # раздувает файл на треть. WebP понимают все браузеры с 2020 года.
+        pic = re.search(r"<picture>.*?</picture>", body, re.S)
+        if pic:
+            body = body[:pic.start()] + (
+                '<picture>'
+                '<source media="(max-width: 760px)" type="image/webp" '
+                'srcset="/assets/img/hero-mob.webp">'
+                '<img src="/assets/img/hero.webp" '
+                'alt="Виола Маро сидит в кресле" width="1672" height="941" '
+                'fetchpriority="high" decoding="async">'
+                '</picture>') + body[pic.end():]
+
+        # картинки внутрь разметки
+        def inline(m):
+            path = os.path.join(src_dir, m.group(1).lstrip("/").split("?")[0])
+            if not os.path.isfile(path):
+                return m.group(0)
+            mime = "image/webp" if path.endswith(".webp") else "image/jpeg"
+            return m.group(0).replace(m.group(1), _data_uri(path, mime))
+
+        body = re.sub(r'(/assets/img/[\w.-]+(?:\?v=[a-f0-9]+)?)', inline, body)
+
+        name = ("index" if rel == "." else rel.replace(os.sep, "-")) + ".html"
+        piece = ("<style>" + css + "</style>\n"
+                 + '<div class="' + TILDA_SCOPE + '">' + body.strip() + "</div>\n"
+                 + "<script>" + VM_WIDTH_JS + js + "</script>\n")
+        write(os.path.join(out_dir, name), piece)
+        made.append((name, os.path.getsize(os.path.join(out_dir, name)) / 1024))
+
+    print("  куски для Тильды (%d шрифтов внутри):" % fonts)
+    for name, kb in sorted(made):
+        print("    %-26s %6.0f КБ" % (name, kb))
+
+
 # ─────────────────────────────────────────────────────────────────── main ──
 
 def parse_args(argv):
-    global BASE, NOINDEX, MODE, OUT, DOCS_ROOT, CNAME
+    global BASE, NOINDEX, MODE, OUT, DOCS_ROOT, CNAME, TILDA_OUT
     i = 0
     while i < len(argv):
         a = argv[i]
@@ -1348,6 +1523,9 @@ def parse_args(argv):
         elif a == "--cname":
             i += 1
             CNAME = argv[i]
+        elif a == "--tilda":
+            i += 1
+            TILDA_OUT = argv[i]
         elif a == "--noindex":
             NOINDEX = True
         else:
@@ -1378,6 +1556,9 @@ def main():
         write(os.path.join(OUT, "CNAME"), CNAME + "\n")
         print("  CNAME → %s" % CNAME)
     add_cache_busting()
+
+    if TILDA_OUT:
+        build_tilda(OUT, os.path.join(ROOT, TILDA_OUT))
 
     total = 0
     for dirpath, _dirs, files in os.walk(OUT):

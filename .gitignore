@@ -12,3 +12,4 @@ source/uploads/*
 .playwright-mcp/
 *.pyc
 __pycache__/
+tilda-src/
