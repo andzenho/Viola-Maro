@@ -7,9 +7,10 @@
   /* ─────────────────────────────────────────────────── настройка ──
      Заполняется один раз перед публикацией.
 
-     LEAD_ENDPOINT — адрес веб-приложения Apps Script, которое кладёт
-       заявку в Google Таблицу. Код и инструкция — в
-       integrations/google-sheets/. Вид: https://script.google.com/…/exec
+     LEAD_ENDPOINT — адрес веб-приложения Apps Script при таблице, куда
+       падают и результаты теста эмпата. Заявка с предзаписи ложится
+       в лист «Предзапись с сайта», с оплаты — в «Заявки на продукт».
+       Код скрипта — в integrations/google-sheets/.
        Пока пусто, форма не делает вид, что заявка принята: она
        проверяет согласия и отправляет человека в службу заботы.
 
@@ -19,7 +20,7 @@
        оплата, и рассрочка ведут на ту же страницу: способ человек выбирает
        уже там. Переход происходит после того, как согласия записаны. */
 
-  var LEAD_ENDPOINT = 'https://script.google.com/macros/s/AKfycbzoZdsZ2KFXhNbpEO2C3jbXZyM9TRCgWzwFSTi4IkkaboVaffA8EHIIjaehpfJGZWI-hw/exec';
+  var LEAD_ENDPOINT = 'https://script.google.com/macros/s/AKfycbxjnSIU9If91sGwI7yr1bFQhHJq77VWDtI9eUY4eF2L4CQ06hkNLKs4kQWi-vuX6qFa_w/exec';
   var FORM_SECRET = 'PxlGXL9bQSjc0dHcLoiCZJZWtNdfv9D8yY9SHBuJ';
 
   var PAY_URLS = {
