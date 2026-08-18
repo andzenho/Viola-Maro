@@ -100,6 +100,39 @@ TILDA_OUT = ""
 # копией файлов это делать нельзя: правки разъедутся на первой же неделе.
 MODE = "pay"
 
+# ── Страница брони ──────────────────────────────────────────────────────
+#
+# Отдельная короткая страница, ссылку на которую отправляют лично: человек
+# уже поговорил с командой и решает вносить бронь. Продавать заново незачем,
+# поэтому экраны с программой на ней не выводятся.
+#
+# Бронь — это АВАНС, а не задаток. Задаток по ст. 380–381 ГК обязан быть
+# прямо назван задатком письменно и тянет за собой штрафные последствия
+# для обеих сторон; для потребителя это лишний риск. Аванс засчитывается
+# в стоимость и возвращается при отказе, как того и требует ст. 32 ЗоЗПП:
+# написать «бронь невозвратна» нельзя, такое условие ничтожно.
+#
+# Заполняется перед выпуском. Пустые значения роняют сборку намеренно:
+# страница про деньги не должна выйти с недописанными цифрами.
+BOOKING_AMOUNT = "5 000 ₽"
+BOOKING_DEADLINE = "1 октября"        # день старта потока
+BOOKING_PAY_URL = ""                  # страница оплаты брони в GetPlatinum
+
+# Формулировка про судьбу брони при неоплате остатка.
+#
+# Заказчик просил «невозвратная». Так писать нельзя, и запрещает это не
+# закон вообще, а п. 8.1 их собственной оферты: «Право Заказчика на отказ
+# от Договора не может быть ограничено настоящей Офертой. Условия,
+# ущемляющие права потребителя по сравнению с законодательством, ничтожны.»
+# Строка «бронь не возвращается» на странице противоречила бы договору,
+# на который эта же страница ссылается.
+#
+# Поэтому то же по сути, но как перенос, а не как утрата: деньги остаются
+# у человека, просто в другом потоке. Право на отказ по разделу 8 оферты
+# при этом никуда не девается и упомянуто отдельно.
+BOOKING_CARRY = ("Если не доплатите до старта, бронь переносится "
+                 "на следующий поток и засчитывается в его стоимость.")
+
 CHANNEL_URL = "https://t.me/+iIqJoSn2UBU3Yzky"
 
 # Два разных срока, и путать их нельзя.
@@ -632,6 +665,22 @@ def hero_picture():
 
 # ──────────────────────────────────────────── экраны версии предзаписи ──
 
+CTA_BOOK = ('<a href="#bron" data-open-form="Бронь места" data-pay="bron" '
+            'style="align-self: center; display: inline-flex; white-space: nowrap; '
+            'align-items: center; gap: 14px; '
+            'background: linear-gradient(180deg, #F0DCBB 0%, #D9BC92 52%, #C29A6C 100%); '
+            'color: #2A211C; text-decoration: none; font-weight: 700; '
+            'font-size: clamp(18px, 1.9vw, 22px); letter-spacing: .01em; '
+            'padding: 23px 34px 23px 48px; border-radius: 999px; '
+            'box-shadow: 0 18px 40px -14px rgba(60,45,32,.45), 0 0 0 1px rgba(194,154,108,.4), '
+            '0 0 0 10px rgba(201,168,127,.12), inset 0 1px 0 rgba(255,255,255,.6); '
+            'transition: transform .2s ease, box-shadow .2s ease, filter .2s ease;" '
+            'style-hover="transform: translateY(-3px); filter: brightness(1.05);" '
+            'style-active="transform: translateY(-1px);">Внести бронь'
+            '<span style="display: inline-flex; align-items: center; justify-content: center; '
+            'width: 34px; height: 34px; border-radius: 50%; background: rgba(42,33,28,.9); '
+            'color: #F0DCBB; font-size: 16px; line-height: 1;">→</span></a>')
+
 CTA_DARK = ('<a href="#zapis" data-open-form="Предзапись" style="align-self: center; '
             'display: inline-flex; white-space: nowrap; align-items: center; gap: 14px; '
             'background: linear-gradient(165deg, #4E3C31 0%, #2B211C 100%); color: #F6F0E8; '
@@ -691,6 +740,77 @@ PRE_FOR_EARLY = [
 ]
 
 
+
+
+
+# ─────────────────────────────────────────────── экраны страницы брони ──
+
+BOOKING_GIVES = [
+    ("Место на потоке",
+     "оно закрепляется за вами и не уходит другому, пока идёт набор."),
+    ("Цена не изменится",
+     "сколько бы ни стоило участие к старту, вы платите по цене, "
+     "зафиксированной сегодня."),
+    ("Все бонусы остаются вашими",
+     "включая те, что действуют только для ранней оплаты."),
+]
+
+
+def booking_screens():
+    """Короткая страница под личную отправку.
+
+    Продавать заново незачем: человек уже поговорил с командой и решает
+    вносить бронь. Поэтому экранов с программой здесь нет, только условия
+    и кнопка.
+    """
+    rows = "".join(
+        '<div style="background: linear-gradient(180deg, #FFFFFF 0%%, #FDFAF6 100%%); '
+        'border: 1px solid #E9DFD2; border-radius: 16px; '
+        'box-shadow: 0 1px 2px rgba(60,48,40,.04), 0 16px 36px -24px rgba(60,48,40,.34); '
+        'padding: clamp(24px, 3vw, 32px); display: flex; flex-direction: column; gap: 12px;">'
+        '<span style="display: inline-flex; align-items: center; justify-content: center; '
+        'width: 44px; height: 44px; border-radius: 50%%; '
+        'background: linear-gradient(180deg, #F0DCBB, #C29A6C); color: #2A211C; '
+        'font-size: 18px; font-weight: 700; flex: none; '
+        'box-shadow: inset 0 1px 0 rgba(255,255,255,.5);">%d</span>'
+        '<h3 style="margin: 0; font-size: clamp(19px, 2.1vw, 23px); font-weight: 700; '
+        'letter-spacing: -.02em; line-height: 1.25; color: #2E2521;">%s</h3>'
+        '<p style="margin: 0; font-size: 17px; line-height: 1.55; color: #5C5149;">%s</p>'
+        "</div>" % (i + 1, t, tail)
+        for i, (t, tail) in enumerate(BOOKING_GIVES))
+
+    return '''
+<div id="bron" data-screen-label="06 Что даёт бронь" style="background: linear-gradient(180deg, #F5EFE6 0%%, #EFE6DA 100%%); padding: clamp(56px, 8vw, 100px) clamp(14px, 4vw, 40px);">
+  <div style="max-width: 1020px; margin: 0 auto; display: flex; flex-direction: column; gap: clamp(26px, 3.4vw, 38px);">
+    <div style="display: flex; flex-direction: column; gap: 12px; align-items: center; text-align: center;">
+      <div style="%(eyebrow)s">Что даёт бронь</div>
+      <h2 style="font-family: \'Golos Text\', system-ui, sans-serif; font-weight: 700; letter-spacing: -.025em; font-size: clamp(34px, 5vw, 56px); line-height: 1.1; margin: 0; text-wrap: balance;">Три вещи, которые бронь закрепляет за&nbsp;вами</h2>
+    </div>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 18px; align-items: stretch;">%(rows)s</div>
+
+    <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 20px 32px; background: linear-gradient(165deg, #4A392F 0%%, #2B211C 100%%); border: 1px solid #33271F; border-radius: 18px; box-shadow: 0 22px 48px -26px rgba(43,33,28,.75), inset 0 1px 0 rgba(255,255,255,.1); padding: clamp(26px, 3.4vw, 38px);">
+      <div style="flex: 0 0 auto; display: flex; flex-direction: column; gap: 4px;">
+        <span style="font-size: 12px; letter-spacing: .18em; text-transform: uppercase; color: #E9C98F;">Размер брони</span>
+        <span style="font-size: clamp(40px, 6vw, 60px); font-weight: 700; letter-spacing: -.03em; line-height: 1; color: #F6F0E8;">%(amount)s</span>
+      </div>
+      <div style="flex: 1 1 300px; display: flex; flex-direction: column; gap: 10px; font-size: 17.5px; line-height: 1.55; color: #DCD1C4;">
+        <p style="margin: 0;"><b style="color: #F6F0E8; font-weight: 700;">Засчитывается в&nbsp;стоимость участия.</b> Это не&nbsp;доплата сверху: остаток вы&nbsp;вносите за&nbsp;вычетом брони.</p>
+        <p style="margin: 0;">Остаток&nbsp;— до&nbsp;%(deadline)s, дня старта потока.</p>
+      </div>
+    </div>
+
+    <div style="display: flex; flex-direction: column; gap: 10px; max-width: 68ch; align-self: center; text-align: center;">
+      <p style="margin: 0; font-size: 17px; line-height: 1.55; color: #2E2521;">%(carry)s</p>
+      <p style="margin: 0; font-size: 15.5px; line-height: 1.55; color: #6E6158;">Отказаться от&nbsp;участия и&nbsp;вернуть деньги можно в&nbsp;любой момент до&nbsp;начала занятий&nbsp;— порядок описан в&nbsp;разделе&nbsp;8 <a href="/offer" style="color: #4A392F;">Публичной оферты</a>.</p>
+    </div>
+
+    %(cta)s
+  </div>
+</div>
+''' % {"eyebrow": EYEBROW, "rows": rows, "cta": CTA_BOOK,
+       "amount": BOOKING_AMOUNT, "deadline": BOOKING_DEADLINE,
+       "carry": BOOKING_CARRY}
 
 
 def gifts_block():
@@ -974,6 +1094,22 @@ def build_landing():
           "все доступы и&nbsp;показать, как всё работает, чтобы вы&nbsp;с&nbsp;максимальным "
           "комфортом прошли программу.</p>" % note)
 
+    if MODE == "bron":
+        # Деньги принимаются, значит акцепт оферты обязателен — галка
+        # остаётся, в отличие от предзаписи.
+        for old, new in (
+            ("Оформление участия", "Бронь места"),
+            ("Оставьте контакты&nbsp;— на&nbsp;них придут доступы",
+             "Оставьте контакты&nbsp;— пришлём доступы"),
+            ("Дальше откроется страница оплаты. Заплатить можно целиком или частями.",
+             "Дальше откроется оплата брони %s. Она засчитывается в&nbsp;стоимость "
+             "участия, остаток вносится до&nbsp;%s." % (BOOKING_AMOUNT, BOOKING_DEADLINE)),
+            ("Перейти к оплате", "Внести бронь " + BOOKING_AMOUNT),
+        ):
+            if old not in form:
+                raise ValueError("не найдена строка модалки брони: %s" % old)
+            form = form.replace(old, new)
+
     if MODE == "pre":
         # Предзаписи нечего акцептовать: покупки нет, значит нет и оферты.
         # Требовать её согласие на бесплатной заявке юридически неверно
@@ -1035,7 +1171,7 @@ def build_landing():
     form = form.replace('<label style="display: flex; flex-direction: column; gap: 8px;">',
                         honeypot + '<label style="display: flex; flex-direction: column; gap: 8px;">', 1)
 
-    if MODE == "pay":
+    if MODE in ("pay", "bron"):
         # Подарки идут под плашкой тарифа, внутри тёмной шапки формы:
         # это последний экран перед платежом, и здесь они ещё работают.
         # После id="form-plan" идут два </span> и </div> самой плашки:
@@ -1083,6 +1219,34 @@ def build_landing():
 
     # надзаголовок первого экрана: имя не должно разрываться по строкам
     tpl = tpl.replace("от\u00a0Виолы Маро", "от\u00a0Виолы\u00a0Маро")
+
+    if MODE == "bron":
+        # Страницу отправляют лично тем, кто уже поговорил с командой.
+        # Продавать заново незачем — остаются только первый экран,
+        # условия брони и призыв.
+        for label in ("02 Зачем мне это", "03 Что нового", "04 Программа шесть недель",
+                      "05 Финальный мастер-класс", "06 Тарифы",
+                      "06b Проблемы с оплатой", "07 Рассрочка"):
+            tpl = drop_screen(tpl, label)
+
+        tpl = insert_before_screen(tpl, "11 Финальный призыв", booking_screens())
+
+        tpl = tpl.replace("Принять участие", "Внести бронь")
+        tpl = tpl.replace('href="#tarify"',
+                          'href="#bron" data-open-form="Бронь места" data-pay="bron"')
+
+        tpl = tpl.replace("от 14&nbsp;900&nbsp;₽", "Бронь " + BOOKING_AMOUNT)
+        tpl = tpl.replace(
+            "В «С Виолой» пятьдесят мест. Оплатить можно сразу или частями&nbsp;— "
+            "рассрочка до&nbsp;12&nbsp;месяцев для&nbsp;СНГ.",
+            "Бронь %s закрепляет за&nbsp;вами место, цену и&nbsp;бонусы. "
+            "Остаток&nbsp;— до&nbsp;%s." % (BOOKING_AMOUNT, BOOKING_DEADLINE))
+        tpl = tpl.replace("Цена предзаписи действует до&nbsp;4&nbsp;сентября",
+                          "Бронь засчитывается в&nbsp;стоимость участия")
+
+        # Заголовок прямо называет, что это за страница.
+        tpl = tpl.replace("Прикладная <br>эмпатия",
+                          "Бронь на <br>«Прикладную эмпатию»", 1)
 
     if MODE == "pre":
         # Уходят все экраны, где есть цена или оплата. Рассрочка тоже: она
@@ -1139,8 +1303,12 @@ def build_landing():
                           "Заявка бесплатна и&nbsp;ни&nbsp;к&nbsp;чему не&nbsp;обязывает")
 
     # ── сноска про Meta у самого упоминания (требование правового ТЗ) ──────
-    if tpl.count("Инстаграме") != 1:
-        raise ValueError("ожидалось одно упоминание Инстаграма, найдено %d" % tpl.count("Инстаграме"))
+    # На странице брони экран с этим упоминанием не выводится, и сноска
+    # вместе с ним не нужна: ставить её не к чему.
+    mentions = tpl.count("Инстаграме")
+    if mentions > 1:
+        raise ValueError("ожидалось одно упоминание Инстаграма, найдено %d" % mentions)
+    HAS_META_NOTE = mentions == 1
     tpl = tpl.replace("Инстаграме",
                       'Инстаграме<a href="#meta-note" class="fn" '
                       'aria-label="Сноска: Meta признана экстремистской организацией в России">*</a>')
@@ -1508,8 +1676,8 @@ def parse_args(argv):
         if a == "--mode":
             i += 1
             MODE = argv[i]
-            if MODE not in ("pay", "pre"):
-                sys.exit("режим бывает pay или pre, получено: %s" % MODE)
+            if MODE not in ("pay", "pre", "bron"):
+                sys.exit("режим бывает pay, pre или bron, получено: %s" % MODE)
         elif a == "--out":
             i += 1
             OUT = os.path.join(ROOT, argv[i])

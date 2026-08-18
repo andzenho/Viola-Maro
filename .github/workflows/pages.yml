@@ -39,6 +39,9 @@ jobs:
       - name: Собрать версию предзаписи
         run: python3 build.py --mode pre --out site/pre --base /Viola-Maro/pre --noindex
 
+      - name: Собрать страницу брони
+        run: python3 build.py --mode bron --out site/bron --base /Viola-Maro/bron --noindex
+
       - uses: actions/configure-pages@v5
 
       - uses: actions/upload-pages-artifact@v3

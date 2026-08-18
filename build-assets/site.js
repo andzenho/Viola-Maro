@@ -25,7 +25,8 @@
 
   var PAY_URLS = {
     basic: 'https://anny-nizh.getplatinum.ru/payment/JQqAJkS',
-    full:  'https://anny-nizh.getplatinum.ru/payment/ppgQJJ7'
+    full:  'https://anny-nizh.getplatinum.ru/payment/ppgQJJ7',
+    bron:  ''            // страница оплаты брони 5 000 ₽ — ждёт адреса
   };
 
   var SUPPORT_TG = 'https://t.me/violamarohelper';
