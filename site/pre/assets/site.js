@@ -186,7 +186,8 @@
 
   submit.addEventListener('click', function () {
     var name = (inputs.name.value || '').trim();
-    var phone = (inputs.phone.value || '').trim();
+    var phone = (window.__fullPhone ? window.__fullPhone()
+                                    : (inputs.phone.value || '')).trim();
     var tg = (inputs.tg.value || '').trim();
 
     if (!name) { fail('Укажите имя.'); inputs.name.focus(); return; }
@@ -384,6 +385,122 @@
 
   tick();
   var timer = setInterval(tick, 1000);
+})();
+
+/* ─────────────────────────────────── страна в поле телефона ──
+   Страна подставляется сама, но без обращений наружу: IP-геолокация
+   потребовала бы запроса к чужому сервису, а страница обязана открываться
+   из России без VPN и не делать ни одного внешнего запроса.
+
+   Поэтому два локальных источника. Первый — часовой пояс браузера:
+   Europe/Moscow и Asia/Almaty говорят о стране точнее, чем язык, и не
+   врут при включённом VPN так, как врёт IP. Второй — язык системы,
+   если пояса нет или он незнакомый. Если не сработало ни то ни другое,
+   остаётся Россия: это основная аудитория. */
+
+(function () {
+  'use strict';
+
+  var select = document.querySelector('[name="phone_country"]');
+  var phone = document.querySelector('[name="phone"]');
+  if (!select || !phone) return;
+
+  var BY_ZONE = {
+    RU: ['Europe/Moscow', 'Europe/Kaliningrad', 'Europe/Volgograd', 'Europe/Saratov',
+         'Europe/Astrakhan', 'Europe/Ulyanovsk', 'Europe/Kirov', 'Europe/Samara',
+         'Asia/Yekaterinburg', 'Asia/Omsk', 'Asia/Novosibirsk', 'Asia/Barnaul',
+         'Asia/Tomsk', 'Asia/Krasnoyarsk', 'Asia/Irkutsk', 'Asia/Chita',
+         'Asia/Yakutsk', 'Asia/Vladivostok', 'Asia/Magadan', 'Asia/Sakhalin',
+         'Asia/Kamchatka', 'Asia/Anadyr'],
+    KZ: ['Asia/Almaty', 'Asia/Aqtobe', 'Asia/Atyrau', 'Asia/Oral', 'Asia/Qostanay',
+         'Asia/Qyzylorda', 'Asia/Aqtau'],
+    BY: ['Europe/Minsk'],
+    UA: ['Europe/Kyiv', 'Europe/Kiev', 'Europe/Simferopol'],
+    DE: ['Europe/Berlin', 'Europe/Busingen'],
+    IT: ['Europe/Rome'],
+    CZ: ['Europe/Prague'],
+    LU: ['Europe/Luxembourg'],
+    AM: ['Asia/Yerevan'],
+    AZ: ['Asia/Baku'],
+    GB: ['Europe/London'],
+    HU: ['Europe/Budapest'],
+    GE: ['Asia/Tbilisi'],
+    IL: ['Asia/Jerusalem', 'Asia/Tel_Aviv'],
+    ES: ['Europe/Madrid', 'Atlantic/Canary'],
+    CY: ['Asia/Nicosia', 'Europe/Nicosia', 'Asia/Famagusta'],
+    KG: ['Asia/Bishkek'],
+    LV: ['Europe/Riga'],
+    LT: ['Europe/Vilnius'],
+    MD: ['Europe/Chisinau'],
+    NL: ['Europe/Amsterdam'],
+    AE: ['Asia/Dubai'],
+    PL: ['Europe/Warsaw'],
+    PT: ['Europe/Lisbon', 'Atlantic/Madeira'],
+    RS: ['Europe/Belgrade'],
+    TH: ['Asia/Bangkok'],
+    TR: ['Europe/Istanbul', 'Asia/Istanbul'],
+    UZ: ['Asia/Tashkent', 'Asia/Samarkand'],
+    FI: ['Europe/Helsinki'],
+    FR: ['Europe/Paris'],
+    CH: ['Europe/Zurich'],
+    EE: ['Europe/Tallinn']
+  };
+
+  /* Порядок в списке — как в разметке, поэтому страну ищем по её месту:
+     у России и Казахстана один код +7, и по коду их не различить. */
+  var ORDER = ['RU', 'KZ', 'BY', 'UA', 'DE', 'IT', 'CZ', 'LU', 'US', 'AM', 'AZ', 'GB',
+               'HU', 'GE', 'IL', 'ES', 'CY', 'KG', 'LV', 'LT', 'MD', 'NL', 'AE', 'PL',
+               'PT', 'RS', 'TH', 'TR', 'UZ', 'FI', 'FR', 'CH', 'EE'];
+
+  function byZone() {
+    var zone;
+    try { zone = Intl.DateTimeFormat().resolvedOptions().timeZone; } catch (e) { return null; }
+    if (!zone) return null;
+    for (var iso in BY_ZONE) {
+      if (BY_ZONE[iso].indexOf(zone) !== -1) return iso;
+    }
+    if (zone.indexOf('America/') === 0) return 'US';
+    return null;
+  }
+
+  function byLanguage() {
+    var list = navigator.languages || [navigator.language || ''];
+    for (var i = 0; i < list.length; i++) {
+      var m = /[-_]([A-Za-z]{2})$/.exec(list[i] || '');
+      if (m) {
+        var iso = m[1].toUpperCase();
+        if (ORDER.indexOf(iso) !== -1) return iso;
+        if (iso === 'CA') return 'US';       // канадские номера тоже +1
+      }
+    }
+    return null;
+  }
+
+  function syncPlaceholder() {
+    var opt = select.options[select.selectedIndex];
+    var ph = opt && opt.getAttribute('data-ph');
+    if (ph) phone.setAttribute('placeholder', ph);
+  }
+
+  var guess = byZone() || byLanguage();
+  var at = guess ? ORDER.indexOf(guess) : -1;
+  if (at !== -1) select.selectedIndex = at;
+  syncPlaceholder();
+
+  select.addEventListener('change', function () {
+    syncPlaceholder();
+    phone.focus();
+  });
+
+  /* Номер уходит одной строкой вместе с кодом: разбирать две колонки
+     в таблице никто не станет, а звонить надо по полному номеру. */
+  window.__fullPhone = function () {
+    var digits = (phone.value || '').trim();
+    if (!digits) return '';
+    if (digits.charAt(0) === '+') return digits;      // человек вписал код сам
+    var code = select.value || '';
+    return (code ? code + ' ' : '') + digits;
+  };
 })();
 
 
