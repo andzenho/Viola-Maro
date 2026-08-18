@@ -21,7 +21,32 @@ site/                       ← результат сборки, это и за�
 python3 build.py                        # под свой домен
 python3 build.py --base /Viola-Maro     # под подпуть (GitHub Pages)
 python3 build.py --noindex              # запретить индексацию (превью)
+python3 build.py --mode pre             # версия предзаписи
 ```
+
+### Боевая сборка под pre.viola-maro.ru
+
+Две команды подряд — получается папка `dist/`, которая заливается в корень
+домена как есть:
+
+```sh
+rm -rf dist
+python3 build.py --mode pre --out dist --cname pre.viola-maro.ru
+python3 build.py --out dist/pay --base /pay --docs-root
+```
+
+| Адрес | Что |
+|---|---|
+| `/` | предзапись |
+| `/pay/` | оплата |
+| `/offer`, `/privacy`, `/consent`, `/consent-ads`, `/offer-prilozhenie`, `/terms` | документы |
+
+Документы строятся один раз, в корне. Версия в `/pay/` ссылается на них
+флагом `--docs-root` и своих копий не заводит: у правового документа должен
+быть один постоянный адрес, иначе две копии однажды разойдутся.
+
+Файл `CNAME` нужен только для GitHub Pages. На обычном хостинге он лишний
+и ни на что не влияет.
 
 Скрипт перетирает `site/` целиком. Правки вносятся в `build-assets/` или в
 `build.py`, не в `site/`.

@@ -16,6 +16,12 @@
   python3 build.py --base /Viola-Maro       сборка под подпуть (GitHub Pages)
   python3 build.py --noindex                запретить индексацию (превью)
   python3 build.py --mode pre --out site/pre   версия предзаписи
+
+Сборка под домен pre.viola-maro.ru — предзапись в корне, оплата в /pay/,
+правовые страницы в одном экземпляре:
+
+  python3 build.py --mode pre --out dist --cname pre.viola-maro.ru
+  python3 build.py --out dist/pay --base /pay --docs-root
 """
 
 import base64
@@ -72,6 +78,15 @@ DOC_URL = {slug: "/" + url for slug, url, _ in DOCS}
 BASE = ""
 NOINDEX = False
 
+# Правовые страницы должны лежать в одном экземпляре: у документа обязан
+# быть постоянный адрес, версии которого вы храните. Когда обе версии сайта
+# живут на одном домене, вторая свои копии не строит, а ссылается на первые.
+DOCS_ROOT = False
+
+# Своё имя домена для GitHub Pages: без этого файла он обслуживает
+# только адрес вида имя.github.io.
+CNAME = ""
+
 # Два сайта из одного шаблона. "pay" — продажа с тарифами и оплатой,
 # "pre" — предзапись: без цен, с блоком «что даёт предзапись» и заявкой
 # вместо платежа. Девять экранов из одиннадцати у них общие, поэтому
@@ -103,7 +118,8 @@ def apply_base(text):
     if not BASE:
         return text
     text = text.replace('href="/"', 'href="%s/"' % BASE)
-    for root in ABS_ROOTS:
+    roots = ["assets/"] if DOCS_ROOT else ABS_ROOTS
+    for root in roots:
         text = text.replace('"/' + root, '"%s/%s' % (BASE, root))   # href, src
         text = text.replace(" /" + root, " %s/%s" % (BASE, root))   # записи srcset
         text = text.replace("(/" + root, "(%s/%s" % (BASE, root))   # url() в CSS
@@ -1310,7 +1326,7 @@ def add_cache_busting():
 # ─────────────────────────────────────────────────────────────────── main ──
 
 def parse_args(argv):
-    global BASE, NOINDEX, MODE, OUT
+    global BASE, NOINDEX, MODE, OUT, DOCS_ROOT, CNAME
     i = 0
     while i < len(argv):
         a = argv[i]
@@ -1327,6 +1343,11 @@ def parse_args(argv):
             BASE = "/" + argv[i].strip("/")
         elif a.startswith("--base="):
             BASE = "/" + a.split("=", 1)[1].strip("/")
+        elif a == "--docs-root":
+            DOCS_ROOT = True
+        elif a == "--cname":
+            i += 1
+            CNAME = argv[i]
         elif a == "--noindex":
             NOINDEX = True
         else:
@@ -1346,10 +1367,16 @@ def main():
     copy_fonts()
     build_images()
     build_landing()          # заполняет HOVER_RULES
-    build_docs()
+    if DOCS_ROOT:
+        print("  правовые страницы не строятся: ссылки ведут в корень домена")
+    else:
+        build_docs()
     build_css()              # поэтому идёт после
     build_js()
     build_favicon()
+    if CNAME:
+        write(os.path.join(OUT, "CNAME"), CNAME + "\n")
+        print("  CNAME → %s" % CNAME)
     add_cache_busting()
 
     total = 0
