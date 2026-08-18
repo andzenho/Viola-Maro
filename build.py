@@ -802,8 +802,8 @@ def pre_contents_screen():
 
 TIMER_SCREEN = """
 <div data-screen-label="01b Срок предзаписи" id="srok" style="background: linear-gradient(180deg, #2B211C 0%, #241C18 100%); border-top: 1px solid rgba(246,240,232,.12); padding: clamp(20px, 3vw, 30px) clamp(14px, 4vw, 40px);">
-  <div style="max-width: 1020px; margin: 0 auto; display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 14px clamp(20px, 4vw, 44px);">
-    <p style="margin: 0; max-width: 30ch; font-size: 15px; line-height: 1.45; color: #DCD1C4;">До&nbsp;закрытия предзаписи для&nbsp;получения лучших условий</p>
+  <div style="max-width: 1020px; margin: 0 auto; display: flex; flex-direction: column; align-items: center; text-align: center; gap: clamp(12px, 2vw, 16px);">
+    <p style="margin: 0; max-width: 34ch; font-size: clamp(15px, 1.7vw, 17px); font-weight: 700; line-height: 1.4; color: #F6F0E8;">До&nbsp;закрытия предзаписи для&nbsp;получения лучших условий</p>
     <div id="countdown" style="display: flex; align-items: flex-start; gap: clamp(10px, 2vw, 18px);" data-deadline="2026-09-04T23:59:59+03:00">
       <div style="display: flex; flex-direction: column; align-items: center; gap: 3px; min-width: 54px;"><span data-cd="d" style="font-size: clamp(26px, 4vw, 34px); font-weight: 700; letter-spacing: -.02em; line-height: 1; color: #F0DCBB; font-variant-numeric: tabular-nums;">—</span><span style="font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: #B8AA9C;">дней</span></div>
       <div style="display: flex; flex-direction: column; align-items: center; gap: 3px; min-width: 54px;"><span data-cd="h" style="font-size: clamp(26px, 4vw, 34px); font-weight: 700; letter-spacing: -.02em; line-height: 1; color: #F0DCBB; font-variant-numeric: tabular-nums;">—</span><span style="font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: #B8AA9C;">часов</span></div>
