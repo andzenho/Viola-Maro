@@ -1,6 +1,3 @@
-/* Коды стран собраны из PHONE_COUNTRIES в build.py. */
-window.__PHONE_CODES = [["+7", "Россия", "900 000-00-00"], ["+7", "Казахстан", "700 000-00-00"], ["+375", "Беларусь", "29 000-00-00"], ["+380", "Украина", "50 000-00-00"], ["+49", "Германия", "151 00000000"], ["+39", "Италия", "312 0000000"], ["+420", "Чехия", "601 000 000"], ["+352", "Люксембург", "621 000 000"], ["+1", "США и Канада", "201 000-0000"], ["+374", "Армения", "77 000000"], ["+994", "Азербайджан", "40 000 00 00"], ["+44", "Великобритания", "7400 000000"], ["+36", "Венгрия", "20 000 0000"], ["+995", "Грузия", "555 00 00 00"], ["+972", "Израиль", "50 000 0000"], ["+34", "Испания", "600 000 000"], ["+357", "Кипр", "96 000000"], ["+996", "Киргизия", "700 000 000"], ["+371", "Латвия", "20 000 000"], ["+370", "Литва", "600 00000"], ["+373", "Молдова", "60 000 000"], ["+31", "Нидерланды", "6 00000000"], ["+971", "ОАЭ", "50 000 0000"], ["+48", "Польша", "500 000 000"], ["+351", "Португалия", "912 000 000"], ["+381", "Сербия", "60 0000000"], ["+66", "Таиланд", "81 000 0000"], ["+90", "Турция", "530 000 00 00"], ["+998", "Узбекистан", "90 000 00 00"], ["+358", "Финляндия", "40 0000000"], ["+33", "Франция", "6 00 00 00 00"], ["+41", "Швейцария", "78 000 00 00"], ["+372", "Эстония", "5000 0000"]];
-
 /* Прикладная эмпатия — поведение страницы.
    Ноль зависимостей, ноль внешних запросов. */
 
@@ -189,8 +186,7 @@ window.__PHONE_CODES = [["+7", "Россия", "900 000-00-00"], ["+7", "Каз�
 
   submit.addEventListener('click', function () {
     var name = (inputs.name.value || '').trim();
-    var phone = (window.__fullPhone ? window.__fullPhone()
-                                    : (inputs.phone.value || '')).trim();
+    var phone = (inputs.phone.value || '').trim();
     var tg = (inputs.tg.value || '').trim();
 
     if (!name) { fail('Укажите имя.'); inputs.name.focus(); return; }
@@ -384,137 +380,6 @@ window.__PHONE_CODES = [["+7", "Россия", "900 000-00-00"], ["+7", "Каз�
 
   tick();
   var timer = setInterval(tick, 1000);
-})();
-
-/* ─────────────────────────────────── страна в поле телефона ──
-   Поле одно. Код страны подставляется сам, а страна узнаётся по тому,
-   что человек пишет: набрал +49 — справа появилось «Германия».
-
-   Определяется без обращений наружу: IP-геолокация потребовала бы запроса
-   к чужому сервису, а страница обязана открываться из России без VPN.
-   Источника два — часовой пояс браузера (Europe/Moscow и Asia/Almaty
-   говорят о стране точнее языка и не врут при VPN так, как врёт IP)
-   и язык системы. Не вышло ни то ни другое — остаётся Россия, основная
-   аудитория. */
-
-(function () {
-  'use strict';
-
-  var input = document.querySelector('[name="phone"]');
-  var label = document.getElementById('phone-country');
-  var CODES = window.__PHONE_CODES || [];
-  if (!input || !CODES.length) return;
-
-  /* Длинные коды проверяем раньше коротких: иначе +375 опознается как +3. */
-  var BY_LENGTH = CODES.slice().sort(function (a, b) { return b[0].length - a[0].length; });
-
-  var BY_ZONE = {
-    RU: ['Europe/Moscow', 'Europe/Kaliningrad', 'Europe/Volgograd', 'Europe/Saratov',
-         'Europe/Astrakhan', 'Europe/Ulyanovsk', 'Europe/Kirov', 'Europe/Samara',
-         'Asia/Yekaterinburg', 'Asia/Omsk', 'Asia/Novosibirsk', 'Asia/Barnaul',
-         'Asia/Tomsk', 'Asia/Krasnoyarsk', 'Asia/Irkutsk', 'Asia/Chita',
-         'Asia/Yakutsk', 'Asia/Vladivostok', 'Asia/Magadan', 'Asia/Sakhalin',
-         'Asia/Kamchatka', 'Asia/Anadyr'],
-    KZ: ['Asia/Almaty', 'Asia/Aqtobe', 'Asia/Atyrau', 'Asia/Oral', 'Asia/Qostanay',
-         'Asia/Qyzylorda', 'Asia/Aqtau'],
-    BY: ['Europe/Minsk'], UA: ['Europe/Kyiv', 'Europe/Kiev', 'Europe/Simferopol'],
-    DE: ['Europe/Berlin', 'Europe/Busingen'], IT: ['Europe/Rome'],
-    CZ: ['Europe/Prague'], LU: ['Europe/Luxembourg'], AM: ['Asia/Yerevan'],
-    AZ: ['Asia/Baku'], GB: ['Europe/London'], HU: ['Europe/Budapest'],
-    GE: ['Asia/Tbilisi'], IL: ['Asia/Jerusalem', 'Asia/Tel_Aviv'],
-    ES: ['Europe/Madrid', 'Atlantic/Canary'],
-    CY: ['Asia/Nicosia', 'Europe/Nicosia', 'Asia/Famagusta'], KG: ['Asia/Bishkek'],
-    LV: ['Europe/Riga'], LT: ['Europe/Vilnius'], MD: ['Europe/Chisinau'],
-    NL: ['Europe/Amsterdam'], AE: ['Asia/Dubai'], PL: ['Europe/Warsaw'],
-    PT: ['Europe/Lisbon', 'Atlantic/Madeira'], RS: ['Europe/Belgrade'],
-    TH: ['Asia/Bangkok'], TR: ['Europe/Istanbul', 'Asia/Istanbul'],
-    UZ: ['Asia/Tashkent', 'Asia/Samarkand'], FI: ['Europe/Helsinki'],
-    FR: ['Europe/Paris'], CH: ['Europe/Zurich'], EE: ['Europe/Tallinn']
-  };
-
-  /* Код и пример набора по стране — для стартового значения поля. */
-  var START = {
-    RU: '+7', KZ: '+7', BY: '+375', UA: '+380', DE: '+49', IT: '+39', CZ: '+420',
-    LU: '+352', US: '+1', AM: '+374', AZ: '+994', GB: '+44', HU: '+36', GE: '+995',
-    IL: '+972', ES: '+34', CY: '+357', KG: '+996', LV: '+371', LT: '+370',
-    MD: '+373', NL: '+31', AE: '+971', PL: '+48', PT: '+351', RS: '+381',
-    TH: '+66', TR: '+90', UZ: '+998', FI: '+358', FR: '+33', CH: '+41', EE: '+372'
-  };
-
-  function guessCountry() {
-    var zone;
-    try { zone = Intl.DateTimeFormat().resolvedOptions().timeZone; } catch (e) {}
-    if (zone) {
-      for (var iso in BY_ZONE) {
-        if (BY_ZONE[iso].indexOf(zone) !== -1) return iso;
-      }
-      if (zone.indexOf('America/') === 0) return 'US';
-    }
-    var langs = navigator.languages || [navigator.language || ''];
-    for (var i = 0; i < langs.length; i++) {
-      var m = /[-_]([A-Za-z]{2})$/.exec(langs[i] || '');
-      if (m) {
-        var c = m[1].toUpperCase();
-        if (START[c]) return c;
-        if (c === 'CA') return 'US';
-      }
-    }
-    return 'RU';
-  }
-
-  /* Из набранного оставляем плюс и цифры: человек пишет со скобками
-     и дефисами, и по ним код не найти. */
-  function match(value) {
-    var clean = '+' + (value || '').replace(/[^\d]/g, '');
-    for (var i = 0; i < BY_LENGTH.length; i++) {
-      if (clean.indexOf(BY_LENGTH[i][0]) === 0) return BY_LENGTH[i];
-    }
-    return null;
-  }
-
-  var startCode = START[guessCountry()] || '+7';
-
-  function sync() {
-    var hit = match(input.value);
-    /* У России и Казахстана общий +7, различить их по номеру нельзя —
-       показываем ту страну, которую определили по поясу. */
-    if (hit && hit[0] === '+7' && startCode === '+7') {
-      var mine = CODES.filter(function (c) { return c[0] === '+7'; });
-      hit = mine.length ? mine[startCode === '+7' ? 0 : 0] : hit;
-    }
-    label.textContent = hit ? hit[1] : '';
-    if (hit && hit[2]) input.setAttribute('placeholder', hit[0] + ' ' + hit[2]);
-  }
-
-  if (!input.value.trim()) input.value = startCode + ' ';
-  sync();
-
-  input.addEventListener('input', sync);
-
-  input.addEventListener('focus', function () {
-    if (!input.value.trim()) { input.value = startCode + ' '; sync(); }
-  });
-
-  /* Курсор не должен вставать перед кодом: щелчок в начало поля
-     переносится за код. */
-  input.addEventListener('click', function () {
-    var hit = match(input.value);
-    var min = hit ? hit[0].length + 1 : 1;
-    if (input.selectionStart < min) {
-      try { input.setSelectionRange(input.value.length, input.value.length); } catch (e) {}
-    }
-  });
-
-  /* В заявку уходит номер целиком. Если человек не написал ничего, кроме
-     подставленного кода, поле считается пустым — иначе проверка «телефон
-     или телеграм» пропустила бы заявку без единой цифры номера. */
-  window.__fullPhone = function () {
-    var v = (input.value || '').trim();
-    var hit = match(v);
-    var digits = v.replace(/[^\d]/g, '');
-    if (hit && digits.length <= hit[0].length - 1) return '';
-    return digits ? v : '';
-  };
 })();
 
 

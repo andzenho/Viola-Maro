@@ -670,79 +670,6 @@ PRE_FOR_EARLY = [
 
 
 
-# ─────────────────────────────────────────── страна в поле телефона ──
-#
-# Порядок неалфавитный: сверху страны, откуда идёт основная аудитория
-# (бриф называет Россию, Германию, Италию, Прагу, Люксембург, США,
-# Казахстан), дальше по алфавиту. Человеку не нужно листать весь список,
-# чтобы найти своё.
-PHONE_COUNTRIES = [
-    ("RU", "Россия", "+7", "900 000-00-00"),
-    ("KZ", "Казахстан", "+7", "700 000-00-00"),
-    ("BY", "Беларусь", "+375", "29 000-00-00"),
-    ("UA", "Украина", "+380", "50 000-00-00"),
-    ("DE", "Германия", "+49", "151 00000000"),
-    ("IT", "Италия", "+39", "312 0000000"),
-    ("CZ", "Чехия", "+420", "601 000 000"),
-    ("LU", "Люксембург", "+352", "621 000 000"),
-    ("US", "США и Канада", "+1", "201 000-0000"),
-    ("AM", "Армения", "+374", "77 000000"),
-    ("AZ", "Азербайджан", "+994", "40 000 00 00"),
-    ("GB", "Великобритания", "+44", "7400 000000"),
-    ("HU", "Венгрия", "+36", "20 000 0000"),
-    ("GE", "Грузия", "+995", "555 00 00 00"),
-    ("IL", "Израиль", "+972", "50 000 0000"),
-    ("ES", "Испания", "+34", "600 000 000"),
-    ("CY", "Кипр", "+357", "96 000000"),
-    ("KG", "Киргизия", "+996", "700 000 000"),
-    ("LV", "Латвия", "+371", "20 000 000"),
-    ("LT", "Литва", "+370", "600 00000"),
-    ("MD", "Молдова", "+373", "60 000 000"),
-    ("NL", "Нидерланды", "+31", "6 00000000"),
-    ("AE", "ОАЭ", "+971", "50 000 0000"),
-    ("PL", "Польша", "+48", "500 000 000"),
-    ("PT", "Португалия", "+351", "912 000 000"),
-    ("RS", "Сербия", "+381", "60 0000000"),
-    ("TH", "Таиланд", "+66", "81 000 0000"),
-    ("TR", "Турция", "+90", "530 000 00 00"),
-    ("UZ", "Узбекистан", "+998", "90 000 00 00"),
-    ("FI", "Финляндия", "+358", "40 0000000"),
-    ("FR", "Франция", "+33", "6 00 00 00 00"),
-    ("CH", "Швейцария", "+41", "78 000 00 00"),
-    ("EE", "Эстония", "+372", "5000 0000"),
-    ("", "Другая страна", "", "код страны и номер"),
-]
-
-
-def phone_field():
-    """Одно поле вместо поля и списка.
-
-    Код страны подставляется сам и стоит в поле готовым, страна узнаётся
-    по мере ввода и подписывается справа. Отдельный <select> рядом занимал
-    половину строки и заставлял человека делать выбор до того, как он начал
-    писать номер, — а он в большинстве случаев и так свой.
-    """
-    box = ("width: 100%; box-sizing: border-box; background: #FFFFFF; "
-           "border: 1.5px solid #E4DACD; border-radius: 12px; padding: 16px 18px; "
-           "font-family: inherit; font-size: 18px; color: #2E2521; outline: none; "
-           "transition: border-color .2s ease, box-shadow .2s ease;")
-    focus = "border-color: #A3835F; box-shadow: 0 0 0 4px rgba(201,168,127,.18);"
-
-    return (
-        '<div style="display: flex; flex-direction: column; gap: 8px;">'
-        '<span style="font-size: 13px; font-weight: 600; letter-spacing: .16em; '
-        'text-transform: uppercase; color: #6B4E2C;">Номер телефона</span>'
-        '<div style="position: relative;">'
-        '<input type="tel" name="phone" inputmode="tel" autocomplete="tel" '
-        'placeholder="+7 900 000-00-00" '
-        'style="%s padding-right: 132px;" style-focus="%s">'
-        '<span id="phone-country" aria-live="polite" style="position: absolute; '
-        'right: 18px; top: 50%%; transform: translateY(-50%%); pointer-events: none; '
-        'max-width: 116px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; '
-        'font-size: 15px; color: #7D7167;"></span>'
-        "</div></div>" % (box, focus))
-
-
 def gifts_block():
     """Подарки за раннюю оплату — в шапку формы оплаты.
 
@@ -1076,12 +1003,6 @@ def build_landing():
                               'color: #7D7167;">Заявка бесплатна и&nbsp;ни&nbsp;к&nbsp;чему '
                               'не&nbsp;обязывает.</p>') + form[form.index("</div>", tail):]
 
-    # телефон — со списком стран вместо ввода кода руками
-    i = form.index('name="phone"')
-    a = form.rindex("<label", 0, i)
-    b = form.index("</label>", i) + len("</label>")
-    form = form[:a] + phone_field() + form[b:]
-
     # приманка для ботов: поле не видно и не читается экранным диктором,
     # заполнить его может только робот, который разбирает форму по разметке
     honeypot = ('<div class="hp" aria-hidden="true">'
@@ -1321,11 +1242,7 @@ def build_css():
 
 
 def build_js():
-    # Список стран — из PHONE_COUNTRIES, чтобы разметка и скрипт не разошлись.
-    codes = [[c, name, ph] for _iso, name, c, ph in PHONE_COUNTRIES if c]
-    head = ("/* Коды стран собраны из PHONE_COUNTRIES в build.py. */\n"
-            "window.__PHONE_CODES = %s;\n\n" % json.dumps(codes, ensure_ascii=False))
-    js = head + read(os.path.join(BUILD_ASSETS, "site.js")) + "\n" + COOKIE_JS
+    js = read(os.path.join(BUILD_ASSETS, "site.js")) + "\n" + COOKIE_JS
     write(os.path.join(OUT, "assets", "site.js"), js)
 
 
