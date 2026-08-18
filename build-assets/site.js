@@ -338,3 +338,49 @@
 
   if (phone.addEventListener) phone.addEventListener('change', pin);
 })();
+
+/* ───────────────────────────────────────── срок предзаписи ──
+   Таймер противоречит красной линии проекта: обратные отсчёты в брифе
+   запрещены прямой правкой эксперта. Поставлен по решению заказчика,
+   поэтому сделан максимально тихо — палитра страницы, без красного,
+   без мигания и без «осталось N мест».
+
+   Когда срок вышел, полоса не показывает нули и не остаётся висеть:
+   она убирается целиком. Нули читаются как сломанная страница. */
+
+(function () {
+  'use strict';
+
+  var box = document.getElementById('countdown');
+  if (!box) return;
+
+  var band = document.getElementById('srok');
+  var target = Date.parse(box.getAttribute('data-deadline'));
+  if (isNaN(target)) { if (band) band.hidden = true; return; }
+
+  var cells = {
+    d: box.querySelector('[data-cd="d"]'),
+    h: box.querySelector('[data-cd="h"]'),
+    m: box.querySelector('[data-cd="m"]'),
+    s: box.querySelector('[data-cd="s"]')
+  };
+
+  function two(n) { return n < 10 ? '0' + n : String(n); }
+
+  function tick() {
+    var left = target - Date.now();
+    if (left <= 0) {
+      if (band) band.hidden = true;
+      clearInterval(timer);
+      return;
+    }
+    var sec = Math.floor(left / 1000);
+    cells.d.textContent = String(Math.floor(sec / 86400));
+    cells.h.textContent = two(Math.floor(sec / 3600) % 24);
+    cells.m.textContent = two(Math.floor(sec / 60) % 60);
+    cells.s.textContent = two(sec % 60);
+  }
+
+  tick();
+  var timer = setInterval(tick, 1000);
+})();

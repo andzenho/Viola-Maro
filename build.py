@@ -709,57 +709,110 @@ def pre_benefits_screen():
 ''' % {"eyebrow": EYEBROW, "light": light, "dark": dark, "cta": CTA_DARK}
 
 
-PRE_INCLUDED = [
-    "Шесть лекций Виолы в прямом эфире, по одной в неделю",
-    "18 техник эмпата, по три на неделю",
-    "Практическое задание после каждой лекции",
-    "Запись и PDF-конспект к каждой лекции",
-    "Вопрос Виоле на аудиоразбор каждую неделю",
-    "Вопросы и ответы в конце лекции",
-    "Мастер-класс в прямом эфире с ответами Виолы",
-    "Участие в финальной встрече",
-    "Разбор вас как эмпата, личный PDF",
-    "Группа до двадцати человек и чат потока",
-    "Большая методичка по итогам",
-    "Аудиомедитация на изобилие",
-    "Доступ навсегда",
+# Состав участия сгруппирован, а не вывален списком из тринадцати галок.
+# Четыре группы человек охватывает взглядом; тринадцать равных строк —
+# читает по диагонали и не запоминает ни одной.
+PRE_GROUPS = [
+    ("Программа",
+     '<rect x="3" y="4.5" width="18" height="13" rx="1.6"/>'
+     '<path d="M8 21h8M12 17.5V21M10.6 8.6l4.4 2.6-4.4 2.6z"/>',
+     ["Шесть лекций Виолы в прямом эфире, по одной в неделю",
+      "18 техник эмпата, по три на неделю",
+      "Практическое задание после каждой лекции"]),
+    ("Внимание Виолы",
+     '<rect x="9" y="3" width="6" height="10" rx="3"/>'
+     '<path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5V21M8.5 21h7"/>',
+     ["Вопрос Виоле на аудиоразбор каждую неделю",
+      "Вопросы и ответы в конце лекции",
+      "Мастер-класс в прямом эфире с ответами Виолы",
+      "Участие в финальной встрече"]),
+    ("Материалы",
+     '<path d="M6 3h8l4 4v14H6z"/><path d="M14 3v4h4M9.5 12h5M9.5 16h5"/>',
+     ["Запись и PDF-конспект к каждой лекции",
+      "Разбор вас как эмпата, личный PDF",
+      "Большая методичка по итогам потока",
+      "Аудиомедитация на изобилие"]),
+    ("Люди рядом",
+     '<circle cx="9" cy="9" r="3"/><circle cx="16.5" cy="12" r="2.4"/>'
+     '<path d="M3.5 19c.7-2.8 2.8-4.3 5.5-4.3M13 19c.3-1.9 1.6-2.9 3.5-2.9s3.2 1 3.5 2.9"/>',
+     ["Группа до двадцати человек",
+      "Чат потока"]),
 ]
 
 
 def pre_contents_screen():
-    """«Что входит в практикум» — вместо двух карточек с ценами одна, по максимуму.
+    """«Что входит в практикум» — четыре карточки вместо списка из галок.
 
     Тарифы намеренно не показываются: на предзаписи цены нет, а выбор тарифа
     человек делает в разговоре с командой. Показывать урезанный состав раньше
     времени значит отговаривать на пустом месте.
     """
-    check = ('<span style="display: inline-flex; margin-top: 2px; color: #5A7A55; flex: none;">'
-             '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" '
-             'stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" '
-             'aria-hidden="true"><path d="M4.5 12.5l5 5 10-11"/></svg></span>')
-    items = "".join(
-        '<div style="display: grid; grid-template-columns: 22px 1fr; gap: 12px; '
-        'align-items: start; font-size: 17px; line-height: 1.5;">%s'
-        '<span style="color: #2E2521;">%s</span></div>' % (check, t)
-        for t in PRE_INCLUDED)
+    def card(title, paths, items):
+        icon = ('<span style="display: inline-flex; align-items: center; justify-content: center; '
+                'width: 46px; height: 46px; border-radius: 50%%; '
+                'background: linear-gradient(180deg, #F0DCBB, #C29A6C); color: #2A211C; '
+                'flex: none; box-shadow: inset 0 1px 0 rgba(255,255,255,.5);">'
+                '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" '
+                'stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" '
+                'aria-hidden="true">%s</svg></span>' % paths)
+        rows = "".join(
+            '<div style="display: grid; grid-template-columns: 9px 1fr; gap: 12px; '
+            'align-items: start;"><span style="width: 5px; height: 5px; margin-top: 10px; '
+            'border-radius: 50%%; background: #C9A87F;"></span>'
+            '<span style="font-size: 17px; line-height: 1.5; color: #5C5149;">%s</span></div>' % t
+            for t in items)
+        return ('<div style="background: linear-gradient(180deg, #FFFFFF 0%%, #FDFAF6 100%%); '
+                'border: 1px solid #E9DFD2; border-radius: 16px; '
+                'box-shadow: 0 1px 2px rgba(60,48,40,.04), 0 16px 36px -24px rgba(60,48,40,.34); '
+                'padding: clamp(24px, 3vw, 32px); display: flex; flex-direction: column; '
+                'gap: 16px;">%s<h3 style="margin: 0; font-size: clamp(20px, 2.2vw, 24px); '
+                'font-weight: 700; letter-spacing: -.02em; line-height: 1.25; color: #2E2521;">'
+                '%s</h3><div style="display: flex; flex-direction: column; gap: 11px;">%s</div>'
+                "</div>" % (icon, title, rows))
+
+    cards = "".join(card(t, p, i) for t, p, i in PRE_GROUPS)
 
     return '''
 <div data-screen-label="07 Что входит" style="background: linear-gradient(180deg, #FBF7F1 0%%, #F4EDE3 100%%); padding: clamp(56px, 8vw, 100px) clamp(14px, 4vw, 40px);">
-  <div style="max-width: 860px; margin: 0 auto; display: flex; flex-direction: column; gap: clamp(24px, 3vw, 34px);">
+  <div style="max-width: 1020px; margin: 0 auto; display: flex; flex-direction: column; gap: clamp(24px, 3vw, 34px);">
     <div style="display: flex; flex-direction: column; gap: 12px;">
       <div style="%(eyebrow)s">По максимуму</div>
-      <h2 style="font-family: 'Golos Text', system-ui, sans-serif; font-weight: 700; letter-spacing: -.025em; font-size: clamp(38px, 5.6vw, 64px); line-height: 1.1; margin: 0; text-wrap: balance;">Что входит в практикум</h2>
+      <h2 style="font-family: \'Golos Text\', system-ui, sans-serif; font-weight: 700; letter-spacing: -.025em; font-size: clamp(38px, 5.6vw, 64px); line-height: 1.1; margin: 0; text-wrap: balance;">Что входит в практикум</h2>
       <p style="margin: 0; font-size: clamp(17.1px, 1.89vw, 19.8px); line-height: 1.55; max-width: 60ch; color: #5C5149;">Полный состав участия&nbsp;— всё, что можно получить на&nbsp;практикуме.</p>
     </div>
 
-    <div style="background: linear-gradient(180deg, #FFFFFF 0%%, #FBF6EE 100%%); border: 1px solid #E9DFD2; border-radius: 16px; box-shadow: 0 1px 2px rgba(60,48,40,.04), 0 16px 36px -24px rgba(60,48,40,.34); padding: clamp(24px, 3.4vw, 36px); display: flex; flex-direction: column; gap: 13px;">%(items)s</div>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 18px; align-items: stretch;">%(cards)s</div>
+
+    <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 16px 22px; background: linear-gradient(165deg, #4A392F 0%%, #2B211C 100%%); border: 1px solid #33271F; border-radius: 16px; box-shadow: 0 18px 40px -24px rgba(43,33,28,.7), inset 0 1px 0 rgba(255,255,255,.1); padding: clamp(22px, 3vw, 28px) clamp(24px, 3vw, 32px);">
+      <span style="display: inline-flex; align-items: center; justify-content: center; width: 52px; height: 52px; border-radius: 50%%; background: linear-gradient(180deg, #F0DCBB, #C29A6C); color: #2A211C; font-size: 24px; font-weight: 700; flex: none; box-shadow: inset 0 1px 0 rgba(255,255,255,.5);">∞</span>
+      <div style="flex: 1 1 260px; display: flex; flex-direction: column; gap: 4px;">
+        <p style="margin: 0; font-size: clamp(19px, 2.1vw, 23px); font-weight: 700; letter-spacing: -.02em; color: #F6F0E8;">Доступ навсегда</p>
+        <p style="margin: 0; font-size: 17px; line-height: 1.5; color: #DCD1C4;">Записи, конспекты и&nbsp;материалы остаются у&nbsp;вас без срока.</p>
+      </div>
+    </div>
 
     <p style="margin: 0; font-size: 17px; line-height: 1.55; color: #5C5149;">Тарифы и&nbsp;цены покажем, когда откроются продажи. Команда Виолы разберёт с&nbsp;вами, какой тариф под&nbsp;вашу задачу&nbsp;— и&nbsp;поможет с&nbsp;оплатой, в&nbsp;том числе в&nbsp;рассрочку.</p>
 
     %(cta)s
   </div>
 </div>
-''' % {"eyebrow": EYEBROW, "items": items, "cta": CTA_DARK}
+''' % {"eyebrow": EYEBROW, "cards": cards, "cta": CTA_DARK}
+
+
+
+TIMER_SCREEN = """
+<div data-screen-label="01b Срок предзаписи" id="srok" style="background: linear-gradient(180deg, #2B211C 0%, #241C18 100%); border-top: 1px solid rgba(246,240,232,.12); padding: clamp(20px, 3vw, 30px) clamp(14px, 4vw, 40px);">
+  <div style="max-width: 1020px; margin: 0 auto; display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 14px clamp(20px, 4vw, 44px);">
+    <p style="margin: 0; max-width: 30ch; font-size: 15px; line-height: 1.45; color: #DCD1C4;">До&nbsp;закрытия предзаписи для&nbsp;получения лучших условий</p>
+    <div id="countdown" style="display: flex; align-items: flex-start; gap: clamp(10px, 2vw, 18px);" data-deadline="2026-09-04T23:59:59+03:00">
+      <div style="display: flex; flex-direction: column; align-items: center; gap: 3px; min-width: 54px;"><span data-cd="d" style="font-size: clamp(26px, 4vw, 34px); font-weight: 700; letter-spacing: -.02em; line-height: 1; color: #F0DCBB; font-variant-numeric: tabular-nums;">—</span><span style="font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: #B8AA9C;">дней</span></div>
+      <div style="display: flex; flex-direction: column; align-items: center; gap: 3px; min-width: 54px;"><span data-cd="h" style="font-size: clamp(26px, 4vw, 34px); font-weight: 700; letter-spacing: -.02em; line-height: 1; color: #F0DCBB; font-variant-numeric: tabular-nums;">—</span><span style="font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: #B8AA9C;">часов</span></div>
+      <div style="display: flex; flex-direction: column; align-items: center; gap: 3px; min-width: 54px;"><span data-cd="m" style="font-size: clamp(26px, 4vw, 34px); font-weight: 700; letter-spacing: -.02em; line-height: 1; color: #F0DCBB; font-variant-numeric: tabular-nums;">—</span><span style="font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: #B8AA9C;">минут</span></div>
+      <div style="display: flex; flex-direction: column; align-items: center; gap: 3px; min-width: 54px;"><span data-cd="s" style="font-size: clamp(26px, 4vw, 34px); font-weight: 700; letter-spacing: -.02em; line-height: 1; color: #C9A87F; font-variant-numeric: tabular-nums;">—</span><span style="font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: #B8AA9C;">секунд</span></div>
+    </div>
+  </div>
+</div>
+"""
 
 
 # ──────────────────────────────────────────────────────────────── лендинг ──
@@ -962,6 +1015,26 @@ def build_landing():
 
         tpl = insert_before_screen(tpl, "11 Финальный призыв",
                                    pre_benefits_screen() + pre_contents_screen())
+
+        # Срок — сразу под первым экраном, тонкой полосой.
+        tpl = insert_before_screen(tpl, "02 Зачем мне это", TIMER_SCREEN)
+
+        # Надзаголовок: первым словом «Предзапись», плашкой, чтобы читалось
+        # раньше названия. Дальше — что это за практикум, мелким.
+        old_brow = ('<div style="font-size: clamp(10px, 1.7vw, 12.5px); letter-spacing: .2em; '
+                    'text-transform: uppercase; color: #C9A87F; line-height: 1.5;">'
+                    '6-недельный практикум для\u00a0эмпатов от\u00a0Виолы\u00a0Маро</div>')
+        if old_brow not in tpl:
+            raise ValueError("не найден надзаголовок первого экрана")
+        tpl = tpl.replace(old_brow,
+            '<div style="display: flex; align-items: center; flex-wrap: wrap; gap: 10px 12px; '
+            'font-size: clamp(10px, 1.7vw, 12.5px); letter-spacing: .2em; '
+            'text-transform: uppercase; color: #C9A87F; line-height: 1.5;">'
+            '<b style="background: linear-gradient(180deg, #F0DCBB, #C29A6C); color: #2A211C; '
+            'font-weight: 700; letter-spacing: .16em; padding: 7px 14px; border-radius: 999px; '
+            'box-shadow: inset 0 1px 0 rgba(255,255,255,.5);">Предзапись</b>'
+            '<span>на 6-недельный практикум для\u00a0эмпатов от\u00a0Виолы\u00a0Маро</span>'
+            "</div>")
 
         # Один призыв на все кнопки, как и было в исходном брифе: этой
         # аудитории не надо гадать, куда нажимать.
