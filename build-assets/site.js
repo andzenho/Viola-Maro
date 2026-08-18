@@ -29,6 +29,9 @@
 
   var SUPPORT_TG = 'https://t.me/violamarohelper';
 
+  /* Закрытый канал Виолы — куда уходит человек после заявки на предзапись. */
+  var CHANNEL_URL = 'https://t.me/+iIqJoSn2UBU3Yzky';
+
   /* Редакции документов на момент акцепта — уходят вместе с заявкой
      и должны меняться вместе с текстом документов. */
   var DOC_VERSIONS = {
@@ -41,6 +44,11 @@
 
   var modal = document.getElementById('lead-modal');
   if (!modal) return;
+
+  /* Чем кончается отправка: 'pay' — страница оплаты, 'channel' — закрытый
+     канал. Задаётся в разметке, чтобы скрипт остался один на обе версии. */
+  var AFTER = modal.getAttribute('data-after') || 'pay';
+  var IS_PRE = AFTER === 'channel';
 
   var planLabel = document.getElementById('form-plan');
   var errBox = document.getElementById('form-error');
@@ -63,7 +71,8 @@
 
   var CB_MESSAGES = {
     accept_offer: 'Без принятия оферты оплата невозможна',
-    accept_pd: 'Без согласия на обработку данных оплата невозможна'
+    accept_pd: IS_PRE ? 'Без согласия на обработку данных заявку оформить нельзя'
+                      : 'Без согласия на обработку данных оплата невозможна'
   };
 
   var lastTrigger = null;
@@ -75,8 +84,12 @@
     return row ? row.querySelector('.cb-err') : null;
   }
 
+  /* На предзаписи галки про оферту нет вовсе, поэтому проверяем только те,
+     что реально есть на странице. */
+  var required = ['accept_offer', 'accept_pd'].filter(function (k) { return boxes[k]; });
+
   function requiredOk() {
-    return boxes.accept_offer.checked && boxes.accept_pd.checked;
+    return required.every(function (k) { return boxes[k].checked; });
   }
 
   function syncSubmit() {
@@ -84,7 +97,7 @@
   }
 
   function showCheckboxErrors(mark) {
-    ['accept_offer', 'accept_pd'].forEach(function (key) {
+    required.forEach(function (key) {
       var slot = errorFor(boxes[key]);
       if (!slot) return;
       var bad = mark && !boxes[key].checked;
@@ -160,7 +173,9 @@
   /* ─────────────────────────────────── кнопки тарифов и рассрочки ── */
 
   Array.prototype.forEach.call(document.querySelectorAll('[data-open-form]'), function (btn) {
-    btn.addEventListener('click', function () {
+    btn.addEventListener('click', function (e) {
+      /* Часть кнопок — ссылки с якорем: он запасной путь, если скрипта нет. */
+      if (btn.tagName === 'A') e.preventDefault();
       openModal(btn.getAttribute('data-open-form'),
                 btn.getAttribute('data-pay'), btn);
     });
@@ -178,9 +193,10 @@
 
     if (!requiredOk()) {
       showCheckboxErrors(true);
-      fail('Отметьте оба обязательных согласия.');
-      var missing = !boxes.accept_offer.checked ? boxes.accept_offer : boxes.accept_pd;
-      missing.focus();
+      fail(required.length > 1 ? 'Отметьте оба обязательных согласия.'
+                               : 'Отметьте обязательное согласие.');
+      var missing = required.filter(function (k) { return !boxes[k].checked; })[0];
+      boxes[missing].focus();
       return;
     }
 
@@ -193,9 +209,11 @@
       phone: phone,
       telegram: tg,
       plan: currentPlan,
-      accept_offer: boxes.accept_offer.checked,
-      accept_pd: boxes.accept_pd.checked,
-      accept_ads: boxes.accept_ads.checked,
+      form: IS_PRE ? 'предзапись' : 'оплата',
+      readiness: (modal.querySelector('[name="readiness"]:checked') || {}).value || '',
+      accept_offer: !!(boxes.accept_offer && boxes.accept_offer.checked),
+      accept_pd: !!(boxes.accept_pd && boxes.accept_pd.checked),
+      accept_ads: !!(boxes.accept_ads && boxes.accept_ads.checked),
       consent_ts: new Date().toISOString(),
       page: window.location.href,
       ua: navigator.userAgent
@@ -206,6 +224,12 @@
        раздел 3 правового ТЗ: акцепт оферты должен быть зафиксирован
        раньше, чем человек расстался с деньгами. */
     function goToPayment() {
+      if (IS_PRE) {
+        hide(errBox);
+        show(sentBox);
+        window.location.href = CHANNEL_URL;
+        return;
+      }
       var url = PAY_URLS[currentPay];
       if (!url) {
         fail('Не нашли страницу оплаты для этого тарифа. Напишите нам в Telegram: ' + SUPPORT_TG);
@@ -246,12 +270,12 @@
       /* Записать не вышло. Продажу не блокируем: даём уйти на оплату
          вручную, но об этом говорим прямо, а не делаем вид, что всё цело. */
       syncSubmit();
-      var url = PAY_URLS[currentPay] || SUPPORT_TG;
+      var url = IS_PRE ? CHANNEL_URL : (PAY_URLS[currentPay] || SUPPORT_TG);
       if (errText) {
         errText.textContent = 'Не удалось сохранить ваши данные. ';
         var a = document.createElement('a');
         a.href = url;
-        a.textContent = 'Перейти к оплате';
+        a.textContent = IS_PRE ? 'Открыть закрытый канал' : 'Перейти к оплате';
         a.style.color = 'inherit';
         errText.appendChild(a);
         errText.appendChild(document.createTextNode(

@@ -29,6 +29,8 @@ const NOTIFY_EMAIL = '';
 
 const FIELDS = [
   ['received_at',          'Получено'],
+  ['form',                 'Форма'],          // предзапись или оплата
+  ['readiness',            'Готовность'],     // только у предзаписи
   ['plan',                 'Тариф'],
   ['name',                 'Имя'],
   ['phone',                'Телефон'],
@@ -74,8 +76,13 @@ function doPost(e) {
     if (!String(data.phone || '').trim() && !String(data.telegram || '').trim()) {
       return reply(400, { ok: false, error: 'no contact' });
     }
-    if (data.accept_offer !== true || data.accept_pd !== true) {
+    // Оферту принимают только при оплате. На предзаписи покупки нет,
+    // поэтому там обязательно лишь согласие на обработку данных.
+    if (data.accept_pd !== true) {
       return reply(400, { ok: false, error: 'no consent' });
+    }
+    if (data.form !== 'предзапись' && data.accept_offer !== true) {
+      return reply(400, { ok: false, error: 'no offer' });
     }
 
     data.received_at = new Date();

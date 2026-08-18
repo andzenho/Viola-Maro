@@ -15,6 +15,7 @@
   python3 build.py                          сборка под свой домен
   python3 build.py --base /Viola-Maro       сборка под подпуть (GitHub Pages)
   python3 build.py --noindex                запретить индексацию (превью)
+  python3 build.py --mode pre --out site/pre   версия предзаписи
 """
 
 import base64
@@ -70,6 +71,14 @@ DOC_URL = {slug: "/" + url for slug, url, _ in DOCS}
 # адреса получают префикс. На своём домене BASE пустой и ничего не меняется.
 BASE = ""
 NOINDEX = False
+
+# Два сайта из одного шаблона. "pay" — продажа с тарифами и оплатой,
+# "pre" — предзапись: без цен, с блоком «что даёт предзапись» и заявкой
+# вместо платежа. Девять экранов из одиннадцати у них общие, поэтому
+# копией файлов это делать нельзя: правки разъедутся на первой же неделе.
+MODE = "pay"
+
+CHANNEL_URL = "https://t.me/+iIqJoSn2UBU3Yzky"
 
 ABS_ROOTS = ["assets/"] + [url for _s, url, _t in DOCS]
 
@@ -315,6 +324,40 @@ def fix_contrast(tpl):
     return tpl
 
 
+def drop_field(html, name):
+    """Убирает <label> целиком вместе с полем name=... внутри."""
+    i = html.index('name="%s"' % name)
+    a = html.rindex("<label", 0, i)
+    b = html.index("</label>", i) + len("</label>")
+    return html[:a] + html[b:]
+
+
+def screen_span(tpl, label):
+    """Границы экрана data-screen-label с учётом вложенных div."""
+    m = re.search(r'<div[^>]*data-screen-label="%s"[^>]*>' % re.escape(label), tpl)
+    if not m:
+        raise ValueError("экран не найден: %s" % label)
+    depth, pos = 1, m.end()
+    pat = re.compile(r"<div\b[^>]*>|</div>")
+    while depth:
+        m2 = pat.search(tpl, pos)
+        if not m2:
+            raise ValueError("незакрытый экран: %s" % label)
+        depth += -1 if m2.group(0) == "</div>" else 1
+        pos = m2.end()
+    return m.start(), pos
+
+
+def drop_screen(tpl, label):
+    a, b = screen_span(tpl, label)
+    return tpl[:a] + tpl[b:]
+
+
+def insert_before_screen(tpl, label, html):
+    a, _ = screen_span(tpl, label)
+    return tpl[:a] + html + tpl[a:]
+
+
 # ───────────────────────────────────────────────── превращение div → section ──
 
 def divs_to_sections(tpl):
@@ -547,6 +590,178 @@ def hero_picture():
         src("hero", "jpg", dsk_lo, dsk_hi))
 
 
+
+
+# ──────────────────────────────────────────── экраны версии предзаписи ──
+
+CTA_DARK = ('<a href="#zapis" data-open-form="Предзапись" style="align-self: center; '
+            'display: inline-flex; white-space: nowrap; align-items: center; gap: 14px; '
+            'background: linear-gradient(165deg, #4E3C31 0%, #2B211C 100%); color: #F6F0E8; '
+            'text-decoration: none; font-weight: 700; font-size: clamp(18px, 1.9vw, 22px); '
+            'letter-spacing: .01em; padding: 23px 34px 23px 48px; border-radius: 999px; '
+            'box-shadow: 0 16px 34px -12px rgba(43,33,28,.55), 0 0 0 1px rgba(43,33,28,.9), '
+            '0 0 0 8px rgba(201,168,127,.22), inset 0 1px 0 rgba(255,255,255,.14); '
+            'transition: transform .2s ease, box-shadow .2s ease, filter .2s ease;" '
+            'style-hover="transform: translateY(-3px); filter: brightness(1.08);" '
+            'style-active="transform: translateY(-1px);">Попасть в предзапись'
+            '<span style="display: inline-flex; align-items: center; justify-content: center; '
+            'width: 34px; height: 34px; border-radius: 50%; '
+            'background: linear-gradient(180deg, #F0DCBB, #C29A6C); color: #2A211C; '
+            'font-size: 16px; line-height: 1;">→</span></a>')
+
+EYEBROW = ('font-size: 12px; letter-spacing: .18em; text-transform: uppercase; '
+           'color: #8A5A2B;')
+
+ICON_DIAMOND = ('<span style="display: inline-flex; align-items: center; justify-content: center; '
+                'width: 26px; height: 26px; margin-top: 2px; border-radius: 50%; '
+                'background: linear-gradient(160deg, #F0DCBB, #C29A6C); color: #2A211C; '
+                'font-size: 13px; line-height: 1; flex: none;">◆</span>')
+
+ICON_GIFT = ('<span style="display: inline-flex; align-items: center; justify-content: center; '
+             'width: 30px; height: 30px; margin-top: 1px; border-radius: 50%; '
+             'background: linear-gradient(180deg, #F0DCBB, #C29A6C); color: #2A211C; '
+             'flex: none;"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" '
+             'stroke="currentColor" stroke-width="1.8" stroke-linecap="round" '
+             'stroke-linejoin="round" aria-hidden="true"><path d="M4 11h16v9.5H4z"/>'
+             '<path d="M2.8 7.5h18.4V11H2.8zM12 7.5v13"/>'
+             '<path d="M12 7.5S10.7 4 8.4 4a1.9 1.9 0 0 0 0 3.5zM12 7.5S13.3 4 15.6 4'
+             'a1.9 1.9 0 0 1 0 3.5z"/></svg></span>')
+
+# Порядок пунктов не тот, что был в присланном тексте: закрытый канал поднят
+# на первое место. Он единственный, что человек получает сегодня же; цена
+# и разговор с командой работают только если он вообще решит покупать.
+PRE_FOR_REQUEST = [
+    ("Закрытый канал Виолы",
+     "подкасты и материалы, которых нет в открытом доступе. Новое вы видите там первыми."),
+    ("Вход по самой низкой цене",
+     "она закрепляется за вами до 4&nbsp;сентября."),
+    ("Право сказать, что включить в программу",
+     "в канале спросим, чего вам не хватает, и соберём из ваших ответов часть программы."),
+    ("Разговор с командой Виолы Маро",
+     "расскажут, как устроен практикум, какой тариф под вашу задачу, ответят на вопросы "
+     "и помогут с оплатой, в том числе в рассрочку."),
+]
+
+PRE_FOR_EARLY = [
+    ("«Любовь и деньги»",
+     "лекция Виолы о том, почему и любовь, и деньги про одно и то же состояние наполненности."),
+    ("Разбор фильма «Догвиль»",
+     "как эмпат оказывается в позиции жертвы, как устроена эмоциональная зависимость "
+     "и как из неё выходят."),
+    ("Большой мастер-класс на узнавание себя",
+     "там подробно разобрано то, что тест показал коротко."),
+]
+
+
+def pre_benefits_screen():
+    """«Что даёт предзапись» — экран, на котором принимается решение.
+
+    Два яруса нарочно разной плотности: за заявку — светлый, порог нулевой;
+    за раннюю оплату — тёмный с бронзой, единственное цветное пятно экрана.
+    Разница между ними должна читаться до чтения текста.
+
+    Срок назван словами и один раз. Ни таймера, ни счётчика мест: прямая
+    красная линия проекта, правка эксперта была «целевая аудитория получается
+    каких-то обиженных и оскорблённых».
+    """
+    def row(title, tail, icon, title_color, text_color):
+        return ('<div style="display: grid; grid-template-columns: auto 1fr; gap: 14px; '
+                'align-items: start;">%s<p style="margin: 0; font-size: 17.5px; '
+                'line-height: 1.55; color: %s;"><b style="color: %s; font-weight: 700;">%s</b>'
+                '&nbsp;— %s</p></div>' % (icon, text_color, title_color, title, tail))
+
+    light = "".join(row(t, x, ICON_DIAMOND, "#2E2521", "#5C5149") for t, x in PRE_FOR_REQUEST)
+    dark = "".join(row(t, x, ICON_GIFT, "#F6F0E8", "#DCD1C4") for t, x in PRE_FOR_EARLY)
+
+    return '''
+<div id="zapis" data-screen-label="06 Что даёт предзапись" style="background: linear-gradient(180deg, #F5EFE6 0%%, #EFE6DA 100%%); padding: clamp(56px, 8vw, 100px) clamp(14px, 4vw, 40px);">
+  <div style="max-width: 1020px; margin: 0 auto; display: flex; flex-direction: column; gap: clamp(26px, 3.4vw, 38px);">
+    <div style="display: flex; flex-direction: column; gap: 12px; align-items: center; text-align: center;">
+      <div style="%(eyebrow)s">Пока идёт набор</div>
+      <h2 style="font-family: 'Golos Text', system-ui, sans-serif; font-weight: 700; letter-spacing: -.025em; font-size: clamp(38px, 5.6vw, 64px); line-height: 1.1; margin: 0; text-wrap: balance;">Что даёт предзапись</h2>
+    </div>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px; align-items: stretch;">
+
+      <div style="background: linear-gradient(180deg, #FFFFFF 0%%, #FDFAF6 100%%); border: 1px solid #E9DFD2; border-radius: 16px; box-shadow: 0 1px 2px rgba(60,48,40,.04), 0 16px 36px -24px rgba(60,48,40,.34); padding: clamp(24px, 3.4vw, 36px); display: flex; flex-direction: column; gap: 18px;">
+        <div style="display: flex; flex-direction: column; gap: 6px;">
+          <div style="%(eyebrow)s">За саму заявку</div>
+          <p style="margin: 0; font-size: 19px; font-weight: 600; line-height: 1.35; color: #2E2521;">Ничего платить не&nbsp;нужно</p>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 14px;">%(light)s</div>
+      </div>
+
+      <div style="background: linear-gradient(165deg, #4A392F 0%%, #2B211C 100%%); border: 1px solid #33271F; border-radius: 16px; box-shadow: 0 20px 44px -24px rgba(43,33,28,.7), inset 0 1px 0 rgba(255,255,255,.1); padding: clamp(24px, 3.4vw, 36px); display: flex; flex-direction: column; gap: 18px;">
+        <div style="display: flex; flex-direction: column; gap: 6px;">
+          <div style="font-size: 12px; letter-spacing: .18em; text-transform: uppercase; color: #E9C98F;">За раннюю оплату, до 4&nbsp;сентября</div>
+          <p style="margin: 0; font-size: 19px; font-weight: 600; line-height: 1.35; color: #F6F0E8;">Три подарка сверх программы</p>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 14px;">%(dark)s</div>
+      </div>
+
+    </div>
+
+    <p style="margin: 0; align-self: center; max-width: 52ch; text-align: center; font-size: 17px; line-height: 1.55; color: #5C5149;">С 5&nbsp;сентября подарки сгорают, а&nbsp;цена становится выше.</p>
+
+    %(cta)s
+  </div>
+</div>
+''' % {"eyebrow": EYEBROW, "light": light, "dark": dark, "cta": CTA_DARK}
+
+
+PRE_INCLUDED = [
+    "Шесть лекций Виолы в прямом эфире, по одной в неделю",
+    "18 техник эмпата, по три на неделю",
+    "Практическое задание после каждой лекции",
+    "Запись и PDF-конспект к каждой лекции",
+    "Вопрос Виоле на аудиоразбор каждую неделю",
+    "Вопросы и ответы в конце лекции",
+    "Мастер-класс в прямом эфире с ответами Виолы",
+    "Участие в финальной встрече",
+    "Разбор вас как эмпата, личный PDF",
+    "Группа до двадцати человек и чат потока",
+    "Большая методичка по итогам",
+    "Аудиомедитация на изобилие",
+    "Доступ навсегда",
+]
+
+
+def pre_contents_screen():
+    """«Что входит в практикум» — вместо двух карточек с ценами одна, по максимуму.
+
+    Тарифы намеренно не показываются: на предзаписи цены нет, а выбор тарифа
+    человек делает в разговоре с командой. Показывать урезанный состав раньше
+    времени значит отговаривать на пустом месте.
+    """
+    check = ('<span style="display: inline-flex; margin-top: 2px; color: #5A7A55; flex: none;">'
+             '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" '
+             'stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" '
+             'aria-hidden="true"><path d="M4.5 12.5l5 5 10-11"/></svg></span>')
+    items = "".join(
+        '<div style="display: grid; grid-template-columns: 22px 1fr; gap: 12px; '
+        'align-items: start; font-size: 17px; line-height: 1.5;">%s'
+        '<span style="color: #2E2521;">%s</span></div>' % (check, t)
+        for t in PRE_INCLUDED)
+
+    return '''
+<div data-screen-label="07 Что входит" style="background: linear-gradient(180deg, #FBF7F1 0%%, #F4EDE3 100%%); padding: clamp(56px, 8vw, 100px) clamp(14px, 4vw, 40px);">
+  <div style="max-width: 860px; margin: 0 auto; display: flex; flex-direction: column; gap: clamp(24px, 3vw, 34px);">
+    <div style="display: flex; flex-direction: column; gap: 12px;">
+      <div style="%(eyebrow)s">По максимуму</div>
+      <h2 style="font-family: 'Golos Text', system-ui, sans-serif; font-weight: 700; letter-spacing: -.025em; font-size: clamp(38px, 5.6vw, 64px); line-height: 1.1; margin: 0; text-wrap: balance;">Что входит в практикум</h2>
+      <p style="margin: 0; font-size: clamp(17.1px, 1.89vw, 19.8px); line-height: 1.55; max-width: 60ch; color: #5C5149;">Полный состав участия&nbsp;— всё, что можно получить на&nbsp;практикуме.</p>
+    </div>
+
+    <div style="background: linear-gradient(180deg, #FFFFFF 0%%, #FBF6EE 100%%); border: 1px solid #E9DFD2; border-radius: 16px; box-shadow: 0 1px 2px rgba(60,48,40,.04), 0 16px 36px -24px rgba(60,48,40,.34); padding: clamp(24px, 3.4vw, 36px); display: flex; flex-direction: column; gap: 13px;">%(items)s</div>
+
+    <p style="margin: 0; font-size: 17px; line-height: 1.55; color: #5C5149;">Тарифы и&nbsp;цены покажем, когда откроются продажи. Команда Виолы разберёт с&nbsp;вами, какой тариф под&nbsp;вашу задачу&nbsp;— и&nbsp;поможет с&nbsp;оплатой, в&nbsp;том числе в&nbsp;рассрочку.</p>
+
+    %(cta)s
+  </div>
+</div>
+''' % {"eyebrow": EYEBROW, "items": items, "cta": CTA_DARK}
+
+
 # ──────────────────────────────────────────────────────────────── лендинг ──
 
 def build_landing():
@@ -638,6 +853,58 @@ def build_landing():
           "все доступы и&nbsp;показать, как всё работает, чтобы вы&nbsp;с&nbsp;максимальным "
           "комфортом прошли программу.</p>" % note)
 
+    if MODE == "pre":
+        # Предзаписи нечего акцептовать: покупки нет, значит нет и оферты.
+        # Требовать её согласие на бесплатной заявке юридически неверно
+        # и лишний барьер. Согласие на обработку ПД остаётся — контакты
+        # мы всё равно собираем.
+        form = drop_field(form, "accept_offer")
+
+        chip = re.search(r'<div style="display: inline-flex; align-self: flex-start;[^>]*>'
+                         r'.*?</div>\s*</div>', form, re.S)
+        if chip:
+            form = form[:chip.start()] + "</div>" + form[chip.end():]
+
+        for old, new in (
+            ("Оформление участия", "Предзапись"),
+            ("Оставьте контакты&nbsp;— на&nbsp;них придут доступы",
+             "Оставьте контакты&nbsp;— откроем канал"),
+            ("Дальше откроется страница оплаты. Заплатить можно целиком или частями.",
+             "Сразу после заявки откроется закрытый канал Виолы. Команда напишет вам "
+             "в&nbsp;Telegram: расскажет, как устроен практикум, ответит на&nbsp;вопросы "
+             "и&nbsp;поможет с&nbsp;оплатой, когда откроются продажи."),
+            ("Перейти к оплате", "Попасть в предзапись"),
+            ("Готово. Открываем страницу оплаты…", "Готово. Открываем закрытый канал…"),
+        ):
+            if old not in form:
+                raise ValueError("не найдена строка модалки предзаписи: %s" % old)
+            form = form.replace(old, new)
+
+        # вопрос о готовности — между контактами и согласиями
+        opts = ("Готов(а) участвовать", "Присматриваюсь", "Пока не готов(а), но интересно")
+        radios = "".join(
+            '<label style="display: grid; grid-template-columns: 26px 1fr; gap: 14px; '
+            'align-items: center; cursor: pointer;">'
+            '<input type="radio" name="readiness" value="%s"%s style="appearance: auto; '
+            'width: 20px; height: 20px; margin: 0; accent-color: #4A392F; cursor: pointer;">'
+            '<span style="font-size: 16.5px; line-height: 1.45; color: #3B2E28;">%s</span>'
+            "</label>" % (o, " checked" if i == 0 else "", o)
+            for i, o in enumerate(opts))
+        block = ('<div style="display: flex; flex-direction: column; gap: 12px;">'
+                 '<span style="font-size: 13px; font-weight: 600; letter-spacing: .16em; '
+                 'text-transform: uppercase; color: #6B4E2C;">Готовность пойти на программу'
+                 "</span>" + radios + "</div>")
+        divider = ('<div style="height: 1px; background: linear-gradient(90deg, #C9A87F, '
+                   'rgba(228,218,205,.2));"></div>')
+        form = form.replace(divider, block + divider, 1)
+
+        # подписи под кнопкой у предзаписи свои: платить пока нечего
+        keep = "Нажимая кнопку, вы&nbsp;подтверждаете отмеченные согласия.</p>"
+        tail = form.index(keep) + len(keep)
+        form = form[:tail] + ('<p style="margin: 0; font-size: 15px; line-height: 1.5; '
+                              'color: #7D7167;">Заявка бесплатна и&nbsp;ни&nbsp;к&nbsp;чему '
+                              'не&nbsp;обязывает.</p>') + form[form.index("</div>", tail):]
+
     # приманка для ботов: поле не видно и не читается экранным диктором,
     # заполнить его может только робот, который разбирает форму по разметке
     honeypot = ('<div class="hp" aria-hidden="true">'
@@ -647,8 +914,9 @@ def build_landing():
     form = form.replace('<label style="display: flex; flex-direction: column; gap: 8px;">',
                         honeypot + '<label style="display: flex; flex-direction: column; gap: 8px;">', 1)
 
+    after = "channel" if MODE == "pre" else "pay"
     form = ('<div id="lead-modal" class="modal" role="dialog" aria-modal="true" '
-            'aria-labelledby="lead-title" hidden>' + form + "</div>")
+            'aria-labelledby="lead-title" data-after="%s" hidden>' % after + form + "</div>")
     form = form.replace('<h2 style="margin: 0; font-family:', '<h2 id="lead-title" style="margin: 0; font-family:', 1)
     tpl = tpl[:o] + form + tpl[ce:]
 
@@ -684,6 +952,40 @@ def build_landing():
 
     # надзаголовок первого экрана: имя не должно разрываться по строкам
     tpl = tpl.replace("от\u00a0Виолы Маро", "от\u00a0Виолы\u00a0Маро")
+
+    if MODE == "pre":
+        # Уходят все экраны, где есть цена или оплата. Рассрочка тоже: она
+        # про деньги, а её содержание сжимается в одну строку про разговор
+        # с командой в блоке «что входит».
+        for label in ("06 Тарифы", "06b Проблемы с оплатой", "07 Рассрочка"):
+            tpl = drop_screen(tpl, label)
+
+        tpl = insert_before_screen(tpl, "11 Финальный призыв",
+                                   pre_benefits_screen() + pre_contents_screen())
+
+        # Один призыв на все кнопки, как и было в исходном брифе: этой
+        # аудитории не надо гадать, куда нажимать.
+        tpl = tpl.replace("Принять участие", "Попасть в предзапись")
+
+        # Кнопки вели к тарифам, которых больше нет. Теперь открывают форму,
+        # а якорь остаётся запасным путём, если скрипт не отработал.
+        tpl = tpl.replace('href="#tarify"',
+                          'href="#zapis" data-open-form="Предзапись"')
+
+        # Липкая панель: вместо цены — состояние набора.
+        tpl = tpl.replace("от 14&nbsp;900&nbsp;₽", "Предзапись открыта")
+        tpl = tpl.replace(
+            '<span style="font-size: 17px; font-weight: 600; color: #2E2521;">',
+            '<span style="font-size: 16px; font-weight: 700; color: #2E2521;">', 1)
+
+        # Финальный экран говорил про оплату и цену — обоих пока нет.
+        tpl = tpl.replace(
+            "В «С Виолой» пятьдесят мест. Оплатить можно сразу или частями&nbsp;— "
+            "рассрочка до&nbsp;12&nbsp;месяцев для&nbsp;СНГ.",
+            "Предзапись открыта. Цена закрепляется за&nbsp;вами до&nbsp;4&nbsp;сентября, "
+            "дальше она выше.")
+        tpl = tpl.replace("Цена предзаписи действует до&nbsp;4&nbsp;сентября",
+                          "Заявка бесплатна и&nbsp;ни&nbsp;к&nbsp;чему не&nbsp;обязывает")
 
     # ── сноска про Meta у самого упоминания (требование правового ТЗ) ──────
     if tpl.count("Инстаграме") != 1:
@@ -880,11 +1182,19 @@ def add_cache_busting():
 # ─────────────────────────────────────────────────────────────────── main ──
 
 def parse_args(argv):
-    global BASE, NOINDEX
+    global BASE, NOINDEX, MODE, OUT
     i = 0
     while i < len(argv):
         a = argv[i]
-        if a == "--base":
+        if a == "--mode":
+            i += 1
+            MODE = argv[i]
+            if MODE not in ("pay", "pre"):
+                sys.exit("режим бывает pay или pre, получено: %s" % MODE)
+        elif a == "--out":
+            i += 1
+            OUT = os.path.join(ROOT, argv[i])
+        elif a == "--base":
             i += 1
             BASE = "/" + argv[i].strip("/")
         elif a.startswith("--base="):
@@ -900,7 +1210,7 @@ def main():
     parse_args(sys.argv[1:])
     if os.path.isdir(OUT):
         shutil.rmtree(OUT)
-    print("Сборка сайта → site/")
+    print("Сборка сайта → %s  (режим: %s)" % (os.path.relpath(OUT, ROOT), MODE))
     if BASE:
         print("  подпуть: %s" % BASE)
     if NOINDEX:
