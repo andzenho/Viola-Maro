@@ -653,6 +653,29 @@ PRE_FOR_EARLY = [
 ]
 
 
+
+def gifts_block():
+    """Подарки за раннюю оплату — в шапку формы оплаты.
+
+    Человек видит их в момент, когда решает платить, а не страницей выше,
+    где он их уже пролистал. Список тот же, что на странице предзаписи:
+    расходиться этим двум местам нельзя.
+    """
+    rows = "".join(
+        '<div style="display: grid; grid-template-columns: auto 1fr; gap: 12px; '
+        'align-items: start;">%s<p style="margin: 0; font-size: 16px; line-height: 1.5; '
+        'color: #DCD1C4;"><b style="color: #F6F0E8; font-weight: 700;">%s</b>&nbsp;— %s</p>'
+        "</div>" % (ICON_GIFT, t, tail)
+        for t, tail in PRE_FOR_EARLY)
+
+    return ('<div style="display: flex; flex-direction: column; gap: 13px; margin-top: 4px; '
+            'padding-top: 18px; border-top: 1px solid rgba(246,240,232,.16);">'
+            '<div style="font-size: 12px; letter-spacing: .18em; text-transform: uppercase; '
+            'color: #E9C98F;">Если оплатить до 4&nbsp;сентября</div>' + rows +
+            '<p style="margin: 0; font-size: 14.5px; line-height: 1.5; color: #B8AA9C;">'
+            'С 5&nbsp;сентября подарки сгорают, а&nbsp;цена становится выше.</p></div>')
+
+
 def pre_benefits_screen():
     """«Что даёт предзапись» — экран, на котором принимается решение.
 
@@ -701,7 +724,10 @@ def pre_benefits_screen():
 
     </div>
 
-    <p style="margin: 0; align-self: center; max-width: 52ch; text-align: center; font-size: 17px; line-height: 1.55; color: #5C5149;">С 5&nbsp;сентября подарки сгорают, а&nbsp;цена становится выше.</p>
+    <div style="align-self: center; max-width: 54ch; text-align: center; display: flex; flex-direction: column; gap: 8px;">
+      <p style="margin: 0; font-size: 17px; line-height: 1.55; color: #2E2521;">Оплату оформляет команда: после заявки она свяжется с&nbsp;вами.</p>
+      <p style="margin: 0; font-size: 17px; line-height: 1.55; color: #5C5149;">С 5&nbsp;сентября подарки сгорают, а&nbsp;цена становится выше.</p>
+    </div>
 
     %(cta)s
   </div>
@@ -791,7 +817,7 @@ def pre_contents_screen():
       </div>
     </div>
 
-    <p style="margin: 0; font-size: 17px; line-height: 1.55; color: #5C5149;">Тарифы и&nbsp;цены покажем, когда откроются продажи. Команда Виолы разберёт с&nbsp;вами, какой тариф под&nbsp;вашу задачу&nbsp;— и&nbsp;поможет с&nbsp;оплатой, в&nbsp;том числе в&nbsp;рассрочку.</p>
+    <p style="margin: 0; font-size: 17px; line-height: 1.55; color: #5C5149;">Тарифы и&nbsp;цены команда разберёт с&nbsp;вами лично: подскажет, какой тариф под&nbsp;вашу задачу, и&nbsp;поможет оформить оплату, в&nbsp;том числе в&nbsp;рассрочку.</p>
 
     %(cta)s
   </div>
@@ -923,9 +949,9 @@ def build_landing():
             ("Оставьте контакты&nbsp;— на&nbsp;них придут доступы",
              "Оставьте контакты&nbsp;— откроем канал"),
             ("Дальше откроется страница оплаты. Заплатить можно целиком или частями.",
-             "Сразу после заявки откроется закрытый канал Виолы. Команда напишет вам "
+             "Сразу после заявки откроется закрытый канал Виолы. Команда свяжется с&nbsp;вами "
              "в&nbsp;Telegram: расскажет, как устроен практикум, ответит на&nbsp;вопросы "
-             "и&nbsp;поможет с&nbsp;оплатой, когда откроются продажи."),
+             "и&nbsp;поможет оформить оплату."),
             ("Перейти к оплате", "Попасть в предзапись"),
             ("Готово. Открываем страницу оплаты…", "Готово. Открываем закрытый канал…"),
         ):
@@ -966,6 +992,16 @@ def build_landing():
                 "</label></div>")
     form = form.replace('<label style="display: flex; flex-direction: column; gap: 8px;">',
                         honeypot + '<label style="display: flex; flex-direction: column; gap: 8px;">', 1)
+
+    if MODE == "pay":
+        # Подарки идут под плашкой тарифа, внутри тёмной шапки формы:
+        # это последний экран перед платежом, и здесь они ещё работают.
+        # После id="form-plan" идут два </span> и </div> самой плашки:
+        # первый же </div> и есть её закрытие. Следующий закрыл бы тёмную
+        # шапку, и блок оказался бы под карточкой, на голой подложке.
+        i = form.index('id="form-plan"')
+        j = form.index("</div>", i) + len("</div>")
+        form = form[:j] + gifts_block() + form[j:]
 
     after = "channel" if MODE == "pre" else "pay"
     form = ('<div id="lead-modal" class="modal" role="dialog" aria-modal="true" '
