@@ -929,9 +929,11 @@
   if (!modal) return;
 
   /* Чем кончается отправка: 'pay' — страница оплаты, 'channel' — закрытый
-     канал. Задаётся в разметке, чтобы скрипт остался один на обе версии. */
+     канал, 'team' — ничем: заявку разбирает команда и пишет человеку сама.
+     Задаётся в разметке, чтобы скрипт остался один на все версии. */
   var AFTER = modal.getAttribute('data-after') || 'pay';
   var IS_PRE = AFTER === 'channel';
+  var IS_TEAM = AFTER === 'team';
 
   var planLabel = document.getElementById('form-plan');
   var errBox = document.getElementById('form-error');
@@ -954,8 +956,9 @@
 
   var CB_MESSAGES = {
     accept_offer: 'Без принятия оферты оплата невозможна',
-    accept_pd: IS_PRE ? 'Без согласия на обработку данных заявку оформить нельзя'
-                      : 'Без согласия на обработку данных оплата невозможна'
+    accept_pd: (IS_PRE || IS_TEAM)
+      ? 'Без согласия на обработку данных заявку оформить нельзя'
+      : 'Без согласия на обработку данных оплата невозможна'
   };
 
   var lastTrigger = null;
@@ -1092,8 +1095,12 @@
       phone: phone,
       telegram: tg,
       plan: currentPlan,
-      form: IS_PRE ? 'предзапись' : 'оплата',
-      readiness: (modal.querySelector('[name="readiness"]:checked') || {}).value || '',
+      /* 'заявка' ложится в тот же лист, что и оплата: команде удобнее
+         видеть всех, кто выбрал тариф, в одном месте. Отличает их
+         колонка «Готовность». */
+      form: IS_PRE ? 'предзапись' : (IS_TEAM ? 'заявка' : 'оплата'),
+      readiness: IS_TEAM ? 'Заявка с канала, без оплаты'
+                         : (modal.querySelector('[name="readiness"]:checked') || {}).value || '',
       accept_offer: !!(boxes.accept_offer && boxes.accept_offer.checked),
       accept_pd: !!(boxes.accept_pd && boxes.accept_pd.checked),
       accept_ads: !!(boxes.accept_ads && boxes.accept_ads.checked),
@@ -1107,6 +1114,14 @@
        раздел 3 правового ТЗ: акцепт оферты должен быть зафиксирован
        раньше, чем человек расстался с деньгами. */
     function goToPayment() {
+      /* Уходить некуда: человек остаётся на странице, а дальше с ним
+         связывается команда. Показываем это прямо в форме. */
+      if (IS_TEAM) {
+        hide(errBox);
+        show(sentBox);
+        submit.disabled = true;
+        return;
+      }
       if (IS_PRE) {
         hide(errBox);
         show(sentBox);
@@ -1153,16 +1168,23 @@
       /* Записать не вышло. Продажу не блокируем: даём уйти на оплату
          вручную, но об этом говорим прямо, а не делаем вид, что всё цело. */
       syncSubmit();
-      var url = IS_PRE ? CHANNEL_URL : (PAY_URLS[currentPay] || SUPPORT_TG);
+      var url = IS_PRE ? CHANNEL_URL
+              : IS_TEAM ? SUPPORT_TG
+              : (PAY_URLS[currentPay] || SUPPORT_TG);
       if (errText) {
-        errText.textContent = 'Не удалось сохранить ваши данные. ';
+        errText.textContent = IS_TEAM ? 'Не удалось отправить заявку. '
+                                      : 'Не удалось сохранить ваши данные. ';
         var a = document.createElement('a');
         a.href = url;
-        a.textContent = IS_PRE ? 'Открыть закрытый канал' : 'Перейти к оплате';
+        a.textContent = IS_PRE ? 'Открыть закрытый канал'
+                      : IS_TEAM ? 'Напишите нам в Telegram'
+                      : 'Перейти к оплате';
         a.style.color = 'inherit';
         errText.appendChild(a);
-        errText.appendChild(document.createTextNode(
-          ' — или напишите нам в Telegram: ' + SUPPORT_TG));
+        if (!IS_TEAM) {
+          errText.appendChild(document.createTextNode(
+            ' — или напишите нам в Telegram: ' + SUPPORT_TG));
+        }
       }
       show(errBox);
       hide(sentBox);

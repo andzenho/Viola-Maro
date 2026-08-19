@@ -42,6 +42,9 @@ jobs:
       - name: Собрать страницу брони
         run: python3 build.py --mode bron --out site/bron --base /Viola-Maro/bron --noindex
 
+      - name: Собрать страницу заявки
+        run: python3 build.py --mode zayavka --out site/zayavka --base /Viola-Maro/zayavka --noindex
+
       - uses: actions/configure-pages@v5
 
       - uses: actions/upload-pages-artifact@v3
