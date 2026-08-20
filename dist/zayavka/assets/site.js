@@ -34,6 +34,11 @@
   /* Закрытый канал Виолы — куда уходит человек после заявки на предзапись. */
   var CHANNEL_URL = 'https://t.me/+iIqJoSn2UBU3Yzky';
 
+  /* Чат команды — куда уходит человек со страницы заявки. Это не то же самое,
+     что SUPPORT_TG: там служба заботы для тех, у кого что-то сломалось,
+     а здесь начинается разговор про участие. */
+  var TEAM_CHAT_URL = 'https://t.me/m/68IixHyvOGM1';
+
   /* Редакции документов на момент акцепта — уходят вместе с заявкой
      и должны меняться вместе с текстом документов. */
   var DOC_VERSIONS = {
@@ -239,7 +244,7 @@
       if (IS_TEAM) {
         hide(errBox);
         show(sentBox);
-        window.location.href = SUPPORT_TG;
+        window.location.href = TEAM_CHAT_URL;
         return;
       }
       if (IS_PRE) {
@@ -289,7 +294,7 @@
          вручную, но об этом говорим прямо, а не делаем вид, что всё цело. */
       syncSubmit();
       var url = IS_PRE ? CHANNEL_URL
-              : IS_TEAM ? SUPPORT_TG
+              : IS_TEAM ? TEAM_CHAT_URL
               : (PAY_URLS[currentPay] || SUPPORT_TG);
       if (errText) {
         errText.textContent = IS_TEAM ? 'Не удалось отправить заявку. '
