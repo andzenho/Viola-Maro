@@ -47,7 +47,20 @@ BUILD_ASSETS = os.path.join(ROOT, "build-assets")
 OUT = os.path.join(ROOT, "site")
 
 TG = "https://t.me/violamarohelper"
+TEAM_TG = "https://t.me/violamaroteam"
 EMAIL = "mg.ananizh@gmail.com"
+CARE_HOURS = "пн–пт, 10:00–18:00\u00a0МСК"
+
+# Оба аккаунта отдела заботы показываются вместе намеренно. Человеку,
+# который платит незнакомой команде, важнее знать, с каких аккаунтов ему
+# напишут, чем к кому именно обращаться: поддельные «менеджеры» в Telegram
+# после оплаты — обычная история. Поэтому рядом с контактами всегда стоит
+# строка «Пишем только с этих аккаунтов», а не просто список ссылок.
+CARE_ACCOUNTS = (
+    ("Дарья", "@violamaroteam", TEAM_TG),
+    ("Отдел заботы", "@violamarohelper", TG),
+)
+CARE_ONLY = "Пишем только с\u00a0этих аккаунтов."
 
 # Телефонный кадр режется из того же снимка, что и десктопный: одно фото
 # на оба экрана, иначе на десктопе одно выражение лица, а на телефоне другое.
@@ -863,6 +876,86 @@ def gifts_block():
             'С %s&nbsp;%s подарки сгорают.</p></div>' % (GIFT_NEXT, GIFT_MONTH))
 
 
+ICON_TG = ('<span style="display: inline-flex; align-items: center; justify-content: center; '
+           'width: 40px; height: 40px; border-radius: 50%; '
+           'background: linear-gradient(180deg, #F0DCBB, #C29A6C); color: #2A211C; '
+           'font-size: 18px; line-height: 1; flex: none;">\u2708</span>')
+
+
+def care_rows():
+    """Две строки-ссылки: имя, юзернейм, стрелка. Вся строка кликабельна.
+
+    Юзернейм вынесен отдельной строкой и крупным: с телефона его не выделишь
+    из текста, а искать вручную никто не станет — поэтому он должен читаться
+    и как подпись, и как цель нажатия.
+    """
+    строки = []
+    for i, (имя, ник, url) in enumerate(CARE_ACCOUNTS):
+        рамка = "" if i == 0 else "border-top: 1px solid #EFE6DA; "
+        строки.append(
+            '<a href="' + url + '" target="_blank" rel="noopener" '
+            'style="' + рамка + 'display: grid; grid-template-columns: auto 1fr auto; '
+            'gap: 14px; align-items: center; padding: 16px 2px; text-decoration: none; '
+            'color: inherit;">'
+            + ICON_TG +
+            '<span style="display: flex; flex-direction: column; gap: 3px; min-width: 0;">'
+            '<span style="font-size: 18px; font-weight: 600; line-height: 1.25; '
+            'color: #2E2521;">' + имя + '</span>'
+            '<span style="font-size: 16.5px; line-height: 1.3; color: #6B4E2C; '
+            'overflow-wrap: anywhere;">' + ник + '</span>'
+            '</span>'
+            '<span aria-hidden="true" style="display: inline-flex; align-items: center; '
+            'justify-content: center; width: 34px; height: 34px; border-radius: 50%; '
+            'background: rgba(42,33,28,.9); color: #F0DCBB; font-size: 16px; '
+            'line-height: 1; flex: none;">\u2192</span>'
+            '</a>')
+    return "".join(строки)
+
+
+def contacts_screen():
+    """Экран «Задать вопрос команде» — одна полоса на два контакта.
+
+    Стоит перед финальным призывом: человек дочитал, решение ещё не принято,
+    и здесь ему дают живого человека вместо кнопки покупки. В подвале
+    контакт тоже есть, но подвал не читают.
+    """
+    return ('\n<div id="kontakty" data-screen-label="10 Контакты команды" '
+            'style="background: linear-gradient(180deg, #FFFFFF 0%, #FBF6EF 100%); '
+            'border-top: 1px solid #E4DACD; '
+            'padding: clamp(48px, 6.5vw, 84px) clamp(14px, 4vw, 40px);">'
+            '<div style="max-width: 720px; margin: 0 auto; '
+            'background: linear-gradient(180deg, #FFFFFF 0%, #FDFAF6 100%); '
+            'border: 1px solid #DCCFBC; border-radius: 16px; '
+            'box-shadow: 0 1px 2px rgba(60,48,40,.05), 0 18px 40px -24px rgba(60,48,40,.34); '
+            'padding: clamp(22px, 3.2vw, 32px); display: flex; flex-direction: column; '
+            'gap: 16px;">'
+            '<div style="display: flex; flex-direction: column; gap: 8px;">'
+            '<div style="' + EYEBROW + '">Отдел заботы</div>'
+            '<h2 style="margin: 0; font-family: \'Golos Text\', system-ui, sans-serif; '
+            'font-weight: 700; letter-spacing: -.025em; font-size: clamp(26px, 3.6vw, 40px); '
+            'line-height: 1.12; color: #2E2521; text-wrap: balance;">'
+            'Задать вопрос команде</h2>'
+            '</div>'
+            '<div style="display: flex; flex-direction: column;">' + care_rows() + '</div>'
+            '<p style="margin: 0; font-size: 16.5px; line-height: 1.5; color: #2E2521; '
+            'font-weight: 600;">' + CARE_ONLY + '</p>'
+            '<p style="margin: 0; font-size: 15px; line-height: 1.5; color: #7D7167;">'
+            + CARE_HOURS + '</p>'
+            '</div></div>\n')
+
+
+def care_note(размер="15px"):
+    """Та же мысль одной строкой — для мест, где целый экран не нужен:
+    под тарифами и в форме заявки."""
+    ссылки = " · ".join(
+        '<a href="' + url + '" target="_blank" rel="noopener" '
+        'style="color: #6B4E2C; font-weight: 600;">' + ник + '</a>'
+        for _имя, ник, url in CARE_ACCOUNTS)
+    return ('<p style="margin: 0; font-size: ' + размер + '; line-height: 1.5; '
+            'color: #5C5149;"><b style="color: #2E2521;">' + CARE_ONLY + '</b> '
+            + ссылки + '</p>')
+
+
 def pre_benefits_screen():
     """«Что даёт предзапись» — экран, на котором принимается решение.
 
@@ -1226,6 +1319,14 @@ def build_landing():
                               'color: #7D7167;">Заявка бесплатна и&nbsp;ни&nbsp;к&nbsp;чему '
                               'не&nbsp;обязывает.</p>') + form[form.index("</div>", tail):]
 
+    # Кому писать и с каких аккаунтов ждать ответа — там, где человек
+    # оставляет свой Telegram. Вставляется после правок всех режимов:
+    # у предзаписи свой блок приписок затирает всё, что стоит раньше.
+    маркер = "Нажимая кнопку, вы&nbsp;подтверждаете отмеченные согласия.</p>"
+    if маркер not in form:
+        raise ValueError("не найдена приписка под кнопкой формы")
+    form = form.replace(маркер, маркер + care_note(), 1)
+
     # приманка для ботов: поле не видно и не читается экранным диктором,
     # заполнить его может только робот, который разбирает форму по разметке
     honeypot = ('<div class="hp" aria-hidden="true">'
@@ -1409,6 +1510,20 @@ def build_landing():
         # Липкая панель обещала переход к оплате — теперь ведёт к заявке.
         tpl = tpl.replace("Цена предзаписи действует до&nbsp;4&nbsp;сентября",
                           "Оплату проводим вместе с&nbsp;командой")
+
+    # Контакты команды — отдельным экраном перед финальным призывом,
+    # на всех четырёх версиях страницы.
+    tpl = insert_before_screen(tpl, "11 Финальный призыв", contacts_screen())
+
+    if MODE in ("pay", "zayavka"):
+        # Та же мысль под тарифами: это момент, когда человек решается
+        # платить, и именно тогда полезно знать, кто ему напишет.
+        курс = ('<p style="margin: 0; font-size: 16px;">Цены в&nbsp;долларах '
+                'и&nbsp;евро справочные: оплата идёт в&nbsp;рублях по&nbsp;курсу '
+                'на&nbsp;день оплаты.</p>')
+        if курс not in tpl:
+            raise ValueError("не найдена сноска о курсе под тарифами")
+        tpl = tpl.replace(курс, курс + care_note("16px"), 1)
 
     # ── сноска про Meta у самого упоминания (требование правового ТЗ) ──────
     # На странице брони экран с этим упоминанием не выводится, и сноска
