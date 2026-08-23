@@ -546,7 +546,10 @@ body.modal-open { overflow: hidden; }
 .s2a8b6d2:hover{transform: translateY(-3px); filter: brightness(1.08);}
 .s55f03b1:active{transform: translateY(-1px);}
 .s55f03b1:hover{transform: translateY(-3px); filter: brightness(1.05); box-shadow: 0 24px 48px -14px rgba(0,0,0,.85), 0 0 0 1px rgba(240,220,187,.5), 0 0 0 14px rgba(201,168,127,.18), inset 0 1px 0 rgba(255,255,255,.7);}
+.s8709514:focus-visible{border-color: #8A5A2B; box-shadow: 0 0 0 4px rgba(201,168,127,.18);}
 .sa96e5b9:active{transform: translateY(-1px);}
 .sa96e5b9:hover{transform: translateY(-3px); filter: brightness(1.05); box-shadow: 0 24px 48px -14px rgba(60,45,32,.5), 0 0 0 1px rgba(194,154,108,.55), 0 0 0 14px rgba(201,168,127,.18), inset 0 1px 0 rgba(255,255,255,.7);}
+.sd52180d:hover{color: #2E2521; border-bottom-color: #4A392F;}
 .se62f8e9:active{transform: translateY(-1px);}
 .se62f8e9:hover{transform: translateY(-3px); filter: brightness(1.08); box-shadow: 0 22px 44px -12px rgba(43,33,28,.6), 0 0 0 1px rgba(43,33,28,.9), 0 0 0 12px rgba(201,168,127,.3), inset 0 1px 0 rgba(255,255,255,.2);}
+.sef58d2f:hover{background: rgba(246,240,232,.24);}

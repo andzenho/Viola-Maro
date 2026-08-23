@@ -116,12 +116,6 @@ TILDA_OUT = ""
 # копией файлов это делать нельзя: правки разъедутся на первой же неделе.
 MODE = "pay"
 
-# Чат команды для страницы предзаписи. Формы на ней больше нет: человек
-# не оставляет контакты на сайте, а сразу открывает переписку — там же
-# отвечают на вопросы и записывают. Обычная ссылка, без скрипта: работает
-# и в браузере без JavaScript, и если site.js не доехал.
-PRE_CHAT_URL = "https://t.me/m/ZwKnyuYdNmY1"
-
 # ── Страница брони ──────────────────────────────────────────────────────
 #
 # Отдельная короткая страница, ссылку на которую отправляют лично: человек
@@ -719,10 +713,7 @@ CTA_BOOK = ('<a href="#bron" data-open-form="Бронь места" data-pay="br
             'width: 34px; height: 34px; border-radius: 50%; background: rgba(42,33,28,.9); '
             'color: #F0DCBB; font-size: 16px; line-height: 1;">→</span></a>')
 
-# Кнопка двух экранов предзаписи — единственных, где она встречается.
-# Ведёт туда же, куда и все остальные на этой странице: в чат с командой.
-CTA_DARK = ('<a href="' + PRE_CHAT_URL + '" target="_blank" rel="noopener" '
-            'style="align-self: center; '
+CTA_DARK = ('<a href="#zapis" data-open-form="Предзапись" style="align-self: center; '
             'display: inline-flex; white-space: nowrap; align-items: center; gap: 14px; '
             'background: linear-gradient(165deg, #4E3C31 0%, #2B211C 100%); color: #F6F0E8; '
             'text-decoration: none; font-weight: 700; font-size: clamp(18px, 1.9vw, 22px); '
@@ -1352,12 +1343,7 @@ def build_landing():
     form = ('<div id="lead-modal" class="modal" role="dialog" aria-modal="true" '
             'aria-labelledby="lead-title" data-after="%s" hidden>' % after + form + "</div>")
     form = form.replace('<h2 style="margin: 0; font-family:', '<h2 id="lead-title" style="margin: 0; font-family:', 1)
-    # На предзаписи формы нет — кнопки ведут прямо в чат. Разметку модалки
-    # выше всё равно собираем: там десяток проверок, которые ловят расхождение
-    # с исходником вёрстки. Пропустить их значило бы узнать о поломке уже
-    # на странице оплаты. В саму страницу она просто не вставляется,
-    # а site.js без блока #lead-modal сразу выходит и ничего не ищет.
-    tpl = tpl[:o] + ("" if MODE == "pre" else form) + tpl[ce:]
+    tpl = tpl[:o] + form + tpl[ce:]
 
     # ── кнопки тарифов открывают форму ─────────────────────────────────────
     # Ссылка на оплату одна на тариф: и прямая оплата, и рассрочка ведут
@@ -1463,12 +1449,10 @@ def build_landing():
         # аудитории не надо гадать, куда нажимать.
         tpl = tpl.replace("Принять участие", "Попасть в предзапись")
 
-        # Кнопки вели к тарифам, которых больше нет. Теперь ведут в чат
-        # с командой: разговор начинается сразу в Телеграме, контакт остаётся
-        # там же. Скрипт в этом не участвует вовсе — обычная ссылка доедет
-        # и там, где форма бы не открылась.
+        # Кнопки вели к тарифам, которых больше нет. Теперь открывают форму,
+        # а якорь остаётся запасным путём, если скрипт не отработал.
         tpl = tpl.replace('href="#tarify"',
-                          'href="%s" target="_blank" rel="noopener"' % PRE_CHAT_URL)
+                          'href="#zapis" data-open-form="Предзапись"')
 
         # Липкая панель: вместо цены — состояние набора.
         tpl = tpl.replace("от 14&nbsp;900&nbsp;₽", "Предзапись открыта")
