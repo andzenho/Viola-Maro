@@ -177,9 +177,9 @@ CHANNEL_URL = "https://t.me/+iIqJoSn2UBU3Yzky"
 #
 # Правовые документы не трогаются вовсе: в Приложении № 1 свои даты,
 # менять их может только юрист.
-GIFT_DAY = "23"              # последний день, когда подарки ещё дают
-GIFT_NEXT = "24"             # день, когда они сгорают
-GIFT_MONTH = "августа"
+# Дат у подарков на страницах больше нет: в блоках стоит просто
+# «за раннюю оплату». Срок остался только у счётчика под первым экраном
+# предзаписи — он тикает до этой отметки и прячется, когда она пройдена.
 GIFT_ISO = "2026-08-23T23:59:59+03:00"
 
 ABS_ROOTS = ["assets/"] + [url for _s, url, _t in DOCS]
@@ -861,10 +861,8 @@ def gifts_block():
     return ('<div style="display: flex; flex-direction: column; gap: 13px; margin-top: 4px; '
             'padding-top: 18px; border-top: 1px solid rgba(246,240,232,.16);">'
             '<div style="font-size: 12px; letter-spacing: .18em; text-transform: uppercase; '
-            'color: #E9C98F;">Если оплатить до %s&nbsp;%s</div>' % (GIFT_DAY, GIFT_MONTH)
-            + rows +
-            '<p style="margin: 0; font-size: 14.5px; line-height: 1.5; color: #B8AA9C;">'
-            'С %s&nbsp;%s подарки сгорают.</p></div>' % (GIFT_NEXT, GIFT_MONTH))
+            'color: #E9C98F;">За раннюю оплату</div>'
+            + rows + "</div>")
 
 
 ICON_TG = ('<span style="display: inline-flex; align-items: center; justify-content: center; '
@@ -987,7 +985,7 @@ def pre_benefits_screen():
 
       <div style="background: linear-gradient(165deg, #4A392F 0%%, #2B211C 100%%); border: 1px solid #33271F; border-radius: 16px; box-shadow: 0 20px 44px -24px rgba(43,33,28,.7), inset 0 1px 0 rgba(255,255,255,.1); padding: clamp(24px, 3.4vw, 36px); display: flex; flex-direction: column; gap: 18px;">
         <div style="display: flex; flex-direction: column; gap: 6px;">
-          <div style="font-size: 12px; letter-spacing: .18em; text-transform: uppercase; color: #E9C98F;">За раннюю оплату, до %(gift)s</div>
+          <div style="font-size: 12px; letter-spacing: .18em; text-transform: uppercase; color: #E9C98F;">За раннюю оплату</div>
           <p style="margin: 0; font-size: 19px; font-weight: 600; line-height: 1.35; color: #F6F0E8;">Три подарка сверх программы</p>
         </div>
         <div style="display: flex; flex-direction: column; gap: 14px;">%(dark)s</div>
@@ -997,15 +995,14 @@ def pre_benefits_screen():
 
     <div style="align-self: center; max-width: 54ch; text-align: center; display: flex; flex-direction: column; gap: 8px;">
       <p style="margin: 0; font-size: 17px; line-height: 1.55; color: #2E2521;">Оплату оформляет команда: после заявки она свяжется с&nbsp;вами.</p>
-      <p style="margin: 0; font-size: 17px; line-height: 1.55; color: #5C5149;">С %(giftnext)s подарки сгорают. С 5&nbsp;сентября цена становится выше.</p>
+      <p style="margin: 0; font-size: 17px; line-height: 1.55; color: #5C5149;">С 5&nbsp;сентября цена становится выше.</p>
     </div>
 
     %(cta)s
   </div>
 </div>
 ''' % {"eyebrow": EYEBROW, "light": light, "dark": dark, "cta": CTA_DARK,
-       "gift": "%s&nbsp;%s" % (GIFT_DAY, GIFT_MONTH),
-       "giftnext": "%s&nbsp;%s" % (GIFT_NEXT, GIFT_MONTH)}
+}
 
 
 # Состав участия сгруппирован, а не вывален списком из тринадцати галок.
