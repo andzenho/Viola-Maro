@@ -29,7 +29,7 @@
     bron:  'https://anny-nizh.getplatinum.ru/payment/ASs2MgT'   // бронь 5 000 ₽
   };
 
-  var SUPPORT_TG = 'https://t.me/violamarohelper';
+  var SUPPORT_TG = 'https://t.me/violamaroteam';
 
   /* Закрытый канал Виолы — куда уходит человек после заявки на предзапись. */
   var CHANNEL_URL = 'https://t.me/+iIqJoSn2UBU3Yzky';

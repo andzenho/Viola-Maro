@@ -46,7 +46,8 @@ LEGAL = os.path.join(ROOT, "Страницы-к-публикации")
 BUILD_ASSETS = os.path.join(ROOT, "build-assets")
 OUT = os.path.join(ROOT, "site")
 
-TG = "https://t.me/violamarohelper"
+TG_NAME = "@violamaroteam"          # аккаунт службы заботы
+TG = "https://t.me/" + TG_NAME[1:]  # ссылка и подпись — из одного места
 EMAIL = "mg.ananizh@gmail.com"
 CARE_HOURS = "пн–пт, 10:00–18:00\u00a0МСК"
 
@@ -58,7 +59,7 @@ CARE_HOURS = "пн–пт, 10:00–18:00\u00a0МСК"
 # Список, а не одна строка: если аккаунтов снова станет несколько, блок
 # и текст соберутся сами, без правок вёрстки.
 CARE_ACCOUNTS = (
-    ("Отдел заботы", "@violamarohelper", TG),
+    ("Отдел заботы", TG_NAME, TG),
 )
 CARE_ONLY = ("Пишем только с\u00a0этого аккаунта."
              if len(CARE_ACCOUNTS) == 1 else
@@ -522,7 +523,7 @@ def footer_html(depth_prefix=""):
 
       <div class="ft-col">
         <p class="ft-label"><span class="ft-ico" aria-hidden="true">✈</span>Служба заботы в&nbsp;Telegram</p>
-        <a href="%(tg)s" target="_blank" rel="noopener">@violamarohelper</a>
+        <a href="%(tg)s" target="_blank" rel="noopener">%(tgname)s</a>
         <p class="ft-hours">пн–пт, 10:00–18:00&nbsp;МСК</p>
       </div>
 
@@ -544,7 +545,7 @@ def footer_html(depth_prefix=""):
     <p class="ft-note" id="meta-note">* Meta признана экстремистской организацией в&nbsp;России</p>
   </div>
 </footer>
-""" % {"email": EMAIL, "tg": TG, "docs": docs}
+""" % {"email": EMAIL, "tg": TG, "tgname": TG_NAME, "docs": docs}
 
 
 COOKIE_HTML = """
