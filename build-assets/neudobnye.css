@@ -1,127 +1,143 @@
 /* ══════════════════════════════════════════════ «Неудобные» ══ */
 /*
    Страница события. Своих красок не заводит: палитра, кегли, радиусы,
-   тени и кнопки взяты из собранного лендинга практикума — те же значения,
-   только вынесены в классы, а не разложены по инлайновым стилям.
+   тени и кнопки взяты с лендинга практикума — те же значения, только
+   вынесены в классы, а не разложены по инлайновым стилям.
 
    Подключается к site.css только в режиме --mode neudobnye.
 
-   Аудитория читает с телефона и ей 45–55: ни один текст на странице
-   не опускается ниже 17 px, на узком экране всё подрастает ещё,
-   а кнопки становятся во всю ширину и не мельче 66 px в высоту.
+   ── Светлая насквозь. Решение продюсера, зафиксировано
+   в produkt/lending-strategiya-dizayna.md: тёмных секций на странице
+   нет ни одной, включая первый экран и финал. Цвет по странице несут
+   кнопки — заливка у них та же тёмная, что была у секций, и повторяется
+   ритмом действия сверху донизу. Это буквально её образ: «зажечь свет
+   во всех своих комнатах», страница из плотного выходит в светлое
+   и дальше в нём остаётся.
+
+   Следствие, которое ужесточает всё остальное: фон больше не делит
+   страницу на планы, и ошибку набора цветной плашкой не прикрыть.
+   Иерархию целиком несёт типографика.
+
+   ── Бронза не носит текст. #C9A87F на светлом даёт 3,85:1 и в буквы
+   не идёт никогда: только линии, рамки и подложки. Акцентный текст —
+   затемнённая бронза #8A5A2B, 6,4:1.
+
+   ── Аудитория читает с телефона и ей 45–55: ни один текст не опускается
+   ниже 17 px, на узком экране всё подрастает, кнопки во всю ширину
+   и не мельче 64 px.
 */
 
 /* ─────────────────────────────────────────────────── каркас ── */
 
-.n-sec { padding: clamp(56px, 8vw, 100px) clamp(14px, 4vw, 40px); }
+.n-sec {
+  padding: clamp(56px, 8vw, 104px) clamp(14px, 4vw, 40px);
+  background: #FBF7F1;
+}
+
+/* Через один — на полтона теплее. Это вся смена планов, какая
+   на странице есть: секции различает оттенок ground, не заливка. */
+.n-sec--tint { background: linear-gradient(180deg, #F5EFE6 0%, #F1E8DB 100%); }
 
 .n-in { max-width: 1020px; margin: 0 auto; }
-.n-in--mid { max-width: 860px; }
-.n-in--narrow { max-width: 720px; }
+.n-in--mid { max-width: 780px; }
+.n-in--narrow { max-width: 680px; }
 
 .n-stack { display: flex; flex-direction: column; }
-.n-gap-l { gap: clamp(26px, 3.6vw, 38px); }
-.n-gap-m { gap: clamp(16px, 2.2vw, 22px); }
-.n-center { align-items: center; text-align: center; }
+.n-gap-l { gap: clamp(28px, 3.6vw, 40px); }
+.n-gap-m { gap: clamp(18px, 2.2vw, 24px); }
 
 /* ────────────────────────────────────────── типографика ── */
 
-/* Формат — над названием и мелко: он отвечает на вопрос «что это»,
-   но не спорит за внимание с именем события. */
 .n-eyebrow {
   margin: 0;
   font-size: 13px;
-  font-weight: 600;
+  font-weight: 700;
   letter-spacing: .18em;
   text-transform: uppercase;
   line-height: 1.5;
-  color: #C9A87F;
+  color: #8A5A2B;
 }
 
-/* Название события. Самый крупный текст на странице — это имя, а не
-   заголовок-обещание, и человек должен прочесть его первым. Набрано
-   Prata, той же, что стоит в шапке практикума: кто пришёл оттуда,
-   узнаёт сайт с первого экрана. */
+/* Надстрочник разнесён по краям строки: три факта о событии стоят
+   не через точку, а по своим местам, и строка сама держит ширину
+   текстовой колонки. */
+.n-eyebrow--wide {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 6px 18px;
+}
+
 .n-name {
   margin: 0;
   font-family: 'Prata', Georgia, serif;
   font-weight: 400;
-  font-size: clamp(42px, 6.4vw, 82px);
+  font-size: clamp(46px, 7.2vw, 96px);
   line-height: 1;
   letter-spacing: .02em;
-  color: #F6F0E8;
-  text-shadow: 0 2px 26px rgba(24, 17, 12, .6);
+  color: #2E2521;
 }
 
-/* Оффер идёт сразу под названием и заметно мельче его: название
-   называет, оффер обещает. Двум самым крупным строкам подряд спорить
-   между собой незачем. */
 .n-offer {
   margin: 0;
   font-weight: 700;
-  letter-spacing: -.02em;
-  font-size: clamp(23px, 2.6vw, 33px);
-  line-height: 1.22;
-  color: #F6F0E8;
-  text-shadow: 0 2px 18px rgba(24, 17, 12, .75);
+  letter-spacing: -.022em;
+  font-size: clamp(25px, 2.9vw, 38px);
+  line-height: 1.2;
+  color: #2E2521;
   text-wrap: pretty;
+}
+
+.n-lead {
+  margin: 0;
+  font-size: clamp(18px, 1.9vw, 21px);
+  font-weight: 500;
+  line-height: 1.5;
+  color: #4A3F38;
 }
 
 .n-h2 {
   margin: 0;
   font-weight: 700;
   letter-spacing: -.025em;
-  font-size: clamp(34px, 5.2vw, 60px);
+  font-size: clamp(32px, 4.8vw, 54px);
   line-height: 1.1;
   color: #2E2521;
   text-wrap: balance;
-}
-
-/* Засечки — та же Prata, что в шапке практикума. Отдана одному
-   заголовку, финальному: там она читается как подпись, а не как
-   украшение. Знака ₽ в подшитой Prata нет, поэтому на суммы
-   этот класс не ставится. */
-.n-h2--serif {
-  font-family: 'Prata', Georgia, serif;
-  font-weight: 400;
-  letter-spacing: -.01em;
-  line-height: 1.16;
 }
 
 .n-h3 {
   margin: 0;
   font-weight: 700;
   letter-spacing: -.02em;
-  font-size: clamp(20.5px, 2.3vw, 25px);
+  font-size: clamp(21px, 2.3vw, 26px);
   line-height: 1.28;
   color: #2E2521;
+  text-wrap: pretty;
 }
-
-.n-dark .n-h2, .n-dark .n-h3 { color: #F6F0E8; }
 
 .n-p {
   margin: 0;
   font-size: 18.5px;
-  line-height: 1.6;
-  color: #3B2E28;
+  line-height: 1.62;
+  color: #3B322C;
   text-wrap: pretty;
 }
 .n-p b { color: #2E2521; font-weight: 700; }
-.n-dark .n-p { color: #DCD1C4; }
-.n-dark .n-p b { color: #F6F0E8; }
 
-.n-lead {
+.n-note { margin: 0; font-size: 16.5px; line-height: 1.55; color: #6E6158; }
+
+/* Подпись перед списком. Набрана так же, как «С чем выйдете:» в той же
+   карточке: обе вводят содержимое, и разводить их по разным стилям
+   значит сказать, что они разного рода. Двоеточие в источнике есть
+   и остаётся — капслок с разрядкой его отрывал от слова. */
+.n-label {
   margin: 0;
-  font-size: clamp(17.5px, 1.8vw, 20.5px);
-  font-weight: 500;
-  line-height: 1.5;
-  text-shadow: 0 2px 14px rgba(24, 17, 12, .8);
-  color: #3B2E28;
+  font-size: 17.5px;
+  font-weight: 700;
+  line-height: 1.4;
+  color: #2E2521;
 }
-.n-dark .n-lead { color: #F6F0E8; }
-
-.n-note { margin: 0; font-size: 16px; line-height: 1.5; color: #6E6158; }
-.n-dark .n-note { color: #B8AA9C; }
 
 .n-tg {
   color: #6B4E2C;
@@ -135,165 +151,91 @@
 
 /* ────────────────────────────────────────── первый экран ── */
 /*
-   Портрет — тот же снимок и тот же кадр, что на лендинге практикума:
-   собирается тем же build_images(), режется тем же MOBILE_CROP.
-   Свои имена классов взяты намеренно: правила base.css для
-   [data-hero-*] подогнаны под разметку практикума и на другую
-   структуру легли бы криво.
+   Портрет — вырезка без фона. На светлой странице студийный кадр
+   с тёмной средой тянул бы за собой тёмный план, которого здесь быть
+   не должно.
 
-   На широком экране кадр лежит фоном и прижат вправо, текст идёт
-   слева по тёмной вуали. На телефоне так нельзя: текста здесь семь
-   элементов, он занял бы весь экран и от портрета осталась бы
-   тёмная плашка. Поэтому ниже 900 px снимок становится полосой
-   сверху, а текст уходит под него на сплошной фон — Виолу видно
-   целиком, буквы лежат на ровном, читать легко.
+   Вырезка на голом светлом повисает, поэтому под ней лежит тёплое
+   пятно: оно даёт фигуре опору и заодно возвращает странице каплю
+   цвета, которую отняла отмена тёмной шапки.
 */
 
 .n-hero {
-  position: relative;
-  overflow: hidden;
-  display: flex;
-  align-items: center;
   background:
-    radial-gradient(110% 70% at 84% 0%, rgba(201, 168, 127, .18) 0%, rgba(201, 168, 127, 0) 58%),
-    linear-gradient(160deg, #4A3A31 0%, #3B2E28 45%, #241C18 100%);
-  min-height: clamp(620px, 90vh, 940px);
-  padding-top: clamp(48px, 8vw, 96px);
-  padding-bottom: clamp(48px, 8vw, 96px);
+    radial-gradient(80% 60% at 82% 88%, rgba(232, 213, 183, .5) 0%, rgba(232, 213, 183, 0) 62%),
+    linear-gradient(180deg, #FDFAF5 0%, #F7F0E5 100%);
+  padding-bottom: 0;
+  overflow: hidden;
 }
 
-.n-hero-media { position: absolute; inset: 0; }
-.n-hero-media picture,
-.n-hero-media img { display: block; width: 100%; height: 100%; }
-
-/* Кадр прижат вправо: слева ложится текст. */
-.n-hero-media img { object-fit: cover; object-position: 100% 50%; }
-
-.n-veil { position: absolute; inset: 0; pointer-events: none; }
-
-.n-veil--side {
-  background: linear-gradient(100deg,
-    rgba(30, 23, 19, .95) 0%,
-    rgba(30, 23, 19, .88) 28%,
-    rgba(30, 23, 19, .56) 48%,
-    rgba(30, 23, 19, 0) 68%);
+/* Имя события идёт во всю ширину, а не в текстовую колонку: в Prata
+   оно шире колонки и вылезало на портрет. Ниже колонки расходятся —
+   текст слева, Виола справа. */
+.n-hero-in {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, .74fr);
+  grid-template-areas:
+    "top   top"
+    "bottom photo";
+  column-gap: clamp(20px, 4vw, 56px);
+  row-gap: clamp(22px, 2.8vw, 34px);
+  align-items: end;
 }
 
-.n-veil--bottom {
-  background: linear-gradient(to top,
-    rgba(36, 28, 24, .88) 0%,
-    rgba(36, 28, 24, .5) 28%,
-    rgba(36, 28, 24, 0) 56%);
-}
+/* Обёртка нужна только на телефоне, где группы переставляются местами.
+   На широком экране она раскрывается, и её дети становятся ячейками
+   сетки напрямую. */
+.n-hero-copy { display: contents; }
 
-.n-hero-in { position: relative; z-index: 1; }
-
-/* Текст держится в левых двух третях: справа остаётся видна Виола.
-
-   Разбит на две группы, верхнюю и нижнюю, как на первом экране
-   практикума. На широком экране разница незаметна — те же отступы
-   подряд. На телефоне группы расходятся к краям кадра, и между ними
-   остаётся чистая полоса, в которой видно лицо. */
-.n-hero-copy {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: clamp(18px, 2.6vw, 26px);
-  max-width: min(64%, 640px);
-}
+.n-hero-top { grid-area: top; }
+.n-hero-bottom { grid-area: bottom; padding-bottom: clamp(56px, 8vw, 104px); }
 
 .n-hero-top,
 .n-hero-bottom {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  gap: clamp(18px, 2.6vw, 26px);
-  width: 100%;
+  gap: clamp(16px, 2.2vw, 24px);
 }
 
-/* Дата и скидка стоят под кнопкой, а не над ней: сначала человек видит,
-   куда нажать, и только потом — когда это и что он получает сверх.
-   Обе строки набраны мелко и держатся одной группой: это подпись
-   к кнопке, а не самостоятельный экран. */
-.n-under-btn {
-  display: flex;
-  flex-direction: column;
-  gap: 7px;
-  margin-top: -6px;
-}
+.n-hero-act { display: flex; flex-direction: column; align-items: flex-start; gap: 12px; }
+.n-hero-act .n-cta { align-self: flex-start; }
 
-.n-when {
-  margin: 0;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-size: 18px;
-  font-weight: 700;
-  letter-spacing: .01em;
-  line-height: 1.35;
-  color: #E4C08A;
-  text-shadow: 0 2px 14px rgba(24, 17, 12, .8);
-}
+.n-under-btn { margin: 0; font-size: 17px; line-height: 1.5; color: #5C5149; }
 
-.n-dot {
-  width: 7px;
-  height: 7px;
-  flex: none;
+.n-hero-photo { grid-area: photo; position: relative; align-self: end; }
+
+/* Тёплое пятно под фигурой. Мягкий эллипс, не плашка: у плашки есть
+   край, а край под вырезкой читается как ошибка обтравки. */
+.n-hero-photo::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -4%;
+  width: 152%;
+  height: 104%;
+  transform: translateX(-50%);
   border-radius: 50%;
-  background: #C9A87F;
-  box-shadow: 0 0 0 4px rgba(201, 168, 127, .25);
+  background: radial-gradient(closest-side,
+    rgba(221, 194, 152, .92) 0%,
+    rgba(226, 202, 165, .72) 42%,
+    rgba(232, 212, 182, .34) 66%,
+    rgba(236, 219, 193, 0) 82%);
 }
 
-.n-terms-sub {
-  margin: 0;
-  font-size: 16.5px;
-  line-height: 1.5;
-  color: #C6B8A8;
-  max-width: 46ch;
-  text-shadow: 0 2px 12px rgba(24, 17, 12, .8);
-}
-
-/* ─────────────────────────── дар и скидка, под первым экраном ── */
-/*
-   Не самостоятельный экран, а хвост первого: фон продолжает градиент
-   героя, отступы вдвое меньше секционных. Признание дара стоит здесь
-   по требованию аналитики — до разбора цены, а цена ниже по странице.
-*/
-
-.n-band {
-  background: linear-gradient(180deg, #241C18 0%, #2C221D 100%);
-  padding-top: clamp(28px, 4vw, 48px);
-  padding-bottom: clamp(36px, 5vw, 60px);
-}
-
-.n-band-in { display: flex; flex-direction: column; gap: clamp(18px, 2.4vw, 24px); }
-
-.n-ego {
-  margin: 0;
-  font-size: clamp(18.5px, 1.9vw, 21px);
-  line-height: 1.55;
-  color: #DCD1C4;
-  max-width: 56ch;
-}
-.n-ego b { color: #F6F0E8; font-weight: 700; }
-
-/* Подсветка скидки. На тёмном золотая заливка из палитры лендинга —
-   та же, что у блока «Материалы, которых раньше не было». */
-.n-hl {
-  margin: 0;
-  padding: clamp(16px, 2vw, 20px) clamp(18px, 2.4vw, 24px);
-  background: linear-gradient(135deg, rgba(201, 168, 127, .2) 0%, rgba(201, 168, 127, .08) 100%);
-  border: 1px solid rgba(201, 168, 127, .34);
-  border-radius: 14px;
-  box-shadow: 0 1px 2px rgba(60, 48, 40, .04), 0 24px 46px -28px rgba(120, 86, 50, .5),
-              inset 0 1px 0 rgba(255, 255, 255, .12);
-  font-size: 18px;
-  font-weight: 600;
-  line-height: 1.5;
-  color: #F6F0E8;
+.n-hero-photo picture,
+.n-hero-photo img {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: auto;
 }
 
 /* ──────────────────────────────────────────────── кнопки ── */
+/*
+   Кнопки — единственные цветные пятна страницы, и держат весь цвет.
+   Заливка тёмная, текст светлый: белое на бронзе даёт 4,27:1
+   и в кнопку не годится, а тёмная заливка даёт 12:1.
+*/
 
 .n-btn {
   display: inline-flex;
@@ -307,425 +249,325 @@
   border-radius: 999px;
   font-family: inherit;
   font-weight: 700;
-  font-size: clamp(18px, 1.9vw, 21px);
+  font-size: clamp(18px, 1.9vw, 20px);
   letter-spacing: .01em;
   line-height: 1.25;
   text-align: center;
   text-decoration: none;
   cursor: pointer;
-  transition: transform .2s ease, box-shadow .2s ease, filter .2s ease;
-}
-.n-btn:hover { transform: translateY(-3px); filter: brightness(1.06); }
-.n-btn:active { transform: translateY(-1px); }
-
-/* золотая — на тёмном фоне */
-.n-btn--gold,
-.n-dark .n-btn--primary {
-  background: linear-gradient(180deg, #F0DCBB 0%, #D9BC92 52%, #C29A6C 100%);
-  color: #2A211C;
-  box-shadow: 0 18px 40px -14px rgba(0, 0, 0, .7),
-              0 0 0 1px rgba(240, 220, 187, .35),
-              0 0 0 10px rgba(201, 168, 127, .12),
-              inset 0 1px 0 rgba(255, 255, 255, .6);
-}
-.n-btn--gold .n-arrow,
-.n-dark .n-btn--primary .n-arrow { background: rgba(42, 33, 28, .9); color: #F0DCBB; }
-
-/* тёмная — на светлом фоне */
-.n-btn--primary {
   background: linear-gradient(165deg, #4E3C31 0%, #2B211C 100%);
   color: #F6F0E8;
-  box-shadow: 0 16px 34px -12px rgba(43, 33, 28, .55),
-              0 0 0 8px rgba(201, 168, 127, .2),
+  box-shadow: 0 16px 34px -14px rgba(43, 33, 28, .5),
+              0 0 0 1px rgba(43, 33, 28, .06),
               inset 0 1px 0 rgba(255, 255, 255, .14);
+  transition: transform .2s ease, box-shadow .2s ease, filter .2s ease;
 }
-.n-btn--primary .n-arrow { background: linear-gradient(180deg, #F0DCBB, #C29A6C); color: #2A211C; }
-
-/* вторая кнопка пары — тише первой, но такого же размера */
-.n-btn--second {
-  background: linear-gradient(180deg, #F7EBD8 0%, #EDD9B8 100%);
-  color: #3B2E28;
-  border: 1.5px solid #C9A87F;
-  box-shadow: 0 8px 20px -12px rgba(120, 90, 50, .45), inset 0 1px 0 rgba(255, 255, 255, .7);
-}
-.n-dark .n-btn--second {
-  background: rgba(246, 240, 232, .1);
-  color: #F6F0E8;
-  border: 1px solid rgba(246, 240, 232, .34);
-  box-shadow: none;
-}
+.n-btn:hover { transform: translateY(-3px); filter: brightness(1.08); }
+.n-btn:active { transform: translateY(-1px); }
 
 .n-arrow {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 34px;
-  height: 34px;
+  width: 32px;
+  height: 32px;
   flex: none;
   border-radius: 50%;
-  font-size: 16px;
+  background: linear-gradient(180deg, #F0DCBB, #C29A6C);
+  color: #2A211C;
+  font-size: 15px;
   font-weight: 400;
   line-height: 1;
 }
 
-/* Повторная кнопка после каждого блока. Цвет берёт у секции: на тёмной
-   золотая, на светлой тёмная — тот же .n-btn--primary, разные правила. */
-.n-cta { align-self: center; margin-top: 2px; }
+.n-cta { align-self: center; }
 
-/* пара кнопок оплаты, одна под другой */
+/* Две кнопки оплаты рядом и одного веса: способ платежа — это не выбор
+   «лучше и хуже», и подсказывать один другому странице незачем. */
 .n-pay {
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  gap: 10px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 16px 18px;
   width: 100%;
-  max-width: 470px;
-  margin: 0 auto;
 }
+
+/* Колонки сетки тянутся до общей высоты, кнопка внутри забирает всё
+   свободное. Иначе «Оплатить с зарубежной карты» переносится на две
+   строки, становится выше соседа, и пара одного веса перестаёт быть
+   парой одного веса. */
+.n-pay-one { display: flex; flex-direction: column; align-items: stretch; gap: 9px; }
+.n-pay-one .n-btn { width: 100%; flex: 1; }
+
 .n-pay-note {
-  margin: 0 0 6px;
+  margin: 0;
   text-align: center;
-  font-size: 16px;
+  font-size: 16.5px;
   line-height: 1.45;
   color: #6E6158;
 }
-.n-dark .n-pay-note { color: #C6B8A8; }
 
-/* ────────────────────────────────────────── карточки дней ── */
+/* ───────────────────────────────────────────────── цитаты ── */
+/*
+   Слова подписчиц набираются как цитата, а не как текст страницы:
+   это чужая прямая речь, и присваивать её вёрсткой нельзя. Линия
+   слева — бронзой; бронза здесь работает линией, как ей и положено.
+*/
+
+.n-quote {
+  margin: 0;
+  padding: clamp(16px, 2vw, 20px) clamp(18px, 2.4vw, 26px);
+  border-left: 3px solid #C9A87F;
+  border-radius: 0 12px 12px 0;
+  background: linear-gradient(180deg, #FFFFFF 0%, #FDF9F3 100%);
+  box-shadow: 0 1px 2px rgba(60, 48, 40, .04), 0 14px 30px -24px rgba(60, 48, 40, .34);
+}
+.n-quote p {
+  margin: 0;
+  font-size: 19px;
+  line-height: 1.55;
+  color: #3B322C;
+  font-style: italic;
+}
+
+/* Реплика Виолы крупнее и без курсива: это её голос, а не выписка. */
+.n-quote--viola {
+  border-left-width: 4px;
+  padding: clamp(20px, 2.6vw, 28px) clamp(20px, 2.8vw, 30px);
+}
+.n-quote--viola p {
+  font-style: normal;
+  font-size: clamp(20px, 2.1vw, 24px);
+  font-weight: 600;
+  line-height: 1.45;
+  color: #2E2521;
+}
+
+/* Несущее утверждение экрана. Не цитата и не абзац — то, ради чего
+   экран написан, и набрано соответственно. */
+.n-say {
+  margin: 0;
+  font-size: clamp(20px, 2.1vw, 24px);
+  line-height: 1.45;
+  color: #3B322C;
+}
+.n-say b { color: #2E2521; }
+
+/* Реплика, которой человек сам называет своё состояние. Стоит
+   отдельной строкой, потому что в абзаце она теряется. */
+.n-punch {
+  margin: 0;
+  font-family: 'Prata', Georgia, serif;
+  font-weight: 400;
+  font-size: clamp(27px, 3.4vw, 42px);
+  line-height: 1.2;
+  letter-spacing: -.01em;
+  color: #2E2521;
+}
+
+/* ────────────────────────────────────────────── три дня ── */
 
 .n-days {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 16px;
+  gap: 18px;
   align-items: stretch;
 }
 
 .n-day {
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  padding: clamp(24px, 3vw, 32px);
+  gap: 14px;
+  padding: clamp(24px, 3vw, 34px);
   background: linear-gradient(180deg, #FFFFFF 0%, #FDFAF6 100%);
   border: 1px solid #E9DFD2;
   border-top: 3px solid #C9A87F;
   border-radius: 14px;
-  box-shadow: 0 1px 2px rgba(60, 48, 40, .04), 0 18px 38px -24px rgba(60, 48, 40, .38);
+  box-shadow: 0 1px 2px rgba(60, 48, 40, .04), 0 18px 38px -26px rgba(60, 48, 40, .38);
 }
 
-/* Когда и сколько это займёт. Две строки, а не одна: «13 сентября,
-   воскресенье» и «не меньше часа, живой» в одну строку не влезают
-   в узкую карточку и рвутся посреди слова, а от разной высоты плашек
-   заголовки трёх дней вставали на разной высоте.
-
-   Строки ровно две у всех трёх карточек, поэтому заголовки всегда
-   на одном уровне и коробка вокруг меты не нужна: рамка тут ничего
-   не сообщала, а дата и длительность сообщают. Длительность важна
-   отдельной строкой — у этой аудитории «сколько это займёт» реальный
-   вопрос, а не мелочь. */
+/* Когда, сколько и в каком виде — три факта, на которые человек
+   смотрит раньше названия дня. */
 .n-daymeta {
   margin: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 1px;
-}
-.n-daymeta b { font-size: 15.5px; font-weight: 700; line-height: 1.35; color: #8A5A2B; }
-.n-daymeta span { font-size: 15px; line-height: 1.35; color: #6E6158; }
-
-/* Иконка говорит то, чего не говорит дата: чем этот день занят —
-   лекцией, медитацией или эфиром. Те же пять иконок повторяются
-   в списке «что вы получаете», связывая пункт с днём. */
-.n-dayico {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 44px;
-  height: 44px;
-  flex: none;
-  border-radius: 50%;
-  background: linear-gradient(160deg, #4A392F, #2B211C);
-  color: #F0DCBB;
-  box-shadow: 0 8px 18px -10px rgba(43, 33, 28, .7);
-}
-
-/* замыкающая строка блока — выделена подложкой, а не цветом текста */
-.n-callout {
-  margin: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 14px;
-  text-align: center;
-  padding: clamp(22px, 3vw, 28px) clamp(20px, 3vw, 32px);
-  background: linear-gradient(165deg, #4A392F 0%, #2B211C 100%);
-  border: 1px solid #33271F;
-  border-radius: 14px;
-  box-shadow: 0 18px 40px -22px rgba(43, 33, 28, .7), inset 0 1px 0 rgba(255, 255, 255, .1);
-  color: #F6F0E8;
-  font-size: clamp(19px, 2vw, 22px);
+  font-size: 15px;
   font-weight: 700;
-  line-height: 1.35;
-}
-
-/* ───────────────────────────────── список «что останется» ── */
-
-.n-list { display: flex; flex-direction: column; gap: 10px; }
-
-.n-item {
-  display: grid;
-  grid-template-columns: auto 1fr;
-  gap: 14px;
-  align-items: start;
-  padding: clamp(18px, 2.2vw, 22px) clamp(18px, 2.4vw, 26px);
-  background: linear-gradient(180deg, rgba(246, 240, 232, .09) 0%, rgba(246, 240, 232, .04) 100%);
-  border: 1px solid rgba(246, 240, 232, .16);
-  border-radius: 14px;
-}
-
-/* Иконка пункта. Первые три повторяют иконки трёх дней: человек уже
-   видел их выше и связывает пункт с днём, не перечитывая. Это перенесено
-   из витрины теста вместе с текстом — там же и объяснено. */
-.n-getico {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 32px;
-  height: 32px;
-  margin-top: 1px;
-  flex: none;
-  border-radius: 50%;
-  background: linear-gradient(160deg, #F0DCBB, #C29A6C);
-  color: #2A211C;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .5);
-}
-
-.n-under {
-  margin: 0;
-  padding-left: 18px;
-  border-left: 2px solid #C9A87F;
-  font-size: 18px;
-  font-weight: 600;
-  line-height: 1.5;
-  color: #F6F0E8;
-}
-
-/* ─────────────────────────────────────── стоимость и оплата ── */
-
-.n-paycard {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  gap: clamp(18px, 2.4vw, 24px);
-  padding: clamp(30px, 4.6vw, 60px) clamp(22px, 4vw, 56px);
-  background: linear-gradient(180deg, #FFFFFF 0%, #FDF9F3 100%);
-  border: 1px solid #E9DFD2;
-  border-radius: 28px;
-  box-shadow: 0 1px 2px rgba(60, 48, 40, .04), 0 24px 56px -32px rgba(60, 48, 40, .4);
-}
-
-.n-price {
-  margin: 0;
-  font-weight: 700;
-  letter-spacing: -.03em;
-  font-size: clamp(48px, 7vw, 82px);
-  line-height: 1;
-  color: #2E2521;
-}
-
-.n-paycard .n-p { max-width: 46ch; }
-
-/* Подарок за раннюю оплату. Единственный золотой прямоугольник на белой
-   карточке: он и должен быть тут единственным цветным пятном. */
-.n-bonus {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  padding: clamp(18px, 2.4vw, 24px) clamp(18px, 2.6vw, 28px);
-  background: linear-gradient(180deg, #FBF3E4 0%, #F4E6CD 100%);
-  border: 1px solid #E0CBA6;
-  border-radius: 16px;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .7);
-}
-
-.n-bonus-head {
-  margin: 0;
-  font-size: 13px;
-  font-weight: 700;
-  letter-spacing: .14em;
-  text-transform: uppercase;
   line-height: 1.4;
   color: #8A5A2B;
 }
 
-.n-bonus .n-p { color: #3B2E28; }
+.n-dash { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 10px; }
+.n-dash li {
+  position: relative;
+  padding-left: 22px;
+  font-size: 17.5px;
+  line-height: 1.55;
+  color: #3B322C;
+}
+/* Тире рисуется псевдоэлементом, а не стоит в тексте: так оно не
+   попадает в выделение и не читается вслух. Цвет — затемнённая бронза:
+   светлая давала 3,4:1, а знак этот всё-таки читают глазами. */
+.n-dash li::before {
+  content: "—";
+  position: absolute;
+  left: 0;
+  color: #8A5A2B;
+}
 
-/* Закрывающая строка перед кнопками. Это не ещё один абзац текста,
-   а последнее, что человек читает до решения, — и набрана она крупнее
-   тела, чтобы читалась как реплика, а не как примечание. */
+.n-out {
+  margin: 0;
+  padding-top: 14px;
+  border-top: 1px solid #EDE4D8;
+  font-size: 17.5px;
+  line-height: 1.55;
+  color: #3B322C;
+}
+.n-out b { color: #2E2521; }
+
+/* ──────────────────────────────────────────────── состав ── */
+
+.n-keeps { display: flex; flex-direction: column; }
+
+.n-keep {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: clamp(16px, 2vw, 20px) 0;
+  border-top: 1px solid #E4DACD;
+}
+.n-keep:last-child { border-bottom: 1px solid #E4DACD; }
+
+.n-keep-t { margin: 0; font-size: 19.5px; font-weight: 700; line-height: 1.35; color: #2E2521; }
+.n-keep-d { margin: 0; font-size: 17.5px; line-height: 1.5; color: #5C5149; }
+
+/* ──────────────────────────────────────────────── цена ── */
+
+/* Цифра чернильная, не акцентная: цена, выкрашенная в цвет, начинает
+   кричать, а акцент на странице тратится на действие. */
+.n-price {
+  margin: 0;
+  font-weight: 700;
+  letter-spacing: -.03em;
+  font-size: clamp(54px, 8vw, 92px);
+  line-height: 1;
+  color: #2E2521;
+}
+
+.n-note-block {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: clamp(20px, 2.6vw, 28px) clamp(20px, 2.8vw, 30px);
+  background: linear-gradient(180deg, #FFFFFF 0%, #FDFAF6 100%);
+  border: 1px solid #E9DFD2;
+  border-radius: 16px;
+  box-shadow: 0 1px 2px rgba(60, 48, 40, .04), 0 16px 34px -26px rgba(60, 48, 40, .34);
+}
+
 .n-close {
   margin: 0;
-  max-width: 34ch;
-  font-size: 20.5px;
+  font-size: clamp(20px, 2.1vw, 23px);
   font-weight: 600;
   line-height: 1.45;
   color: #2E2521;
 }
 
-/* ───────────────────────────────────────────────── вопросы ── */
+/* ───────────────────────────────────────────── вопросы ── */
+/*
+   Аккордеон: вопрос виден всегда целиком, ответ раскрывается. Это
+   продающий экран, а не служебный — по ca-master у этой аудитории
+   тормозит тревога, и снимают её именно ответы.
+*/
 
-.n-faq { display: flex; flex-direction: column; gap: 14px; }
+.n-faq { display: flex; flex-direction: column; gap: 12px; }
 
 .n-qa {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  padding: clamp(22px, 3vw, 30px) clamp(20px, 3vw, 32px);
   background: linear-gradient(180deg, #FFFFFF 0%, #FDFAF6 100%);
   border: 1px solid #E9DFD2;
   border-radius: 14px;
-  box-shadow: 0 1px 2px rgba(60, 48, 40, .04), 0 16px 34px -26px rgba(60, 48, 40, .34);
+  box-shadow: 0 1px 2px rgba(60, 48, 40, .04), 0 14px 30px -26px rgba(60, 48, 40, .32);
 }
 
-.n-q {
-  margin: 0;
+.n-qa summary {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  padding: clamp(18px, 2.4vw, 24px) clamp(18px, 2.6vw, 28px);
+  cursor: pointer;
+  list-style: none;
+  font-size: clamp(18.5px, 2vw, 21px);
   font-weight: 700;
-  letter-spacing: -.02em;
-  font-size: clamp(19.5px, 2.1vw, 23px);
-  line-height: 1.3;
+  letter-spacing: -.015em;
+  line-height: 1.35;
   color: #2E2521;
 }
+.n-qa summary::-webkit-details-marker { display: none; }
 
-.n-a { margin: 0; font-size: 18.5px; line-height: 1.6; color: #5C5149; }
-
-/* ───────────────────────────────────────────────── финал ── */
-
-.n-final {
-  background:
-    radial-gradient(110% 70% at 50% 0%, rgba(201, 168, 127, .18) 0%, rgba(201, 168, 127, 0) 60%),
-    linear-gradient(160deg, #4A3A31 0%, #3B2E28 45%, #241C18 100%);
-  padding-top: clamp(60px, 9vw, 120px);
-  padding-bottom: clamp(60px, 9vw, 120px);
+/* Знак раскрытия рисуется псевдоэлементом, а не символом в тексте:
+   так он не попадает в выделение и не читается вслух скринридером. */
+.n-qa summary::after {
+  content: "";
+  flex: none;
+  width: 13px;
+  height: 13px;
+  margin-top: .42em;
+  border-right: 2.5px solid #8A5A2B;
+  border-bottom: 2.5px solid #8A5A2B;
+  transform: rotate(45deg);
+  transition: transform .2s ease;
 }
+.n-qa[open] summary::after { transform: rotate(-135deg); }
 
-.n-final .n-p { max-width: 52ch; margin-inline: auto; }
-
-/* ─────────────────────────── первый экран на узком экране ── */
-/*
-   Кадр занимает весь экран, текст лежит поверх — ровно как на первом
-   экране практикума. Полосой сверху с текстом под ней это было
-   сделано раньше и оказалось хуже: между фото и текстом читался шов,
-   а половина кадра уходила в пустой тёмный фон, на который ничего
-   не ложилось.
-
-   Работает это на трёх вещах, и все три взяты с практикума.
-   Первая — высота в 94% экрана: кадру нужно место, иначе он режется
-   по лицу. Вторая — текст расходится к верхнему и нижнему краю,
-   и лицо попадает в чистую полосу между группами. Третья — плотная
-   вуаль снизу и тени у самих букв: притемнять портрет целиком нельзя,
-   он тут главный, поэтому контраст держат тени, а не заливка.
-*/
-
-@media (max-width: 900px) {
-  .n-hero {
-    align-items: stretch;
-    min-height: clamp(620px, 94vh, 980px);
-    padding-top: clamp(26px, 6vw, 46px);
-    padding-bottom: clamp(26px, 5vw, 42px);
-  }
-
-  .n-hero-in { display: flex; width: 100%; }
-
-  .n-hero-copy {
-    flex: 1;
-    max-width: 100%;
-    justify-content: space-between;
-    gap: clamp(20px, 5vw, 34px);
-  }
-
-  .n-hero-top, .n-hero-bottom { flex: 0 0 auto; gap: 14px; }
-  .n-hero-bottom { gap: 16px; }
-
-  /* Лицо стоит на 74% ширины и 22% высоты вырезанного кадра — те же
-     доли, что в base.css, и меняются они только вместе с MOBILE_CROP. */
-  .n-hero-media img { object-position: 74% 22%; }
-
-  /* Сверху лёгкое притемнение под надстрочник и название,
-     снизу плотная вуаль под весь нижний блок. */
-  /* Плотность вуалей не на глаз: замерена по собранной странице.
-     На светлых волосах название давало 3,3:1, на свитере оффер 3,7:1 —
-     для крупного текста порог формально 3:1, но читают это с телефона
-     люди 45–55, и держать надо 4,5:1. Обе вуали доведены до этого.
-     Лицо стоит на 22% высоты, выше обеих плотных зон, и не тускнеет. */
-  .n-veil--side {
-    background: linear-gradient(180deg,
-      rgba(26, 20, 16, .86) 0%,
-      rgba(26, 20, 16, .66) 13%,
-      rgba(26, 20, 16, .3) 27%,
-      rgba(26, 20, 16, 0) 46%);
-  }
-  .n-veil--bottom {
-    background: linear-gradient(to top,
-      rgba(26, 20, 16, .96) 0%,
-      rgba(26, 20, 16, .93) 34%,
-      rgba(26, 20, 16, .84) 50%,
-      rgba(26, 20, 16, .62) 62%,
-      rgba(26, 20, 16, .24) 74%,
-      rgba(26, 20, 16, 0) 88%);
-  }
-
-  /* Буквы лежат на портрете, и держать контраст должна тень у них
-     самих, а не заливка поверх кадра. */
-  .n-name { font-size: clamp(42px, 11.5vw, 72px); text-shadow: 0 1px 2px rgba(18, 12, 8, .95), 0 4px 24px rgba(18, 12, 8, .85); }
-  .n-eyebrow { text-shadow: 0 1px 8px rgba(18, 12, 8, .9); }
-  .n-offer { font-size: 21px; line-height: 1.26; text-shadow: 0 1px 2px rgba(18, 12, 8, .95), 0 3px 18px rgba(18, 12, 8, .85); }
-  .n-lead { font-size: 17px; line-height: 1.5; text-shadow: 0 1px 2px rgba(18, 12, 8, .95), 0 3px 16px rgba(18, 12, 8, .8); }
-  .n-when, .n-terms-sub { text-shadow: 0 1px 10px rgba(18, 12, 8, .9); }
-  .n-under-btn { gap: 4px; }
+.n-qa .n-a {
+  margin: 0;
+  padding: 0 clamp(18px, 2.6vw, 28px) clamp(20px, 2.6vw, 26px);
+  font-size: 18.5px;
+  line-height: 1.62;
+  color: #4A3F38;
 }
 
 /* ───────────────────────────────────────────── телефон ── */
 /*
-   Ниже 760 px кегли подрастают, а не уменьшаются: страницу читают
-   с телефона люди, которым за сорок пять. Кнопки — во всю ширину,
-   высота не меньше 66 px: попасть пальцем должно получаться с первого
-   раза, а не с третьего.
+   Ниже 900 px кегли подрастают, а не уменьшаются, кнопки идут во всю
+   ширину. На первом экране портрет встаёт между именем события и
+   оффером: имя человек видит сразу, Виолу следом, и ни то ни другое
+   не уезжает за сгиб.
 */
 
+@media (max-width: 900px) {
+  .n-hero-in { display: flex; flex-direction: column; gap: 0; }
+  .n-hero-top { order: 1; gap: 14px; }
+  .n-hero-photo { order: 2; align-self: center; width: min(84%, 420px); margin: clamp(10px, 3vw, 24px) 0 clamp(18px, 4vw, 30px); }
+  .n-hero-bottom { order: 3; gap: 18px; padding-bottom: clamp(48px, 9vw, 72px); }
+  .n-hero-act { align-self: stretch; }
+  .n-hero-act .n-btn { width: 100%; }
+  .n-under-btn { text-align: center; }
+}
+
 @media (max-width: 760px) {
-  .n-p, .n-a { font-size: 19.5px; }
-  /* Заголовок дня обязан вести жирный абзац под собой, а на узком
-     экране они сходились почти в один кегль. */
-  .n-h3 { font-size: 23px; }
-  .n-note, .n-pay-note, .n-terms-sub { font-size: 17px; }
-  .n-when { font-size: 19px; }
-  .n-under-btn { margin-top: 2px; }
-  .n-under { font-size: 19px; }
-  .n-ego { font-size: 19.5px; max-width: 100%; }
-  .n-close { font-size: 21px; max-width: 100%; }
-  .n-hl { font-size: 19px; }
+  .n-p, .n-out, .n-dash li, .n-qa .n-a, .n-keep-d { font-size: 19px; }
+  .n-note, .n-pay-note, .n-under-btn { font-size: 17.5px; }
+  .n-lead { font-size: 19px; }
+  .n-quote p { font-size: 19.5px; }
+  .n-keep-t { font-size: 20px; }
+  .n-daymeta { font-size: 16px; }
+  .n-eyebrow { font-size: 13.5px; letter-spacing: .14em; }
+  .n-eyebrow--wide { justify-content: flex-start; gap: 4px 14px; }
 
   .n-btn {
     width: 100%;
     min-height: 66px;
     padding: 18px 20px;
-    font-size: 19.5px;
+    font-size: 19px;
     gap: 12px;
   }
-  .n-btn--gold, .n-btn--second, .n-btn--primary { align-self: stretch; }
-  .n-pay { max-width: 100%; }
-
-  .n-daymeta b { font-size: 17px; }
-  .n-daymeta span { font-size: 16.5px; }
+  .n-cta { align-self: stretch; }
   .n-days { grid-template-columns: 1fr; }
-  .n-callout { font-size: 20px; }
-  .n-final .n-p { max-width: 100%; }
+  .n-pay { grid-template-columns: 1fr; }
 }
 
-/* Совсем узкие экраны: длинные слова в заголовках не должны
-   выпирать за край. */
 @media (max-width: 380px) {
-  .n-name { font-size: 40px; }
-  .n-offer { font-size: 23px; }
-  .n-h2 { font-size: 31px; }
+  .n-name { font-size: 42px; }
+  .n-offer { font-size: 24px; }
+  .n-h2 { font-size: 30px; }
 }

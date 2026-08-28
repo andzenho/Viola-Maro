@@ -673,6 +673,67 @@ def build_images():
     print("  картинки: %d файлов, %.0f КБ" % (len(made), total / 1024))
 
 
+def build_cutout():
+    """Портрет без фона для первого экрана «Неудобных».
+
+    Страница светлая насквозь (решение продюсера 15.08, зафиксировано
+    в produkt/lending-strategiya-dizayna.md), поэтому кадр с тёмной
+    студийной средой сюда не годится: он тянет за собой тёмный план,
+    которого на странице быть не должно. Берётся вырезка.
+
+    Формат — WebP с альфой. JPEG прозрачности не знает вовсе, а PNG
+    того же качества весит вчетверо больше: у этого снимка 1,7 МБ
+    против 90 КБ. PNG кладётся один, узкий, как запасной для браузеров
+    без WebP — таких почти не осталось, и тащить им полный размер незачем.
+
+    Поля вырезки обрезаются по альфе: в присланном файле слева и справа
+    остаются прозрачные полосы, из-за которых портрет на странице встаёт
+    меньше, чем занимает место.
+    """
+    from PIL import Image
+    src = os.path.join(SRC, "assets", "viola-cutout.png")
+    outdir = os.path.join(OUT, "assets", "img")
+    os.makedirs(outdir, exist_ok=True)
+
+    im = Image.open(src).convert("RGBA")
+    im = im.crop(im.getchannel("A").getbbox())
+
+    made = []
+    for w in CUTOUT_WIDTHS:
+        r = im.resize((w, round(im.height * w / im.width)), Image.LANCZOS)
+        path = os.path.join(outdir, "viola%s.webp" % ("-sm" if w == min(CUTOUT_WIDTHS) else ""))
+        r.save(path, quality=88, method=6)
+        made.append(path)
+
+    # Запасной PNG для браузеров без WebP. Таких почти не осталось,
+    # поэтому он узкий и квантованный: полноцветный весил 601 КБ,
+    # больше самой страницы, ради доли процента посетителей. 255 цветов
+    # с альфой на фотографии в 420 px глазом не отличаются, а файл
+    # выходит в девять раз легче.
+    small = im.resize((PNG_WIDTH, round(im.height * PNG_WIDTH / im.width)), Image.LANCZOS)
+    png = os.path.join(outdir, "viola-sm.png")
+    small.quantize(colors=255, method=Image.FASTOCTREE).save(png, optimize=True)
+    made.append(png)
+
+    total = sum(os.path.getsize(p) for p in made)
+    print("  портрет без фона: %d файлов, %.0f КБ" % (len(made), total / 1024))
+
+
+CUTOUT_WIDTHS = (560, 1020)
+PNG_WIDTH = 420
+
+
+def cutout_picture():
+    lo, hi = CUTOUT_WIDTHS
+    return ('<picture>\n'
+            '        <source type="image/webp" '
+            'srcset="/assets/img/viola-sm.webp %dw, /assets/img/viola.webp %dw" '
+            'sizes="(max-width: 900px) 78vw, 42vw">\n'
+            '        <img src="/assets/img/viola-sm.png" alt="Виола Маро" '
+            'width="%d" height="%d" fetchpriority="high" decoding="async">\n'
+            '      </picture>' % (lo, hi, PNG_WIDTH, round(PNG_WIDTH * 1419 / 955)))
+
+
 # Ширины подставляются те, что реально собраны: они зависят от кропа,
 # а зашитые руками разъезжались с ним и давали 404 на первом экране.
 MOBILE_WIDTHS = ()
@@ -1571,30 +1632,36 @@ def build_landing():
 
 
 def pay_buttons():
-    """Пара кнопок оплаты. Одна на всю страницу, вставляется дважды.
+    """Две кнопки оплаты. Одна пара на страницу, вставляется дважды.
 
-    Внешний вид задаёт окружение, а не разметка: на тёмной секции те же
-    классы отдают золотую кнопку, на светлой — тёмную. Поэтому копий
-    у блока две, а описание одно, и разъехаться им негде.
+    Кнопки одного веса и стоят рядом: способ платежа — не выбор
+    «лучше и хуже», и подсказывать один другому странице незачем.
+    У каждой своя подпись, потому что различаются они условиями,
+    а не важностью.
     """
     rub = NEUD_PAY_RUB or "#"
     intl = NEUD_PAY_INTL or "#"
     ext = ' target="_blank" rel="noopener"'
     return (
         '<div class="n-pay">\n'
-        '        <a class="n-btn n-btn--primary" href="%s"%s>Оплатить в&nbsp;рублях'
+        '        <div class="n-pay-one">\n'
+        '          <a class="n-btn" href="%s"%s>Оплатить в&nbsp;рублях'
         '<span class="n-arrow" aria-hidden="true">→</span></a>\n'
-        '        <p class="n-pay-note">Для оплаты в&nbsp;рублях доступна рассрочка</p>\n'
-        '        <a class="n-btn n-btn--second" href="%s"%s>Оплатить с&nbsp;зарубежной карты</a>\n'
+        '          <p class="n-pay-note">есть рассрочка</p>\n'
+        '        </div>\n'
+        '        <div class="n-pay-one">\n'
+        '          <a class="n-btn" href="%s"%s>Оплатить с&nbsp;зарубежной карты'
+        '<span class="n-arrow" aria-hidden="true">→</span></a>\n'
+        '          <p class="n-pay-note">принимаются карты любой страны</p>\n'
+        '        </div>\n'
         '      </div>'
         % (rub, ext if NEUD_PAY_RUB else "", intl, ext if NEUD_PAY_INTL else "")
     )
 
 
-# Кнопка-повтор после каждого рассказывающего блока. Ведёт к блоку
-# оплаты, а не открывает форму: на странице события формы нет, платёж
-# происходит сразу.
-CTA_NEUD = ('<a class="n-btn n-btn--primary n-cta" href="#oplata">Принять участие'
+# Повторная кнопка после каждого крупного экрана. Якорь, а не оплата:
+# способ платежа человек выбирает уже на экране цены, когда цену увидел.
+CTA_NEUD = ('<a class="n-btn n-cta" href="#bilet">Приобрести билет'
             '<span class="n-arrow" aria-hidden="true">→</span></a>')
 
 
@@ -1609,7 +1676,7 @@ def build_neudobnye():
     body = re.sub(r"\n{3,}", "\n\n", body)
 
     for mark, repl in (("{{PAY}}", pay_buttons()), ("{{CTA}}", CTA_NEUD),
-                       ("{{HERO}}", hero_picture())):
+                       ("{{HERO}}", cutout_picture())):
         if mark not in body:
             raise ValueError("в разметке «Неудобных» нет метки %s" % mark)
         body = body.replace(mark, repl)
@@ -1618,9 +1685,9 @@ def build_neudobnye():
 
     page = head(
         "Неудобные. Три дня для эмпатов с Виолой Маро",
-        "11–13 сентября. Лекция «Цена непрожитой жизни», аудиомедитация "
-        "и прямой эфир с Виолой Маро. 3 000 ₽. Все участники получают скидку "
-        "3 000 ₽ на один из продуктов Виолы.",
+        "11–13 сентября, онлайн. Лекция «Цена непрожитой жизни», аудиомедитация "
+        "«Мне можно» и живой разбор ваших случаев. Билет 3 000 ₽, и эти 3 000 ₽ "
+        "засчитываются в оплату практикума «Прикладная эмпатия».",
         "/assets/site.css")
     page += body.strip() + "\n"
     page += footer_html() + COOKIE_HTML
@@ -2009,10 +2076,13 @@ def main():
     if NOINDEX:
         print("  индексация запрещена")
     copy_fonts()
-    build_images()
     if MODE == "neudobnye":
+        # Первый экран светлый, студийный кадр с тёмной средой сюда не идёт:
+        # он тянул бы за собой тёмный план, которого на странице быть не должно.
+        build_cutout()
         build_neudobnye()   # заполняет HOVER_RULES
     else:
+        build_images()
         build_landing()      # заполняет HOVER_RULES
     if DOCS_ROOT:
         print("  правовые страницы не строятся: ссылки ведут в корень домена")
