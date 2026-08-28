@@ -170,6 +170,20 @@ BOOKING_AS_SERVICE = False
 
 CHANNEL_URL = "https://t.me/+iIqJoSn2UBU3Yzky"
 
+# ── Страница события «Неудобные» ────────────────────────────────────────
+#
+# Отдельный лендинг на три дня, к практикуму отношения не имеет: своя
+# разметка (build-assets/neudobnye.html) и свои стили (neudobnye.css).
+# Общее с остальным сайтом — шапка, подвал, cookie-полоса, шрифты,
+# палитра и портрет на первом экране: правовые ссылки и реквизиты
+# обязаны быть теми же самыми, а Виола — той же самой.
+#
+# Адреса платёжных страниц заказчик присылает отдельно. Пока пусто,
+# кнопки никуда не ведут и сборка говорит об этом вслух: страница про
+# деньги не должна тихо выйти с мёртвыми кнопками.
+NEUD_PAY_RUB = ""    # оплата в рублях (в ней же рассрочка)
+NEUD_PAY_INTL = ""   # оплата с зарубежной карты
+
 # Два разных срока, и путать их нельзя.
 #
 #   подарки  — до 23 августа, дальше сгорают. На него же идёт таймер.
@@ -1547,6 +1561,80 @@ def build_landing():
     return page
 
 
+# ──────────────────────────────────────────────── страница «Неудобные» ──
+#
+# Собирается не из шаблона DesignCraft, а из своей разметки: у события
+# нет ни недель, ни тарифов, ни формы заявки, и натягивать на него
+# лендинг практикума значило бы тащить десять чужих экранов ради двух
+# общих. Общими остаются шапка, подвал, cookie-полоса, шрифты и палитра —
+# то, что обязано совпадать на всех страницах сайта.
+
+
+def pay_buttons():
+    """Пара кнопок оплаты. Одна на всю страницу, вставляется дважды.
+
+    Внешний вид задаёт окружение, а не разметка: на тёмной секции те же
+    классы отдают золотую кнопку, на светлой — тёмную. Поэтому копий
+    у блока две, а описание одно, и разъехаться им негде.
+    """
+    rub = NEUD_PAY_RUB or "#"
+    intl = NEUD_PAY_INTL or "#"
+    ext = ' target="_blank" rel="noopener"'
+    return (
+        '<div class="n-pay">\n'
+        '        <a class="n-btn n-btn--primary" href="%s"%s>Оплатить в&nbsp;рублях'
+        '<span class="n-arrow" aria-hidden="true">→</span></a>\n'
+        '        <p class="n-pay-note">Для оплаты в&nbsp;рублях доступна рассрочка</p>\n'
+        '        <a class="n-btn n-btn--second" href="%s"%s>Оплатить с&nbsp;зарубежной карты</a>\n'
+        '      </div>'
+        % (rub, ext if NEUD_PAY_RUB else "", intl, ext if NEUD_PAY_INTL else "")
+    )
+
+
+# Кнопка-повтор после каждого рассказывающего блока. Ведёт к блоку
+# оплаты, а не открывает форму: на странице события формы нет, платёж
+# происходит сразу.
+CTA_NEUD = ('<a class="n-btn n-btn--primary n-cta" href="#oplata">Принять участие'
+            '<span class="n-arrow" aria-hidden="true">→</span></a>')
+
+
+def build_neudobnye():
+    body = read(os.path.join(BUILD_ASSETS, "neudobnye.html"))
+
+    # Комментарии из исходника в готовую страницу не едут. Дело не в весе:
+    # в шапке файла объяснены метки {{PAY}} и {{CTA}}, и подстановка
+    # заменила бы их прямо внутри комментария — в выдаче осталась бы
+    # ссылка-двойник, которую никто не видит и никто не поправит.
+    body = re.sub(r"<!--.*?-->", "", body, flags=re.S)
+    body = re.sub(r"\n{3,}", "\n\n", body)
+
+    for mark, repl in (("{{PAY}}", pay_buttons()), ("{{CTA}}", CTA_NEUD),
+                       ("{{HERO}}", hero_picture())):
+        if mark not in body:
+            raise ValueError("в разметке «Неудобных» нет метки %s" % mark)
+        body = body.replace(mark, repl)
+
+    body = collect_state_styles(body)   # style-hover → классы в site.css
+
+    page = head(
+        "Неудобные. Три дня для эмпатов с Виолой Маро",
+        "11–13 сентября. Лекция «Цена непрожитой жизни», аудиомедитация "
+        "и прямой эфир с Виолой Маро. 3 000 ₽. Все участники получают скидку "
+        "3 000 ₽ на один из продуктов Виолы.",
+        "/assets/site.css")
+    page += body.strip() + "\n"
+    page += footer_html() + COOKIE_HTML
+    page += '\n<script src="/assets/site.js"></script>\n</body>\n</html>\n'
+    write(os.path.join(OUT, "index.html"), page)
+
+    print("  index.html: страница события «Неудобные»")
+    if not (NEUD_PAY_RUB and NEUD_PAY_INTL):
+        empty = ", ".join(n for n, v in (("NEUD_PAY_RUB", NEUD_PAY_RUB),
+                                         ("NEUD_PAY_INTL", NEUD_PAY_INTL)) if not v)
+        print("  ВНИМАНИЕ: кнопки оплаты никуда не ведут — пусто в %s" % empty)
+    return page
+
+
 # ────────────────────────────────────────────────────────── правовые страницы ──
 
 def build_docs():
@@ -1633,6 +1721,8 @@ def copy_fonts():
 
 def build_css():
     css = font_css() + "\n\n" + read(os.path.join(BUILD_ASSETS, "base.css"))
+    if MODE == "neudobnye":
+        css += "\n\n" + read(os.path.join(BUILD_ASSETS, "neudobnye.css"))
     css += "\n\n/* состояния наведения и фокуса, перенесённые из инлайновых стилей */\n"
     css += hover_css() + "\n"
     write(os.path.join(OUT, "assets", "site.css"), css)
@@ -1883,8 +1973,9 @@ def parse_args(argv):
         if a == "--mode":
             i += 1
             MODE = argv[i]
-            if MODE not in ("pay", "pre", "bron", "zayavka"):
-                sys.exit("режим бывает pay, pre, bron или zayavka, получено: %s" % MODE)
+            if MODE not in ("pay", "pre", "bron", "zayavka", "neudobnye"):
+                sys.exit("режим бывает pay, pre, bron, zayavka или neudobnye, "
+                         "получено: %s" % MODE)
         elif a == "--out":
             i += 1
             OUT = os.path.join(ROOT, argv[i])
@@ -1919,7 +2010,10 @@ def main():
         print("  индексация запрещена")
     copy_fonts()
     build_images()
-    build_landing()          # заполняет HOVER_RULES
+    if MODE == "neudobnye":
+        build_neudobnye()   # заполняет HOVER_RULES
+    else:
+        build_landing()      # заполняет HOVER_RULES
     if DOCS_ROOT:
         print("  правовые страницы не строятся: ссылки ведут в корень домена")
     else:

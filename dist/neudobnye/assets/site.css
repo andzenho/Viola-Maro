@@ -1,0 +1,1229 @@
+@font-face{font-family:'Golos Text';font-style:normal;font-weight:400 700;font-display:swap;src:url(/neudobnye/assets/fonts/GolosText-cyrillic-ext.woff2) format('woff2');unicode-range:U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F}
+@font-face{font-family:'Golos Text';font-style:normal;font-weight:400 700;font-display:swap;src:url(/neudobnye/assets/fonts/GolosText-cyrillic.woff2) format('woff2');unicode-range:U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116}
+@font-face{font-family:'Golos Text';font-style:normal;font-weight:400 700;font-display:swap;src:url(/neudobnye/assets/fonts/GolosText-latin-ext.woff2) format('woff2');unicode-range:U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF}
+@font-face{font-family:'Golos Text';font-style:normal;font-weight:400 700;font-display:swap;src:url(/neudobnye/assets/fonts/GolosText-latin.woff2) format('woff2');unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}
+@font-face{font-family:'Prata';font-style:normal;font-weight:400;font-display:swap;src:url(/neudobnye/assets/fonts/Prata-cyrillic-ext.woff2) format('woff2');unicode-range:U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F}
+@font-face{font-family:'Prata';font-style:normal;font-weight:400;font-display:swap;src:url(/neudobnye/assets/fonts/Prata-cyrillic.woff2) format('woff2');unicode-range:U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116}
+@font-face{font-family:'Prata';font-style:normal;font-weight:400;font-display:swap;src:url(/neudobnye/assets/fonts/Prata-latin.woff2) format('woff2');unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}
+
+/* ─────────────────────────────────────────────────────────── основа ── */
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  background: #F7F2EA;
+  color: #2E2521;
+  font-family: 'Golos Text', system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  font-size: 20px;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+a { color: #3B2E28; }
+a:hover { color: #A3835F; }
+
+img, picture, svg { max-width: 100%; }
+
+:focus-visible {
+  outline: 3px solid #8A5A2B;
+  outline-offset: 3px;
+  border-radius: 3px;
+}
+
+.skip {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  z-index: 999;
+  background: #241C18;
+  color: #F6F0E8;
+  padding: 14px 22px;
+  border-radius: 0 0 10px 0;
+  font-weight: 600;
+  text-decoration: none;
+}
+.skip:focus { left: 0; }
+
+/* сноска-звёздочка у упоминания соцсети */
+.fn {
+  color: #8A5A2B;
+  text-decoration: none;
+  font-weight: 700;
+  padding: 0 1px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: .001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .001ms !important;
+  }
+}
+
+/* Высота первого экрана — минимум, а не жёсткий размер. В разметке стоит
+   height, и на низком окне текст переставал помещаться в свою же коробку:
+   кадр обрезан по overflow, и шапка или кнопка уезжали за край. Особенно
+   после того, как надзаголовок вырос на строку с плашкой «Предзапись».
+   Теперь экран растягивается под текст, а на нормальных окнах ведёт себя
+   как прежде. */
+[data-hero-stage] {
+  height: auto !important;
+  min-height: clamp(600px, 94vh, 960px);
+}
+
+/* Текст лежал абсолютом поверх фото, а абсолют не задаёт высоту родителю:
+   одного min-height на кадре не хватало — экран оставался 600 px, и низ
+   с кнопкой срезался. Возвращаем текст в поток, фото и вуали остаются
+   абсолютными слоями под ним. Свой min-height текст берёт у кадра,
+   поэтому на высоких экранах шапка и кнопка расходятся по краям
+   ровно как раньше. */
+[data-hero-copy] {
+  position: relative !important;
+  inset: auto !important;
+  min-height: inherit;
+}
+
+/* ───────────────────────────────────── первый экран: кадр портрета ── */
+
+[data-hero-photo] picture,
+[data-hero-photo] img {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+[data-hero-photo] img {
+  object-fit: cover;
+  object-position: 100% 50%;   /* кадр прижат вправо: слева ложится текст */
+}
+
+/* Привязка к лицу. object-position: P% ставит точку P% изображения ровно
+   в P% рамки — при любом её размере. Кадр вырезан так, что лицо стоит
+   на 74% ширины и 22% высоты, поэтому те же числа здесь удерживают его
+   на 74%/22% экрана: и на узком телефоне, и на широком, и на низком.
+   Меняются только вместе с MOBILE_CROP в build.py. */
+@media (max-width: 760px) {
+  [data-hero-photo] img { object-position: 74% 22%; }
+}
+
+/* Нижний текст на телефоне ложится на портрет, поэтому вуаль снизу поднята
+   чуть выше исходной. Не глухая заливка: портрет обязан остаться светлым
+   и узнаваемым, тёмной делается только полоса под самим текстом. */
+@media (max-width: 760px) {
+  [data-hero-veil] + [data-hero-veil] {
+    background: linear-gradient(to top,
+      rgba(36, 28, 24, .9) 0%,
+      rgba(36, 28, 24, .72) 26%,
+      rgba(36, 28, 24, .28) 46%,
+      rgba(36, 28, 24, 0) 64%) !important;
+  }
+}
+
+/* ─────────────────────────── адаптив, перенесённый из исходной сборки ── */
+
+@media (max-width: 860px) {
+  [data-week-card] { grid-template-columns: 1fr !important; }
+  [data-week-rail-line] { display: none; }
+}
+
+@media (max-width: 720px) {
+  [data-week-rail] { grid-template-columns: 1fr 1fr !important; gap: 10px 14px; padding: 16px 14px !important; }
+  [data-rail-item] { flex-direction: row !important; align-items: center !important; text-align: left !important; gap: 10px !important; flex-wrap: nowrap; }
+  [data-rail-item] > span:first-child { width: 34px !important; height: 34px !important; border-width: 2px !important; }
+  [data-rail-item] > span:first-child svg { width: 16px; height: 16px; }
+  [data-rail-num] { display: none; }
+  [data-rail-item] > span:last-child { font-size: 14px !important; line-height: 1.25 !important; }
+}
+
+@media (max-width: 1024px) {
+  [data-hero-copy] h1 { font-size: clamp(40px, 5.4vw, 50px) !important; }
+  [data-hero-copy] > div:last-child { max-width: 100% !important; }
+  [data-hero-copy] > div:last-child > p:first-child { font-size: clamp(23px, 3.1vw, 29px) !important; line-height: 1.22 !important; max-width: 72% !important; }
+  [data-hero-copy] > div:last-child > p:nth-child(2) { font-size: 17px !important; max-width: 78% !important; }
+}
+
+@media (max-width: 1020px) {
+  [data-new-card="last"] { grid-column: 1 / -1 !important; }
+}
+
+@media (max-width: 760px) {
+  [data-sticky-bar] { display: flex !important; }
+  body { padding-bottom: 76px; }
+  /* Высота первого экрана задана в vh, а на телефоне vh меняется, когда при
+     скролле прячется адресная строка: экран становится выше, кадр внутри
+     пересчитывается и портрет заметно «наезжает». svh считается от экрана
+     с раскрытой панелью и при скролле не меняется. Браузеры, которые svh
+     не знают, правило целиком пропустят и останутся на прежнем vh. */
+  [data-hero-stage] { min-height: clamp(600px, 94svh, 960px); }
+  /* Текстовая колонка держится левее портрета: заголовок и обещание живут
+     в левых двух третях, справа остаётся видна сама Виола. Кегль заголовка
+     чуть меньше исходного — иначе в узкой колонке он ломается на обрубки. */
+  [data-hero-copy] > div:first-child { max-width: 100% !important; }
+  /* Кадр без надставок ставит Виолу крупно, и хвост заголовка проходит
+     по подсвеченным волосам — фон там даёт 1.65:1. Притемнять кадр не
+     будем: плотная тень у самих букв держит контраст, не трогая портрет. */
+  [data-hero-copy] h1 {
+    max-width: 76% !important;
+    text-shadow: 0 1px 2px rgba(18, 12, 8, .95), 0 2px 12px rgba(18, 12, 8, .9),
+                 0 6px 30px rgba(18, 12, 8, .85) !important;
+  }
+  /* Плашка лежит на ней же — своя подложка делается плотнее. */
+  [data-hero-copy] > div:last-child > p:nth-child(2) {
+    background: rgba(24, 18, 14, .82) !important;
+  }
+  [data-hero-copy] > div:last-child { max-width: 100% !important; }
+  [data-hero-copy] h1 { font-size: 40px !important; }
+  [data-hero-copy] > div:first-child > div:first-child { font-size: 13px !important; }
+  /* Обещание частью ложится на подсвеченные волосы, где фон даёт всего
+     2.5:1. Притушить портрет нельзя — он и так главный герой экрана,
+     поэтому плотная тень у самих букв: она держит контраст, не трогая кадр. */
+  [data-hero-copy] > div:last-child > p:first-child {
+    font-size: 23px !important;
+    line-height: 1.24 !important;
+    max-width: 58% !important;
+    text-shadow: 0 1px 2px rgba(18, 12, 8, .95), 0 2px 10px rgba(18, 12, 8, .9),
+                 0 4px 24px rgba(18, 12, 8, .8) !important;
+  }
+  [data-hero-copy] > div:last-child > p:nth-child(2) { font-size: 16.5px !important; max-width: 74% !important; }
+  [data-hero-copy] a { padding: 16px 22px 16px 27px !important; font-size: 16.5px !important; }
+  [data-hero-copy] a > span { width: 32px !important; height: 32px !important; font-size: 16px !important; }
+  [data-hero-copy] > div:last-child > div span:last-child { font-size: 15px !important; }
+  body { font-size: 20px; }
+  [style*="font-size: 13px"] { font-size: 14px !important; }
+  [style*="font-size: 14px"] { font-size: 15px !important; }
+  [style*="font-size: 15px"] { font-size: 16px !important; }
+  [style*="font-size: 15.5px"] { font-size: 16px !important; }
+  [style*="font-size: 16px"] { font-size: 17.5px !important; }
+  [style*="font-size: 16.5px"] { font-size: 18px !important; }
+  [style*="font-size: 17px"] { font-size: 18.5px !important; }
+  [style*="font-size: 18px"] { font-size: 19.5px !important; }
+  [style*="font-size: 18.5px"] { font-size: 20px !important; }
+  [style*="font-size: 19px"] { font-size: 21px !important; }
+  [style*="font-size: 20px"] { font-size: 22px !important; }
+  [style*="font-size: 21px"] { font-size: 23px !important; }
+  [data-rail-item] > span:last-child { font-size: 15.5px !important; }
+}
+
+/* ───────────────────────────────────────────── форма заявки в модалке ── */
+
+.modal[hidden] { display: none !important; }
+body.modal-open { overflow: hidden; }
+
+.cb-err {
+  font-size: 14px;
+  line-height: 1.4;
+  color: #8A2B2B;
+}
+
+/* поле-приманка: убрано из потока, из табуляции и из озвучки */
+.hp {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+#form-submit[disabled] {
+  opacity: .45;
+  cursor: not-allowed;
+  transform: none !important;
+  filter: none !important;
+}
+
+/* ─────────────────────────────────────────────────────────── подвал ── */
+
+.ft {
+  background: linear-gradient(180deg, #F7F2EA 0%, #F1EAE0 100%);
+  border-top: 1px solid #E4DACD;
+  color: #574C44;
+  font-size: 15.5px;
+  line-height: 1.6;
+  padding: clamp(44px, 5vw, 72px) clamp(14px, 4vw, 40px) clamp(40px, 5vw, 64px);
+}
+
+.ft-in { max-width: 1020px; margin: 0 auto; }
+
+.ft-grid {
+  display: grid;
+  grid-template-columns: 1.6fr .9fr 1.1fr 1.25fr;
+  gap: clamp(22px, 3vw, 40px);
+  align-items: start;
+}
+
+.ft-col { min-width: 0; display: flex; flex-direction: column; gap: 8px; }
+
+.ft-org {
+  margin: 0;
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: -.01em;
+  color: #2E2521;
+  line-height: 1.35;
+}
+
+.ft-legal { margin: 0; color: #574C44; }
+
+.ft-label {
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  font-size: 12px;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: #8A5A2B;
+}
+
+.ft-ico {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: linear-gradient(160deg, #4A392F, #2B211C);
+  color: #F0DCBB;
+  font-size: 11px;
+  letter-spacing: 0;
+  flex: none;
+}
+
+.ft-hours { margin: 2px 0 0; color: #6E6158; font-size: 14.5px; }
+
+.ft a {
+  color: #4A392F;
+  text-decoration: underline;
+  text-decoration-color: rgba(163, 131, 95, .6);
+  text-decoration-thickness: 1px;
+  text-underline-offset: .22em;
+  width: fit-content;
+}
+.ft a:hover { color: #2E2521; text-decoration-color: #4A392F; }
+
+.ft-docs { gap: 10px; }
+.ft-docs a { font-size: 16px; line-height: 1.4; text-wrap: pretty; }
+
+.ft-disclaimer,
+.ft-copy,
+.ft-note {
+  max-width: 900px;
+  margin-inline: auto;
+  text-align: center;
+}
+
+.ft-disclaimer {
+  margin-top: clamp(32px, 4vw, 56px);
+  padding-top: clamp(24px, 3vw, 36px);
+  border-top: 1px solid #E4DACD;
+  font-size: 15px;
+  color: #574C44;
+}
+
+.ft-copy { margin-top: 18px; font-size: 13.5px; color: #6E6158; }
+.ft-note { margin-top: 14px; font-size: 13px; color: #6E6158; scroll-margin-top: 40vh; }
+
+@media (max-width: 900px) {
+  .ft-grid { grid-template-columns: 1fr 1fr; }
+}
+
+@media (max-width: 560px) {
+  .ft-grid { grid-template-columns: 1fr; gap: 26px; }
+  .ft-disclaimer, .ft-copy, .ft-note { text-align: left; }
+}
+
+/* на телефоне ссылки в подвале — полноценные цели для пальца */
+@media (max-width: 760px) {
+  .ft-docs { gap: 2px; }
+  .ft-docs a,
+  .ft-col > a { display: block; padding: 11px 0; width: auto; }
+}
+
+@media (max-width: 760px) {
+  .ft { padding-bottom: 96px; }
+}
+
+/* ───────────────────────────────────────────────── cookie-полоса ── */
+
+.cookie-bar {
+  position: fixed;
+  left: 12px;
+  right: 12px;
+  bottom: 12px;
+  z-index: 80;
+  display: flex;
+  gap: 14px 20px;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  max-width: 1020px;
+  margin: 0 auto;
+  padding: 16px 20px;
+  border-radius: 14px;
+  background: linear-gradient(165deg, #3B2E28 0%, #241C18 100%);
+  border: 1px solid rgba(246, 240, 232, .14);
+  color: #E6DCCF;
+  font-size: 15px;
+  line-height: 1.5;
+  box-shadow: 0 18px 44px -18px rgba(0, 0, 0, .7);
+}
+
+.cookie-bar[hidden] { display: none; }
+.cookie-bar p { margin: 0; flex: 1 1 320px; }
+.cookie-bar a { color: #F0DCBB; }
+
+.cookie-bar button {
+  flex: 0 0 auto;
+  min-height: 48px;
+  padding: 12px 30px;
+  border: 0;
+  border-radius: 999px;
+  background: linear-gradient(180deg, #F0DCBB, #C29A6C);
+  color: #2A211C;
+  font-family: inherit;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.cookie-bar button:hover { filter: brightness(1.06); }
+
+@media (max-width: 760px) {
+  .cookie-bar { bottom: 88px; }
+}
+
+/* ────────────────────────────────────────── правовые страницы ── */
+
+.doc-top {
+  background: linear-gradient(160deg, #4A3A31 0%, #3B2E28 55%, #241C18 100%);
+  color: #F6F0E8;
+  padding: 18px clamp(14px, 4vw, 40px);
+}
+
+.doc-top-in { max-width: 860px; margin: 0 auto; }
+
+.doc-back {
+  color: #F0DCBB;
+  text-decoration: none;
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: .01em;
+  border-bottom: 1px solid rgba(240, 220, 187, .4);
+}
+.doc-back:hover { color: #FFFFFF; border-bottom-color: #FFFFFF; }
+
+.doc {
+  background: linear-gradient(180deg, #FBF7F1 0%, #F3EBE0 100%);
+  padding: clamp(28px, 5vw, 64px) clamp(12px, 4vw, 40px) clamp(48px, 6vw, 88px);
+}
+
+.doc-in {
+  max-width: 860px;
+  margin: 0 auto;
+  background: #FFFFFF;
+  border: 1px solid #E9DFD2;
+  border-radius: 18px;
+  box-shadow: 0 1px 2px rgba(60, 48, 40, .04), 0 22px 48px -30px rgba(60, 48, 40, .35);
+  padding: clamp(24px, 4vw, 56px) clamp(18px, 4vw, 56px);
+  font-size: 17.5px;
+  line-height: 1.68;
+  color: #332B26;
+}
+
+.doc-in h1 {
+  margin: 0 0 26px;
+  font-size: clamp(28px, 4vw, 40px);
+  font-weight: 700;
+  letter-spacing: -.02em;
+  line-height: 1.15;
+  color: #2E2521;
+  text-wrap: balance;
+}
+
+.anchor { display: block; height: 0; scroll-margin-top: 24px; }
+
+.doc-in h2 {
+  margin: 44px 0 14px;
+  scroll-margin-top: 24px;
+  font-size: clamp(21px, 2.4vw, 26px);
+  font-weight: 700;
+  letter-spacing: -.015em;
+  line-height: 1.25;
+  color: #2E2521;
+  text-wrap: balance;
+}
+
+.doc-in h3 {
+  margin: 32px 0 10px;
+  font-size: clamp(18px, 2vw, 20.5px);
+  font-weight: 700;
+  line-height: 1.3;
+  color: #2E2521;
+}
+
+.doc-in p { margin: 0 0 14px; text-wrap: pretty; }
+.doc-in strong { color: #2E2521; }
+.doc-in em { color: #574C44; }
+
+.doc-in ul, .doc-in ol { margin: 0 0 16px; padding-left: 22px; }
+.doc-in li { margin: 0 0 7px; }
+.doc-in li::marker { color: #A3835F; }
+
+.doc-in hr {
+  margin: 34px 0;
+  border: 0;
+  height: 1px;
+  background: linear-gradient(90deg, #C9A87F, rgba(228, 218, 205, .25));
+}
+
+.doc-in blockquote {
+  margin: 0 0 18px;
+  padding: 14px 20px;
+  border-left: 3px solid #C9A87F;
+  background: #FBF6EE;
+  border-radius: 0 10px 10px 0;
+  color: #574C44;
+}
+.doc-in blockquote p:last-child { margin-bottom: 0; }
+
+.doc-in a { color: #4A392F; text-decoration: underline; text-underline-offset: .18em; }
+.doc-in a:hover { color: #8A5A2B; }
+
+.tw {
+  overflow-x: auto;
+  margin: 0 0 20px;
+  border: 1px solid #E9DFD2;
+  border-radius: 12px;
+  -webkit-overflow-scrolling: touch;
+}
+
+.doc-in table {
+  border-collapse: collapse;
+  width: 100%;
+  min-width: 460px;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+.doc-in th, .doc-in td {
+  padding: 11px 14px;
+  text-align: left;
+  vertical-align: top;
+  border-bottom: 1px solid #EDE4D8;
+}
+
+.doc-in thead th {
+  background: #F6EFE5;
+  color: #2E2521;
+  font-weight: 700;
+}
+
+.doc-in tbody tr:last-child td { border-bottom: 0; }
+
+/* ──────────────────────────────────────────────────────────── печать ── */
+
+@media print {
+  .skip, .cookie-bar, [data-sticky-bar], .doc-top, .modal { display: none !important; }
+  body { background: #fff; font-size: 12pt; padding-bottom: 0; }
+  .doc, .doc-in { background: #fff; box-shadow: none; border: 0; padding: 0; }
+  .doc-in h2, .doc-in h3 { break-after: avoid; }
+  .doc-in table, .tw { break-inside: auto; overflow: visible; border: 0; }
+  .doc-in tr { break-inside: avoid; }
+  .ft { background: #fff; }
+  a { text-decoration: underline; }
+}
+
+
+/* ══════════════════════════════════════════════ «Неудобные» ══ */
+/*
+   Страница события. Своих красок не заводит: палитра, кегли, радиусы,
+   тени и кнопки взяты из собранного лендинга практикума — те же значения,
+   только вынесены в классы, а не разложены по инлайновым стилям.
+
+   Подключается к site.css только в режиме --mode neudobnye.
+
+   Аудитория читает с телефона и ей 45–55: ни один текст на странице
+   не опускается ниже 17 px, на узком экране всё подрастает ещё,
+   а кнопки становятся во всю ширину и не мельче 66 px в высоту.
+*/
+
+/* ─────────────────────────────────────────────────── каркас ── */
+
+.n-sec { padding: clamp(56px, 8vw, 100px) clamp(14px, 4vw, 40px); }
+
+.n-in { max-width: 1020px; margin: 0 auto; }
+.n-in--mid { max-width: 860px; }
+.n-in--narrow { max-width: 720px; }
+
+.n-stack { display: flex; flex-direction: column; }
+.n-gap-l { gap: clamp(26px, 3.6vw, 38px); }
+.n-gap-m { gap: clamp(16px, 2.2vw, 22px); }
+.n-center { align-items: center; text-align: center; }
+
+/* ────────────────────────────────────────── типографика ── */
+
+/* Формат — над названием и мелко: он отвечает на вопрос «что это»,
+   но не спорит за внимание с именем события. */
+.n-eyebrow {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  line-height: 1.5;
+  color: #C9A87F;
+}
+
+/* Название события. Самый крупный текст на странице — это имя, а не
+   заголовок-обещание, и человек должен прочесть его первым. Набрано
+   Prata, той же, что стоит в шапке практикума: кто пришёл оттуда,
+   узнаёт сайт с первого экрана. */
+.n-name {
+  margin: 0;
+  font-family: 'Prata', Georgia, serif;
+  font-weight: 400;
+  font-size: clamp(42px, 6.4vw, 82px);
+  line-height: 1;
+  letter-spacing: .02em;
+  color: #F6F0E8;
+  text-shadow: 0 2px 26px rgba(24, 17, 12, .6);
+}
+
+/* Оффер идёт сразу под названием и заметно мельче его: название
+   называет, оффер обещает. Двум самым крупным строкам подряд спорить
+   между собой незачем. */
+.n-offer {
+  margin: 0;
+  font-weight: 700;
+  letter-spacing: -.02em;
+  font-size: clamp(23px, 2.6vw, 33px);
+  line-height: 1.22;
+  color: #F6F0E8;
+  text-shadow: 0 2px 18px rgba(24, 17, 12, .75);
+  text-wrap: pretty;
+}
+
+.n-h2 {
+  margin: 0;
+  font-weight: 700;
+  letter-spacing: -.025em;
+  font-size: clamp(34px, 5.2vw, 60px);
+  line-height: 1.1;
+  color: #2E2521;
+  text-wrap: balance;
+}
+
+/* Засечки — та же Prata, что в шапке практикума. Отдана одному
+   заголовку, финальному: там она читается как подпись, а не как
+   украшение. Знака ₽ в подшитой Prata нет, поэтому на суммы
+   этот класс не ставится. */
+.n-h2--serif {
+  font-family: 'Prata', Georgia, serif;
+  font-weight: 400;
+  letter-spacing: -.01em;
+  line-height: 1.16;
+}
+
+.n-h3 {
+  margin: 0;
+  font-weight: 700;
+  letter-spacing: -.02em;
+  font-size: clamp(20.5px, 2.3vw, 25px);
+  line-height: 1.28;
+  color: #2E2521;
+}
+
+.n-dark .n-h2, .n-dark .n-h3 { color: #F6F0E8; }
+
+.n-p {
+  margin: 0;
+  font-size: 18.5px;
+  line-height: 1.6;
+  color: #3B2E28;
+  text-wrap: pretty;
+}
+.n-p b { color: #2E2521; font-weight: 700; }
+.n-dark .n-p { color: #DCD1C4; }
+.n-dark .n-p b { color: #F6F0E8; }
+
+.n-lead {
+  margin: 0;
+  font-size: clamp(17.5px, 1.8vw, 20.5px);
+  font-weight: 500;
+  line-height: 1.5;
+  text-shadow: 0 2px 14px rgba(24, 17, 12, .8);
+  color: #3B2E28;
+}
+.n-dark .n-lead { color: #F6F0E8; }
+
+.n-note { margin: 0; font-size: 16px; line-height: 1.5; color: #6E6158; }
+.n-dark .n-note { color: #B8AA9C; }
+
+.n-tg {
+  color: #6B4E2C;
+  font-weight: 600;
+  text-decoration: underline;
+  text-decoration-color: rgba(163, 131, 95, .6);
+  text-underline-offset: .2em;
+  white-space: nowrap;
+}
+.n-tg:hover { color: #2E2521; }
+
+/* ────────────────────────────────────────── первый экран ── */
+/*
+   Портрет — тот же снимок и тот же кадр, что на лендинге практикума:
+   собирается тем же build_images(), режется тем же MOBILE_CROP.
+   Свои имена классов взяты намеренно: правила base.css для
+   [data-hero-*] подогнаны под разметку практикума и на другую
+   структуру легли бы криво.
+
+   На широком экране кадр лежит фоном и прижат вправо, текст идёт
+   слева по тёмной вуали. На телефоне так нельзя: текста здесь семь
+   элементов, он занял бы весь экран и от портрета осталась бы
+   тёмная плашка. Поэтому ниже 900 px снимок становится полосой
+   сверху, а текст уходит под него на сплошной фон — Виолу видно
+   целиком, буквы лежат на ровном, читать легко.
+*/
+
+.n-hero {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  background:
+    radial-gradient(110% 70% at 84% 0%, rgba(201, 168, 127, .18) 0%, rgba(201, 168, 127, 0) 58%),
+    linear-gradient(160deg, #4A3A31 0%, #3B2E28 45%, #241C18 100%);
+  min-height: clamp(620px, 90vh, 940px);
+  padding-top: clamp(48px, 8vw, 96px);
+  padding-bottom: clamp(48px, 8vw, 96px);
+}
+
+.n-hero-media { position: absolute; inset: 0; }
+.n-hero-media picture,
+.n-hero-media img { display: block; width: 100%; height: 100%; }
+
+/* Кадр прижат вправо: слева ложится текст. */
+.n-hero-media img { object-fit: cover; object-position: 100% 50%; }
+
+.n-veil { position: absolute; inset: 0; pointer-events: none; }
+
+.n-veil--side {
+  background: linear-gradient(100deg,
+    rgba(30, 23, 19, .95) 0%,
+    rgba(30, 23, 19, .88) 28%,
+    rgba(30, 23, 19, .56) 48%,
+    rgba(30, 23, 19, 0) 68%);
+}
+
+.n-veil--bottom {
+  background: linear-gradient(to top,
+    rgba(36, 28, 24, .88) 0%,
+    rgba(36, 28, 24, .5) 28%,
+    rgba(36, 28, 24, 0) 56%);
+}
+
+.n-hero-in { position: relative; z-index: 1; }
+
+/* Текст держится в левых двух третях: справа остаётся видна Виола. */
+.n-hero-copy {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: clamp(18px, 2.6vw, 26px);
+  max-width: min(64%, 640px);
+}
+
+/* Дата и скидка стоят под кнопкой, а не над ней: сначала человек видит,
+   куда нажать, и только потом — когда это и что он получает сверх.
+   Обе строки набраны мелко и держатся одной группой: это подпись
+   к кнопке, а не самостоятельный экран. */
+.n-under-btn {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  margin-top: -6px;
+}
+
+.n-when {
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: .01em;
+  line-height: 1.35;
+  color: #E4C08A;
+  text-shadow: 0 2px 14px rgba(24, 17, 12, .8);
+}
+
+.n-dot {
+  width: 7px;
+  height: 7px;
+  flex: none;
+  border-radius: 50%;
+  background: #C9A87F;
+  box-shadow: 0 0 0 4px rgba(201, 168, 127, .25);
+}
+
+.n-terms-sub {
+  margin: 0;
+  font-size: 16.5px;
+  line-height: 1.5;
+  color: #C6B8A8;
+  max-width: 46ch;
+  text-shadow: 0 2px 12px rgba(24, 17, 12, .8);
+}
+
+/* ─────────────────────────── дар и скидка, под первым экраном ── */
+/*
+   Не самостоятельный экран, а хвост первого: фон продолжает градиент
+   героя, отступы вдвое меньше секционных. Признание дара стоит здесь
+   по требованию аналитики — до разбора цены, а цена ниже по странице.
+*/
+
+.n-band {
+  background: linear-gradient(180deg, #241C18 0%, #2C221D 100%);
+  padding-top: clamp(28px, 4vw, 48px);
+  padding-bottom: clamp(36px, 5vw, 60px);
+}
+
+.n-band-in { display: flex; flex-direction: column; gap: clamp(18px, 2.4vw, 24px); }
+
+.n-ego {
+  margin: 0;
+  font-size: clamp(18.5px, 1.9vw, 21px);
+  line-height: 1.55;
+  color: #DCD1C4;
+  max-width: 56ch;
+}
+.n-ego b { color: #F6F0E8; font-weight: 700; }
+
+/* Подсветка скидки. На тёмном золотая заливка из палитры лендинга —
+   та же, что у блока «Материалы, которых раньше не было». */
+.n-hl {
+  margin: 0;
+  padding: clamp(16px, 2vw, 20px) clamp(18px, 2.4vw, 24px);
+  background: linear-gradient(135deg, rgba(201, 168, 127, .2) 0%, rgba(201, 168, 127, .08) 100%);
+  border: 1px solid rgba(201, 168, 127, .34);
+  border-radius: 14px;
+  box-shadow: 0 1px 2px rgba(60, 48, 40, .04), 0 24px 46px -28px rgba(120, 86, 50, .5),
+              inset 0 1px 0 rgba(255, 255, 255, .12);
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1.5;
+  color: #F6F0E8;
+}
+
+/* ──────────────────────────────────────────────── кнопки ── */
+
+.n-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  box-sizing: border-box;
+  min-height: 64px;
+  padding: 19px 32px;
+  border: none;
+  border-radius: 999px;
+  font-family: inherit;
+  font-weight: 700;
+  font-size: clamp(18px, 1.9vw, 21px);
+  letter-spacing: .01em;
+  line-height: 1.25;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  transition: transform .2s ease, box-shadow .2s ease, filter .2s ease;
+}
+.n-btn:hover { transform: translateY(-3px); filter: brightness(1.06); }
+.n-btn:active { transform: translateY(-1px); }
+
+/* золотая — на тёмном фоне */
+.n-btn--gold,
+.n-dark .n-btn--primary {
+  background: linear-gradient(180deg, #F0DCBB 0%, #D9BC92 52%, #C29A6C 100%);
+  color: #2A211C;
+  box-shadow: 0 18px 40px -14px rgba(0, 0, 0, .7),
+              0 0 0 1px rgba(240, 220, 187, .35),
+              0 0 0 10px rgba(201, 168, 127, .12),
+              inset 0 1px 0 rgba(255, 255, 255, .6);
+}
+.n-btn--gold .n-arrow,
+.n-dark .n-btn--primary .n-arrow { background: rgba(42, 33, 28, .9); color: #F0DCBB; }
+
+/* тёмная — на светлом фоне */
+.n-btn--primary {
+  background: linear-gradient(165deg, #4E3C31 0%, #2B211C 100%);
+  color: #F6F0E8;
+  box-shadow: 0 16px 34px -12px rgba(43, 33, 28, .55),
+              0 0 0 8px rgba(201, 168, 127, .2),
+              inset 0 1px 0 rgba(255, 255, 255, .14);
+}
+.n-btn--primary .n-arrow { background: linear-gradient(180deg, #F0DCBB, #C29A6C); color: #2A211C; }
+
+/* вторая кнопка пары — тише первой, но такого же размера */
+.n-btn--second {
+  background: linear-gradient(180deg, #F7EBD8 0%, #EDD9B8 100%);
+  color: #3B2E28;
+  border: 1.5px solid #C9A87F;
+  box-shadow: 0 8px 20px -12px rgba(120, 90, 50, .45), inset 0 1px 0 rgba(255, 255, 255, .7);
+}
+.n-dark .n-btn--second {
+  background: rgba(246, 240, 232, .1);
+  color: #F6F0E8;
+  border: 1px solid rgba(246, 240, 232, .34);
+  box-shadow: none;
+}
+
+.n-arrow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  flex: none;
+  border-radius: 50%;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1;
+}
+
+/* Повторная кнопка после каждого блока. Цвет берёт у секции: на тёмной
+   золотая, на светлой тёмная — тот же .n-btn--primary, разные правила. */
+.n-cta { align-self: center; margin-top: 2px; }
+
+/* пара кнопок оплаты, одна под другой */
+.n-pay {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 10px;
+  width: 100%;
+  max-width: 470px;
+  margin: 0 auto;
+}
+.n-pay-note {
+  margin: 0 0 6px;
+  text-align: center;
+  font-size: 16px;
+  line-height: 1.45;
+  color: #6E6158;
+}
+.n-dark .n-pay-note { color: #C6B8A8; }
+
+/* ────────────────────────────────────────── карточки дней ── */
+
+.n-days {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 16px;
+  align-items: stretch;
+}
+
+.n-day {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: clamp(24px, 3vw, 32px);
+  background: linear-gradient(180deg, #FFFFFF 0%, #FDFAF6 100%);
+  border: 1px solid #E9DFD2;
+  border-top: 3px solid #C9A87F;
+  border-radius: 14px;
+  box-shadow: 0 1px 2px rgba(60, 48, 40, .04), 0 18px 38px -24px rgba(60, 48, 40, .38);
+}
+
+/* Когда и сколько это займёт. Две строки, а не одна: «13 сентября,
+   воскресенье» и «не меньше часа, живой» в одну строку не влезают
+   в узкую карточку и рвутся посреди слова, а от разной высоты плашек
+   заголовки трёх дней вставали на разной высоте.
+
+   Строки ровно две у всех трёх карточек, поэтому заголовки всегда
+   на одном уровне и коробка вокруг меты не нужна: рамка тут ничего
+   не сообщала, а дата и длительность сообщают. Длительность важна
+   отдельной строкой — у этой аудитории «сколько это займёт» реальный
+   вопрос, а не мелочь. */
+.n-daymeta {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+.n-daymeta b { font-size: 15.5px; font-weight: 700; line-height: 1.35; color: #8A5A2B; }
+.n-daymeta span { font-size: 15px; line-height: 1.35; color: #6E6158; }
+
+/* Иконка говорит то, чего не говорит дата: чем этот день занят —
+   лекцией, медитацией или эфиром. Те же пять иконок повторяются
+   в списке «что вы получаете», связывая пункт с днём. */
+.n-dayico {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  flex: none;
+  border-radius: 50%;
+  background: linear-gradient(160deg, #4A392F, #2B211C);
+  color: #F0DCBB;
+  box-shadow: 0 8px 18px -10px rgba(43, 33, 28, .7);
+}
+
+/* замыкающая строка блока — выделена подложкой, а не цветом текста */
+.n-callout {
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  text-align: center;
+  padding: clamp(22px, 3vw, 28px) clamp(20px, 3vw, 32px);
+  background: linear-gradient(165deg, #4A392F 0%, #2B211C 100%);
+  border: 1px solid #33271F;
+  border-radius: 14px;
+  box-shadow: 0 18px 40px -22px rgba(43, 33, 28, .7), inset 0 1px 0 rgba(255, 255, 255, .1);
+  color: #F6F0E8;
+  font-size: clamp(19px, 2vw, 22px);
+  font-weight: 700;
+  line-height: 1.35;
+}
+
+/* ───────────────────────────────── список «что останется» ── */
+
+.n-list { display: flex; flex-direction: column; gap: 10px; }
+
+.n-item {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 14px;
+  align-items: start;
+  padding: clamp(18px, 2.2vw, 22px) clamp(18px, 2.4vw, 26px);
+  background: linear-gradient(180deg, rgba(246, 240, 232, .09) 0%, rgba(246, 240, 232, .04) 100%);
+  border: 1px solid rgba(246, 240, 232, .16);
+  border-radius: 14px;
+}
+
+/* Иконка пункта. Первые три повторяют иконки трёх дней: человек уже
+   видел их выше и связывает пункт с днём, не перечитывая. Это перенесено
+   из витрины теста вместе с текстом — там же и объяснено. */
+.n-getico {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  margin-top: 1px;
+  flex: none;
+  border-radius: 50%;
+  background: linear-gradient(160deg, #F0DCBB, #C29A6C);
+  color: #2A211C;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .5);
+}
+
+.n-under {
+  margin: 0;
+  padding-left: 18px;
+  border-left: 2px solid #C9A87F;
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1.5;
+  color: #F6F0E8;
+}
+
+/* ─────────────────────────────────────── стоимость и оплата ── */
+
+.n-paycard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: clamp(18px, 2.4vw, 24px);
+  padding: clamp(30px, 4.6vw, 60px) clamp(22px, 4vw, 56px);
+  background: linear-gradient(180deg, #FFFFFF 0%, #FDF9F3 100%);
+  border: 1px solid #E9DFD2;
+  border-radius: 28px;
+  box-shadow: 0 1px 2px rgba(60, 48, 40, .04), 0 24px 56px -32px rgba(60, 48, 40, .4);
+}
+
+.n-price {
+  margin: 0;
+  font-weight: 700;
+  letter-spacing: -.03em;
+  font-size: clamp(48px, 7vw, 82px);
+  line-height: 1;
+  color: #2E2521;
+}
+
+.n-paycard .n-p { max-width: 46ch; }
+
+/* Подарок за раннюю оплату. Единственный золотой прямоугольник на белой
+   карточке: он и должен быть тут единственным цветным пятном. */
+.n-bonus {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: clamp(18px, 2.4vw, 24px) clamp(18px, 2.6vw, 28px);
+  background: linear-gradient(180deg, #FBF3E4 0%, #F4E6CD 100%);
+  border: 1px solid #E0CBA6;
+  border-radius: 16px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .7);
+}
+
+.n-bonus-head {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  line-height: 1.4;
+  color: #8A5A2B;
+}
+
+.n-bonus .n-p { color: #3B2E28; }
+
+/* Закрывающая строка перед кнопками. Это не ещё один абзац текста,
+   а последнее, что человек читает до решения, — и набрана она крупнее
+   тела, чтобы читалась как реплика, а не как примечание. */
+.n-close {
+  margin: 0;
+  max-width: 34ch;
+  font-size: 20.5px;
+  font-weight: 600;
+  line-height: 1.45;
+  color: #2E2521;
+}
+
+/* ───────────────────────────────────────────────── вопросы ── */
+
+.n-faq { display: flex; flex-direction: column; gap: 14px; }
+
+.n-qa {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: clamp(22px, 3vw, 30px) clamp(20px, 3vw, 32px);
+  background: linear-gradient(180deg, #FFFFFF 0%, #FDFAF6 100%);
+  border: 1px solid #E9DFD2;
+  border-radius: 14px;
+  box-shadow: 0 1px 2px rgba(60, 48, 40, .04), 0 16px 34px -26px rgba(60, 48, 40, .34);
+}
+
+.n-q {
+  margin: 0;
+  font-weight: 700;
+  letter-spacing: -.02em;
+  font-size: clamp(19.5px, 2.1vw, 23px);
+  line-height: 1.3;
+  color: #2E2521;
+}
+
+.n-a { margin: 0; font-size: 18.5px; line-height: 1.6; color: #5C5149; }
+
+/* ───────────────────────────────────────────────── финал ── */
+
+.n-final {
+  background:
+    radial-gradient(110% 70% at 50% 0%, rgba(201, 168, 127, .18) 0%, rgba(201, 168, 127, 0) 60%),
+    linear-gradient(160deg, #4A3A31 0%, #3B2E28 45%, #241C18 100%);
+  padding-top: clamp(60px, 9vw, 120px);
+  padding-bottom: clamp(60px, 9vw, 120px);
+}
+
+.n-final .n-p { max-width: 52ch; margin-inline: auto; }
+
+/* ─────────────────────────── первый экран на узком экране ── */
+
+@media (max-width: 900px) {
+  .n-hero {
+    display: block;
+    min-height: 0;
+    padding: 0 0 clamp(40px, 9vw, 64px);
+  }
+
+  /* Снимок — полосой во всю ширину, поверх него ничего не лежит.
+     Полоса нарочно высокая: кадр под телефон шире, чем высок, и в низкой
+     полосе Виола выходит мелкой, а слева остаётся пустой фон, на который
+     здесь ничего не ложится. Высокая полоса режет этот пустой край
+     и ставит её крупно. */
+  .n-hero-media {
+    position: relative;
+    inset: auto;
+    height: clamp(360px, 105vw, 520px);
+  }
+
+  /* Лицо стоит на 74% ширины и 22% высоты вырезанного кадра — те же
+     доли, что в base.css, и меняются они только вместе с MOBILE_CROP. */
+  .n-hero-media img { object-position: 74% 22%; }
+
+  /* Боковая вуаль тут ни к чему, зато нужен переход полосы в фон. */
+  .n-veil--side { display: none; }
+  .n-veil--bottom {
+    background: linear-gradient(to top,
+      #241C18 0%,
+      rgba(36, 28, 24, .55) 26%,
+      rgba(36, 28, 24, 0) 62%);
+  }
+
+  .n-hero-in { padding: clamp(18px, 5vw, 28px) clamp(14px, 4vw, 40px) 0; }
+  .n-hero-copy { max-width: 100%; }
+
+  /* На ровном фоне тени у букв не нужны. */
+  .n-name, .n-offer, .n-lead, .n-when, .n-terms-sub { text-shadow: none; }
+  .n-name { font-size: clamp(44px, 12vw, 76px); }
+}
+
+/* ───────────────────────────────────────────── телефон ── */
+/*
+   Ниже 760 px кегли подрастают, а не уменьшаются: страницу читают
+   с телефона люди, которым за сорок пять. Кнопки — во всю ширину,
+   высота не меньше 66 px: попасть пальцем должно получаться с первого
+   раза, а не с третьего.
+*/
+
+@media (max-width: 760px) {
+  .n-p, .n-a { font-size: 19.5px; }
+  /* Заголовок дня обязан вести жирный абзац под собой, а на узком
+     экране они сходились почти в один кегль. */
+  .n-h3 { font-size: 23px; }
+  .n-note, .n-pay-note, .n-terms-sub { font-size: 17px; }
+  .n-when { font-size: 19px; }
+  .n-under-btn { margin-top: 2px; }
+  .n-under { font-size: 19px; }
+  .n-ego { font-size: 19.5px; max-width: 100%; }
+  .n-close { font-size: 21px; max-width: 100%; }
+  .n-hl { font-size: 19px; }
+
+  .n-btn {
+    width: 100%;
+    min-height: 66px;
+    padding: 18px 20px;
+    font-size: 19.5px;
+    gap: 12px;
+  }
+  .n-btn--gold, .n-btn--second, .n-btn--primary { align-self: stretch; }
+  .n-pay { max-width: 100%; }
+
+  .n-daymeta b { font-size: 17px; }
+  .n-daymeta span { font-size: 16.5px; }
+  .n-days { grid-template-columns: 1fr; }
+  .n-callout { font-size: 20px; }
+  .n-final .n-p { max-width: 100%; }
+}
+
+/* Совсем узкие экраны: длинные слова в заголовках не должны
+   выпирать за край. */
+@media (max-width: 380px) {
+  .n-name { font-size: 40px; }
+  .n-offer { font-size: 23px; }
+  .n-h2 { font-size: 31px; }
+}
+
+
+/* состояния наведения и фокуса, перенесённые из инлайновых стилей */
+

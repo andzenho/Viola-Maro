@@ -45,6 +45,9 @@ jobs:
       - name: Собрать страницу заявки
         run: python3 build.py --mode zayavka --out site/zayavka --base /Viola-Maro/zayavka --noindex
 
+      - name: Собрать событие «Неудобные»
+        run: python3 build.py --mode neudobnye --out site/neudobnye --base /Viola-Maro/neudobnye --noindex
+
       - uses: actions/configure-pages@v5
 
       - uses: actions/upload-pages-artifact@v3
