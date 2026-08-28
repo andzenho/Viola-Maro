@@ -110,7 +110,7 @@
   margin: 0;
   font-weight: 700;
   letter-spacing: -.02em;
-  font-size: clamp(21px, 2.3vw, 26px);
+  font-size: clamp(23px, 2.4vw, 27px);
   line-height: 1.28;
   color: #2E2521;
   text-wrap: pretty;
@@ -302,7 +302,7 @@
   margin: 0;
   text-align: center;
   font-size: 16.5px;
-  line-height: 1.45;
+  line-height: 1.4;
   color: #6E6158;
 }
 
@@ -342,12 +342,15 @@
   color: #2E2521;
 }
 
-/* Несущее утверждение экрана. Не цитата и не абзац — то, ради чего
-   экран написан, и набрано соответственно. */
+/* Несущее утверждение экрана. То, ради чего экран написан, и набрано
+   соответственно: заметно крупнее тела и с воздухом вокруг. На светлой
+   странице выделить его больше нечем — плашек тут нет, иерархию несёт
+   только набор. */
 .n-say {
-  margin: 0;
-  font-size: clamp(20px, 2.1vw, 24px);
-  line-height: 1.45;
+  margin: clamp(6px, 1.4vw, 14px) 0;
+  font-size: clamp(22px, 2.5vw, 28px);
+  line-height: 1.34;
+  letter-spacing: -.012em;
   color: #3B322C;
 }
 .n-say b { color: #2E2521; }
@@ -355,29 +358,38 @@
 /* Реплика, которой человек сам называет своё состояние. Стоит
    отдельной строкой, потому что в абзаце она теряется. */
 .n-punch {
-  margin: 0;
+  margin: clamp(10px, 2vw, 20px) 0;
   font-family: 'Prata', Georgia, serif;
   font-weight: 400;
-  font-size: clamp(27px, 3.4vw, 42px);
-  line-height: 1.2;
+  font-size: clamp(31px, 4.2vw, 52px);
+  line-height: 1.16;
   letter-spacing: -.01em;
   color: #2E2521;
 }
 
 /* ────────────────────────────────────────────── три дня ── */
 
+/* Три блока подряд, а не три колонки рядом. В колонках на 265 px
+   каждый день выходил лентой в двадцать строк, а заголовки трёх
+   карточек вставали на разной высоте, потому что мета переносилась
+   по-разному.
+
+   Блоком во всю ширину день делится надвое: слева дата и название,
+   справа содержание. Строка выходит вдвое короче, глазу есть за что
+   зацепиться, и порядок дней читается сверху вниз, как он и идёт. */
 .n-days {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  display: flex;
+  flex-direction: column;
   gap: 18px;
-  align-items: stretch;
 }
 
 .n-day {
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-  padding: clamp(24px, 3vw, 34px);
+  display: grid;
+  grid-template-columns: minmax(0, 290px) minmax(0, 1fr);
+  column-gap: clamp(28px, 4vw, 56px);
+  row-gap: 14px;
+  align-items: start;
+  padding: clamp(24px, 3vw, 36px) clamp(24px, 3vw, 40px);
   background: linear-gradient(180deg, #FFFFFF 0%, #FDFAF6 100%);
   border: 1px solid #E9DFD2;
   border-top: 3px solid #C9A87F;
@@ -385,12 +397,29 @@
   box-shadow: 0 1px 2px rgba(60, 48, 40, .04), 0 18px 38px -26px rgba(60, 48, 40, .38);
 }
 
-/* Когда, сколько и в каком виде — три факта, на которые человек
-   смотрит раньше названия дня. */
-.n-daymeta {
+.n-day-head { display: flex; flex-direction: column; gap: 10px; }
+.n-day-body { display: flex; flex-direction: column; gap: 14px; }
+
+/* Дата — первое, что человек ищет в карточке дня, и раньше она лежала
+   одной строкой вместе с длительностью и форматом. Три факта в строку
+   читались как один, и ни один не читался.
+
+   Теперь дата стоит отдельно и крупно, чернильным: по ней сверяются
+   с календарём. Остальное уходит второй строкой бронзой — это уточнения
+   к дате, а не равные ей факты. */
+.n-daydate {
   margin: 0;
-  font-size: 15px;
+  font-size: clamp(21px, 2.2vw, 25px);
   font-weight: 700;
+  letter-spacing: -.02em;
+  line-height: 1.15;
+  color: #2E2521;
+}
+
+.n-daymeta {
+  margin: -6px 0 0;
+  font-size: 15.5px;
+  font-weight: 600;
   line-height: 1.4;
   color: #8A5A2B;
 }
@@ -436,10 +465,31 @@
 }
 .n-keep:last-child { border-bottom: 1px solid #E4DACD; }
 
+/* Строка про доступ — не шестой пункт списка, и висеть вплотную
+   к нему не должна. */
+.n-keeps + .n-note { margin-top: clamp(4px, 1.2vw, 10px); }
+
 .n-keep-t { margin: 0; font-size: 19.5px; font-weight: 700; line-height: 1.35; color: #2E2521; }
 .n-keep-d { margin: 0; font-size: 17.5px; line-height: 1.5; color: #5C5149; }
 
 /* ──────────────────────────────────────────────── цена ── */
+
+/* Заголовок, цена и кнопки стоят одним столбиком по центру. Это
+   единственный экран, где страница просит человека принять решение,
+   и центр здесь работает: взгляду некуда уйти, всё нужное на одной оси.
+   Прозу ниже центрировать нельзя, длинный текст по центру не читается,
+   поэтому карточки остаются по левому краю. */
+.n-pricetop {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: clamp(18px, 2.4vw, 26px);
+  padding-bottom: clamp(6px, 1.4vw, 14px);
+}
+.n-pricetop .n-pay { max-width: 720px; }
+/* Подпись последней кнопки не должна упираться в карточку ниже. */
+.n-pricetop + .n-note-block { margin-top: clamp(6px, 1.6vw, 14px); }
 
 /* Цифра чернильная, не акцентная: цена, выкрашенная в цвет, начинает
    кричать, а акцент на странице тратится на действие. */
@@ -447,8 +497,8 @@
   margin: 0;
   font-weight: 700;
   letter-spacing: -.03em;
-  font-size: clamp(54px, 8vw, 92px);
-  line-height: 1;
+  font-size: clamp(60px, 9vw, 104px);
+  line-height: .95;
   color: #2E2521;
 }
 
@@ -537,7 +587,7 @@
 @media (max-width: 900px) {
   .n-hero-in { display: flex; flex-direction: column; gap: 0; }
   .n-hero-top { order: 1; gap: 14px; }
-  .n-hero-photo { order: 2; align-self: center; width: min(84%, 420px); margin: clamp(10px, 3vw, 24px) 0 clamp(18px, 4vw, 30px); }
+  .n-hero-photo { order: 2; align-self: center; width: min(86%, 420px); margin: clamp(22px, 6vw, 34px) 0 clamp(20px, 5vw, 32px); }
   .n-hero-bottom { order: 3; gap: 18px; padding-bottom: clamp(48px, 9vw, 72px); }
   .n-hero-act { align-self: stretch; }
   .n-hero-act .n-btn { width: 100%; }
@@ -546,13 +596,28 @@
 
 @media (max-width: 760px) {
   .n-p, .n-out, .n-dash li, .n-qa .n-a, .n-keep-d { font-size: 19px; }
+
+  /* Шаги между уровнями на узком экране приходится делать крупнее:
+     на 390 px разница в два-три пункта глазом не читается, и несущее
+     утверждение сливается с обычным абзацем. */
+  .n-say { font-size: 25px; }
+  .n-punch { font-size: 33px; }
+  .n-h3 { font-size: 24px; }
+  .n-daydate { font-size: 22px; }
+  .n-label { font-size: 18.5px; }
   .n-note, .n-pay-note, .n-under-btn { font-size: 17.5px; }
   .n-lead { font-size: 19px; }
   .n-quote p { font-size: 19.5px; }
   .n-keep-t { font-size: 20px; }
   .n-daymeta { font-size: 16px; }
   .n-eyebrow { font-size: 13.5px; letter-spacing: .14em; }
-  .n-eyebrow--wide { justify-content: flex-start; gap: 4px 14px; }
+  /* Разнести три факта по краям строки на телефоне некуда: они
+     не помещаются, и «онлайн» падал на вторую строку сиротой. Формат
+     события уходит первой строкой целиком, даты и «онлайн» встают
+     второй парой через разделитель. */
+  .n-eyebrow--wide { justify-content: flex-start; gap: 4px 10px; }
+  .n-eyebrow--wide span:first-child { flex: 1 0 100%; }
+  .n-eyebrow--wide span:nth-child(2)::after { content: " ·"; color: #A3835F; }
 
   .n-btn {
     width: 100%;
@@ -562,8 +627,30 @@
     gap: 12px;
   }
   .n-cta { align-self: stretch; }
-  .n-days { grid-template-columns: 1fr; }
-  .n-pay { grid-template-columns: 1fr; }
+  .n-day { grid-template-columns: 1fr; row-gap: 16px; }
+
+  /* В столбик подпись оказывается ровно между двумя кнопками, и к какой
+     она относится, непонятно. Расстояние решает: к своей кнопке подпись
+     жмётся, между парами воздух втрое больше. Плюс общая минимальная
+     высота — «Оплатить с зарубежной карты» переносится на две строки,
+     и без неё пара выглядит как главная кнопка и второстепенная. */
+  .n-pay { grid-template-columns: 1fr; row-gap: 26px; }
+  .n-pay-one { gap: 8px; }
+  .n-pay .n-btn { min-height: 78px; padding-left: 18px; padding-right: 18px; }
+}
+
+/* Отступы под липкую панель, которой на этой странице нет.
+
+   base.css держит их для лендинга практикума: там внизу висит панель
+   с ценой и кнопкой, и под неё зарезервировано 76 px у body, 96 px
+   у подвала и смещение у cookie-полосы. Здесь панели нет, и всё это
+   оборачивается полутора сотнями пустых пикселей под подвалом.
+   Снимается только в этом режиме: base.css общий, трогать его нельзя. */
+
+@media (max-width: 760px) {
+  body { padding-bottom: 0; }
+  .ft { padding-bottom: clamp(40px, 7vw, 64px); }
+  .cookie-bar { bottom: 12px; }
 }
 
 @media (max-width: 380px) {
