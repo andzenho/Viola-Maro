@@ -26,7 +26,11 @@
   var PAY_URLS = {
     basic: 'https://anny-nizh.getplatinum.ru/payment/JQqAJkS',
     full:  'https://anny-nizh.getplatinum.ru/payment/ppgQJJ7',
-    bron:  'https://anny-nizh.getplatinum.ru/payment/ASs2MgT'   // бронь 5 000 ₽
+    bron:  'https://anny-nizh.getplatinum.ru/payment/ASs2MgT',  // бронь 5 000 ₽
+    /* Событие «Неудобные», билет 3 500 ₽ до 4 сентября. Пока пусто,
+       форма не делает вид, что оплата открылась: она проверяет согласия,
+       записывает заявку и отправляет человека в службу заботы. */
+    neudobnye: ''
   };
 
   var SUPPORT_TG = 'https://t.me/violamaroteam';

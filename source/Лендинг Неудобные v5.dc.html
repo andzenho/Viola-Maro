@@ -30,6 +30,8 @@ a:hover{color:var(--accent)}
 h1,h2,h3,p,ul{margin:0}
 
 [data-hero]{padding:24px 22px 48px;overflow-x:clip}
+
+}
 [data-col]{display:flex;flex-direction:column;align-items:flex-start}
 [data-figclip]{--fh:236px;height:165px;width:160px;margin-left:auto;margin-right:-20px;overflow:hidden;display:flex;justify-content:flex-end;align-items:flex-start;background:none;border:0;border-radius:0;box-shadow:none;padding:0}
 [data-geroy]{display:block;height:var(--fh);width:auto;max-width:none;margin-right:calc(var(--fh) * -.101 - 18px);background:none;border:0;border-radius:0;box-shadow:none;padding:0}
@@ -159,7 +161,7 @@ h1,h2,h3,p,ul{margin:0}
   [data-geroy]{width:230%;height:auto;max-width:none;margin:-40px 0 0;flex:none}
 }
 @media (min-width:900px){
-  [data-hero]{position:relative;max-width:1120px;margin:0 auto;padding:96px 40px 120px}
+  [data-hero]{position:relative;max-width:1120px;margin:0 auto}
   [data-col]{max-width:600px}
   [data-name]{font-size:88px!important}
   [data-date]{font-size:26px!important}
@@ -170,10 +172,90 @@ h1,h2,h3,p,ul{margin:0}
   [data-figrow]{position:absolute;right:0;bottom:0;width:auto;margin:0}
   [data-figclip]{--fh:min(760px,64vw);height:min(560px,47vw);width:min(400px,34vw);margin-right:-40px}
 }
+
+/* ══════════════════ Портрет на первом экране ══════════════════════════
+   Как на лендинге практикума: текст слева, эксперт справа, оба на одном
+   экране, в том числе на телефоне.
+
+   Кадр-окно [data-figclip] и портрет [data-geroy] описаны в таблице выше
+   заказчиком, элемента в разметке не было и правила стояли вхолостую.
+   Здесь они получают элемент и раскладку.
+
+   ── Про лицо. Оно измерено по снимку, а не прикинуто: по горизонтали
+   занимает 32,4–65,2% кадра, по вертикали 3,8–31,1%. Отсюда правило:
+   текст может ложиться на пустые поля вырезки и на плечо, но в эту
+   рамку заходить не должен. Ширина текстовой колонки подобрана под неё
+   и проверена замером на 360, 390, 430 и 768 px. ═══════════════════ */
+
+:root{ --face-x:49%; --face-y:17.5%; }
+
+/* Обёртка <picture> растворяется: правила заказчика написаны на сам img,
+   и лишняя коробка между ними всё бы поломала. */
+[data-figclip] picture{display:contents}
+
+[data-heropart]{display:flex;flex-direction:column;align-items:inherit;width:100%}
+
+/* ── телефон и планшет: текст слева, Виола справа ──────────────────────
+   Первый экран делится на три полосы. Сверху во всю ширину имя события
+   и дата. Под ними обещание слева и портрет справа — они и составляют
+   пару «текст слева, эксперт справа». Ниже, снова во всю ширину,
+   продающая часть: подарок, кнопка, места, таймер.
+
+   Почему так, а не портретом во всю высоту первого экрана: текста здесь
+   на тысячу с лишним пикселей, и портрет, прижатый к низу, оказывался
+   рядом со счётчиком мест, а не рядом с именем. Рядом с именем он
+   и должен быть.
+
+   Кадр вылезает за правый край намеренно. Лицо на снимке стоит по центру
+   кадра, и чтобы оно оказалось справа на экране, картинку сдвигают вправо,
+   пряча часть за краем. Ширина колонки текста подобрана под измеренную
+   рамку лица и проверена замером на 360, 390, 430, 768 и 899 px:
+   ни одна строка в рамку не заходит. */
+@media (max-width:899px){
+  [data-hero]{display:grid;overflow:clip;padding:24px 22px 40px;
+    grid-template-columns:minmax(0,1fr) min(40%,250px);
+    grid-template-areas:"top top" "mid pic" "rest rest";
+    column-gap:14px;align-items:start}
+
+  [data-hero] [data-col]{display:contents}
+
+  [data-heropart="top"]{grid-area:top;align-items:flex-start;text-align:left}
+  [data-heropart="mid"]{grid-area:mid;align-items:flex-start;text-align:left;
+    margin-top:20px}
+  [data-heropart="rest"]{grid-area:rest;align-items:flex-start;text-align:left;
+    margin-top:24px}
+
+  [data-figrow]{grid-area:pic;width:100%;margin:0;display:block}
+  [data-figclip]{width:min(168%,330px);max-width:none;height:auto;
+    margin:14px -42% 0 0;overflow:visible;display:block}
+  [data-geroy]{width:100%;height:auto;max-width:none;margin:0;flex:none;
+    /* Холст снимка обрывается по бедро, и на белом это читается как
+       случайный обрез. Мягкий сход внизу превращает обрыв в приём. */
+    -webkit-mask-image:linear-gradient(to bottom,#000 76%,transparent 99%);
+    mask-image:linear-gradient(to bottom,#000 76%,transparent 99%)}
+
+  /* Продающий блок и кнопки — во всю ширину, портрет до них не достаёт. */
+  [data-bonus]{max-width:none!important}
+  [data-btn]{max-width:none}
+}
+
+/* Узкий телефон: кегли левой колонки под её ширину. Выше 660 px колонка
+   уже достаточно широкая и трогать набор незачем. */
+@media (max-width:659px){
+  /* Имя идёт во всю ширину, но в 56 px оно шире экрана телефона
+     и упиралось в правый край. Кегль привязан к ширине окна: 13,3vw —
+     та доля, при которой слово встаёт в колонку с полями уже на 360 px
+     и не мельчает там, где места хватает. */
+  [data-name]{font-size:min(56px,13.3vw)!important}
+  /* Ужимается только то, что делит строку с портретом. */
+  [data-lead]{font-size:26px!important;max-width:none!important}
+  [data-viola]{font-size:19px!important;max-width:none!important}
+}
 </style>
 </helmet>
 <header data-hero="1">
   <div data-col="1">
+    <div data-heropart="top">
     <span style="display:inline-block;white-space:nowrap;width:fit-content;padding:10px 20px;background:var(--accent);border:0;border-radius:999px;font-family:'Golos Text',sans-serif;font-weight:500;font-size:19px;letter-spacing:.12em;text-transform:uppercase;color:var(--on-accent);line-height:1.2">Терапевтический уикенд</span>
 
     <p style="margin-top:12px;font-size:22px;line-height:1.4;color:var(--ink-soft)">от Виолы Маро</p>
@@ -182,10 +264,16 @@ h1,h2,h3,p,ul{margin:0}
 
     <p data-date="1" style="margin-top:10px;font-family:'Literata',serif;font-weight:600;font-size:22px;line-height:1.3;color:var(--ink)">11–13 сентября</p>
 
+    </div>
+
+    <div data-heropart="mid">
     <p data-lead="1" style="margin-top:26px;font-family:'Literata',serif;font-weight:600;font-size:36px;line-height:1.22;letter-spacing:-.01em;color:var(--ink);max-width:20ch">За три дня понять, в какой роли вы застряли и кто вам её назначил</p>
 
     <p data-viola="1" style="margin-top:14px;font-family:'Literata',serif;font-weight:400;font-size:26px;line-height:1.5;color:var(--ink-soft);max-width:26ch">Переводим фокус из жизни для других и ставим фокус на себя.</p>
 
+    </div>
+
+    <div data-heropart="rest">
     <div data-bonus="1" style="margin-top:22px;width:100%;max-width:520px;display:grid;grid-template-columns:38px 1fr;column-gap:14px;align-items:center;background:var(--band);border:1px solid var(--line);border-radius:14px;padding:18px">
       <span style="display:flex;align-items:center;justify-content:center;width:38px;height:38px;border-radius:999px;background:var(--accent);color:var(--on-accent)"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" aria-hidden="true"><rect x="2.5" y="7.5" width="15" height="10" rx="1.5"></rect><line x1="2.5" y1="11" x2="17.5" y2="11"></line><line x1="10" y1="7.5" x2="10" y2="17.5"></line><path d="M10 7.5C10 7.5 9.1 3 6.7 3 5.6 3 5 3.8 5 4.6 5 6.5 7.7 7.5 10 7.5Z"></path><path d="M10 7.5C10 7.5 10.9 3 13.3 3 14.4 3 15 3.8 15 4.6 15 6.5 12.3 7.5 10 7.5Z"></path></svg></span>
       <p style="font-family:'Golos Text',sans-serif;font-weight:500;font-size:25px;line-height:1.35;color:var(--ink)">Лекция «Любовь и деньги» в подарок, при оплате до 4 сентября</p>
@@ -208,7 +296,10 @@ h1,h2,h3,p,ul{margin:0}
     </div>
 
     <p style="margin-top:16px;font-size:21px;line-height:1.5;color:var(--ink-soft)">Записи остаются навсегда.</p>
+    </div>
   </div>
+
+  <div data-figrow="1"><div data-figclip="1"><img data-geroy="1" src="./foto/geroy.png" width="1122" height="1402" alt="Виола Маро" fetchpriority="high"></div></div>
 </header>
 
 <section data-nums="1">

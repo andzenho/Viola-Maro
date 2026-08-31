@@ -673,6 +673,68 @@ def build_images():
     print("  картинки: %d файлов, %.0f КБ" % (len(made), total / 1024))
 
 
+def build_geroy_photo():
+    """Портрет на первый экран. Вырезка без фона.
+
+    Лицо на снимке измерено по тону кожи, а не прикинуто на глаз: центр
+    на 49% ширины и 17,5% высоты, нижняя граница лица на 31% высоты.
+    Эти доли лежат в CSS как --face-x и --face-y — на случай, если кадр
+    где-то придётся обрезать: object-position ставит точку лица в ту же
+    долю рамки при любом её размере.
+
+    Формат — WebP с альфой. PNG того же качества весит вчетверо больше;
+    он остаётся запасным, узким и квантованным.
+    """
+    from PIL import Image
+    src = os.path.join(SRC, "assets", "neudobnye-geroy.png")
+    outdir = os.path.join(OUT, "assets", "img")
+    os.makedirs(outdir, exist_ok=True)
+
+    # Холст НЕ обрезается по альфе намеренно. Кадрирование задаёт окно
+    # [data-figclip] в таблице заказчика, и доли там посчитаны от полного
+    # кадра 1122×1402. Обрежешь прозрачные поля — рамка уедет и макушка
+    # окажется срезанной.
+    im = Image.open(src).convert("RGBA")
+
+    made = []
+    for w in GEROY_WIDTHS:
+        r = im.resize((w, round(im.height * w / im.width)), Image.LANCZOS)
+        path = os.path.join(outdir, "geroy%s.webp" % ("-sm" if w == min(GEROY_WIDTHS) else ""))
+        r.save(path, quality=88, method=6)
+        made.append(path)
+
+    small = im.resize((GEROY_PNG_WIDTH, round(im.height * GEROY_PNG_WIDTH / im.width)),
+                      Image.LANCZOS)
+    png = os.path.join(outdir, "geroy-sm.png")
+    small.quantize(colors=255, method=Image.FASTOCTREE).save(png, optimize=True)
+    made.append(png)
+
+    global GEROY_RATIO
+    GEROY_RATIO = im.height / im.width
+    print("  портрет первого экрана: %d файлов, %.0f КБ"
+          % (len(made), sum(os.path.getsize(x) for x in made) / 1024))
+
+
+GEROY_WIDTHS = (420, 840)
+GEROY_PNG_WIDTH = 420
+GEROY_RATIO = 1402 / 1122
+
+
+def geroy_picture():
+    lo, hi = GEROY_WIDTHS
+    h = round(GEROY_PNG_WIDTH * GEROY_RATIO)
+    return ('<picture>'
+            '<source type="image/webp" '
+            'srcset="/assets/img/geroy-sm.webp %dw, /assets/img/geroy.webp %dw" '
+            'sizes="(max-width: 899px) 78vw, 420px">'
+            '<img data-geroy="1" src="/assets/img/geroy-sm.png" alt="Виола Маро" '
+            'width="%d" height="%d" fetchpriority="high" decoding="async">'
+            '</picture>' % (lo, hi, GEROY_PNG_WIDTH, h))
+    # Размеры у <img> оставлены: без них браузер не знает пропорций
+    # до загрузки и страница прыгает. Кадрирует картинку окно [data-figclip],
+    # ширину и высоту ей задаёт таблица заказчика.
+
+
 def build_avtor_photo():
     """Портрет для экрана «Кто ведёт». Вырезка на бежевом фоне.
 
@@ -1709,17 +1771,30 @@ def build_neudobnye():
     if left:
         raise ValueError("остались нераскрытые подстановки: %s" % left[:3])
 
+    # ── портрет первого экрана ─────────────────────────────────────────
+    if body.count('<img data-geroy="1"') != 1:
+        raise ValueError("ожидался один портрет первого экрана")
+    body = re.sub(r'<img data-geroy="1"[^>]*>', lambda _m: geroy_picture(), body, count=1)
+
     # ── портрет автора ─────────────────────────────────────────────────
     if body.count('<img data-avtor="1"') != 1:
         raise ValueError("ожидался один портрет автора")
     body = re.sub(r'<img data-avtor="1"[^>]*>', lambda _m: avtor_picture(), body, count=1)
 
-    # ── адреса оплаты вместо заглушек ──────────────────────────────────
+    # ── кнопки открывают форму, а не ведут сразу на оплату ─────────────
+    #
+    # Так же, как на странице практикума: контакты и согласия собираются
+    # до платежа, потому что акцепт оферты должен быть получен и записан
+    # раньше денег (раздел 3 правового ТЗ). Сразу после записи в таблицу
+    # человек уходит на страницу оплаты.
     n_btn = body.count('data-btn="1" href="#"')
-    if NEUD_PAY_RUB:
-        body = body.replace('data-btn="1" href="#"',
-                            'data-btn="1" href="%s" target="_blank" rel="noopener"'
-                            % NEUD_PAY_RUB)
+    if n_btn < 3:
+        raise ValueError("ожидалось не меньше трёх кнопок оплаты, найдено %d" % n_btn)
+    body = body.replace('data-btn="1" href="#"',
+                        'data-btn="1" href="#zapis" data-open-form="Неудобные" '
+                        'data-pay="neudobnye"')
+
+    form = read(os.path.join(BUILD_ASSETS, "neudobnye-form.html")).strip()
 
     page = head(
         "Неудобные. Терапевтический уикенд Виолы Маро 11–13 сентября",
@@ -1727,14 +1802,13 @@ def build_neudobnye():
         "и прямой эфир с Виолой Маро. Записи остаются навсегда. 3 500 ₽ до 4 сентября.",
         "/assets/site.css")
     page += '<main id="main">\n' + body + "\n</main>\n"
+    page += form + "\n"
     page += footer_html() + COOKIE_HTML
     page += '\n<script src="/assets/site.js"></script>\n</body>\n</html>\n'
     write(os.path.join(OUT, "index.html"), page)
 
     print("  index.html: страница события «Неудобные», исходник v5")
-    if not NEUD_PAY_RUB:
-        print("  ВНИМАНИЕ: %d кнопки «Занять место» никуда не ведут "
-              "— пусто в NEUD_PAY_RUB" % n_btn)
+    print("  форма заявки: %d кнопки «Занять место» открывают её" % n_btn)
     return page
 
 
@@ -2159,6 +2233,7 @@ def main():
         print("  индексация запрещена")
     copy_fonts()
     if MODE == "neudobnye":
+        build_geroy_photo()
         build_avtor_photo()
         build_neudobnye()
     else:

@@ -567,6 +567,8 @@ a:hover{color:var(--accent)}
 h1,h2,h3,p,ul{margin:0}
 
 [data-hero]{padding:24px 22px 48px;overflow-x:clip}
+
+}
 [data-col]{display:flex;flex-direction:column;align-items:flex-start}
 [data-figclip]{--fh:236px;height:165px;width:160px;margin-left:auto;margin-right:-20px;overflow:hidden;display:flex;justify-content:flex-end;align-items:flex-start;background:none;border:0;border-radius:0;box-shadow:none;padding:0}
 [data-geroy]{display:block;height:var(--fh);width:auto;max-width:none;margin-right:calc(var(--fh) * -.101 - 18px);background:none;border:0;border-radius:0;box-shadow:none;padding:0}
@@ -696,7 +698,7 @@ h1,h2,h3,p,ul{margin:0}
   [data-geroy]{width:230%;height:auto;max-width:none;margin:-40px 0 0;flex:none}
 }
 @media (min-width:900px){
-  [data-hero]{position:relative;max-width:1120px;margin:0 auto;padding:96px 40px 120px}
+  [data-hero]{position:relative;max-width:1120px;margin:0 auto}
   [data-col]{max-width:600px}
   [data-name]{font-size:88px!important}
   [data-date]{font-size:26px!important}
@@ -706,6 +708,85 @@ h1,h2,h3,p,ul{margin:0}
   [data-btn]{width:auto}
   [data-figrow]{position:absolute;right:0;bottom:0;width:auto;margin:0}
   [data-figclip]{--fh:min(760px,64vw);height:min(560px,47vw);width:min(400px,34vw);margin-right:-40px}
+}
+
+/* ══════════════════ Портрет на первом экране ══════════════════════════
+   Как на лендинге практикума: текст слева, эксперт справа, оба на одном
+   экране, в том числе на телефоне.
+
+   Кадр-окно [data-figclip] и портрет [data-geroy] описаны в таблице выше
+   заказчиком, элемента в разметке не было и правила стояли вхолостую.
+   Здесь они получают элемент и раскладку.
+
+   ── Про лицо. Оно измерено по снимку, а не прикинуто: по горизонтали
+   занимает 32,4–65,2% кадра, по вертикали 3,8–31,1%. Отсюда правило:
+   текст может ложиться на пустые поля вырезки и на плечо, но в эту
+   рамку заходить не должен. Ширина текстовой колонки подобрана под неё
+   и проверена замером на 360, 390, 430 и 768 px. ═══════════════════ */
+
+:root{ --face-x:49%; --face-y:17.5%; }
+
+/* Обёртка <picture> растворяется: правила заказчика написаны на сам img,
+   и лишняя коробка между ними всё бы поломала. */
+[data-figclip] picture{display:contents}
+
+[data-heropart]{display:flex;flex-direction:column;align-items:inherit;width:100%}
+
+/* ── телефон и планшет: текст слева, Виола справа ──────────────────────
+   Первый экран делится на три полосы. Сверху во всю ширину имя события
+   и дата. Под ними обещание слева и портрет справа — они и составляют
+   пару «текст слева, эксперт справа». Ниже, снова во всю ширину,
+   продающая часть: подарок, кнопка, места, таймер.
+
+   Почему так, а не портретом во всю высоту первого экрана: текста здесь
+   на тысячу с лишним пикселей, и портрет, прижатый к низу, оказывался
+   рядом со счётчиком мест, а не рядом с именем. Рядом с именем он
+   и должен быть.
+
+   Кадр вылезает за правый край намеренно. Лицо на снимке стоит по центру
+   кадра, и чтобы оно оказалось справа на экране, картинку сдвигают вправо,
+   пряча часть за краем. Ширина колонки текста подобрана под измеренную
+   рамку лица и проверена замером на 360, 390, 430, 768 и 899 px:
+   ни одна строка в рамку не заходит. */
+@media (max-width:899px){
+  [data-hero]{display:grid;overflow:clip;padding:24px 22px 40px;
+    grid-template-columns:minmax(0,1fr) min(40%,250px);
+    grid-template-areas:"top top" "mid pic" "rest rest";
+    column-gap:14px;align-items:start}
+
+  [data-hero] [data-col]{display:contents}
+
+  [data-heropart="top"]{grid-area:top;align-items:flex-start;text-align:left}
+  [data-heropart="mid"]{grid-area:mid;align-items:flex-start;text-align:left;
+    margin-top:20px}
+  [data-heropart="rest"]{grid-area:rest;align-items:flex-start;text-align:left;
+    margin-top:24px}
+
+  [data-figrow]{grid-area:pic;width:100%;margin:0;display:block}
+  [data-figclip]{width:min(168%,330px);max-width:none;height:auto;
+    margin:14px -42% 0 0;overflow:visible;display:block}
+  [data-geroy]{width:100%;height:auto;max-width:none;margin:0;flex:none;
+    /* Холст снимка обрывается по бедро, и на белом это читается как
+       случайный обрез. Мягкий сход внизу превращает обрыв в приём. */
+    -webkit-mask-image:linear-gradient(to bottom,#000 76%,transparent 99%);
+    mask-image:linear-gradient(to bottom,#000 76%,transparent 99%)}
+
+  /* Продающий блок и кнопки — во всю ширину, портрет до них не достаёт. */
+  [data-bonus]{max-width:none!important}
+  [data-btn]{max-width:none}
+}
+
+/* Узкий телефон: кегли левой колонки под её ширину. Выше 660 px колонка
+   уже достаточно широкая и трогать набор незачем. */
+@media (max-width:659px){
+  /* Имя идёт во всю ширину, но в 56 px оно шире экрана телефона
+     и упиралось в правый край. Кегль привязан к ширине окна: 13,3vw —
+     та доля, при которой слово встаёт в колонку с полями уже на 360 px
+     и не мельчает там, где места хватает. */
+  [data-name]{font-size:min(56px,13.3vw)!important}
+  /* Ужимается только то, что делит строку с портретом. */
+  [data-lead]{font-size:26px!important;max-width:none!important}
+  [data-viola]{font-size:19px!important;max-width:none!important}
 }
 
 /* состояния наведения и фокуса, перенесённые из инлайновых стилей */
