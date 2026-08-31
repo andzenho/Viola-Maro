@@ -1,21 +1,177 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Неудобные. Терапевтический уикенд Виолы Маро 11–13 сентября</title>
-<meta name="description" content="Три дня 11–13 сентября: лекция о жизненных ролях, авторская медитация и прямой эфир с Виолой Маро. Записи остаются навсегда. 3 500 ₽ до 4 сентября.">
-<meta name="theme-color" content="#241C18">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Неудобные. Терапевтический уикенд Виолы Маро 11–13 сентября">
-<meta property="og:description" content="Три дня 11–13 сентября: лекция о жизненных ролях, авторская медитация и прямой эфир с Виолой Маро. Записи остаются навсегда. 3 500 ₽ до 4 сентября.">
-<meta property="og:locale" content="ru_RU">
-<link rel="icon" href="/neudobnye/assets/favicon.svg?v=ceb9f380" type="image/svg+xml">
-<link rel="stylesheet" href="/neudobnye/assets/site.css?v=2e572144">
+<script src="./support.js"></script>
 </head>
 <body>
-<a class="skip" href="#main">К основному содержанию</a>
-<main id="main">
+<x-dc>
+<helmet>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500&family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,600;1,7..72,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  /* КОНСТАНТЫ */
+  --foto-geroy: url("./foto/geroy.png");
+  --foto-avtor: url("./assets/viola-cutout-beige.png");
+  --kassa: "#";
+  --ground:#FFFFFF; --band:#FBF4EA; --ground-dark:#241812;
+  --ink:#14101A; --ink-soft:#55505C; --ink-invert:#FBF4EA; --ink-invert-soft:#C9BDB2;
+  --line:#EDE3D6; --accent:#B8371D; --accent-deep:#962C16; --accent-lite:#E8734F;
+  --on-accent:#FFFFFF; --ph:#F0E8DE;
+}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--ground);color:var(--ink);font-family:'Golos Text',sans-serif;font-weight:400;font-size:20px;line-height:1.6;-webkit-font-smoothing:antialiased;text-wrap:pretty}
+a{color:var(--accent-deep);text-decoration:none}
+a:hover{color:var(--accent)}
+h1,h2,h3,p,ul{margin:0}
+
+[data-hero]{padding:24px 22px 48px;overflow-x:clip}
+[data-col]{display:flex;flex-direction:column;align-items:flex-start}
+[data-figclip]{--fh:236px;height:165px;width:160px;margin-left:auto;margin-right:-20px;overflow:hidden;display:flex;justify-content:flex-end;align-items:flex-start;background:none;border:0;border-radius:0;box-shadow:none;padding:0}
+[data-geroy]{display:block;height:var(--fh);width:auto;max-width:none;margin-right:calc(var(--fh) * -.101 - 18px);background:none;border:0;border-radius:0;box-shadow:none;padding:0}
+[data-btn]{display:inline-flex;align-items:center;justify-content:center;height:82px;padding:0 44px;width:100%;max-width:520px;background:linear-gradient(180deg,#D14428 0%,var(--accent) 52%,var(--accent-deep) 100%);color:var(--on-accent);border-radius:12px;font-family:'Golos Text',sans-serif;font-weight:500;font-size:27px;letter-spacing:.01em;border-radius:14px;border-bottom:4px solid var(--accent-deep);box-shadow:0 0 0 8px rgba(184,55,29,.13), 0 20px 40px rgba(184,55,29,.36);transition:transform .12s ease}
+[data-btn]:active{transform:translateY(2px)}
+[data-btn]{margin-left:auto;margin-right:auto;align-self:center}
+[data-nums]{background:linear-gradient(180deg,#FFFCF7 0%,var(--band) 40%,#F6EADA 100%);padding:72px 22px}
+[data-nums-in]{max-width:1120px;margin:0 auto}
+[data-h2]{font-family:'Literata',serif;font-weight:600;font-size:38px;line-height:1.2;letter-spacing:-.01em;color:var(--ink);margin-bottom:30px;max-width:20ch}
+[data-h2]::before{content:"";display:block;width:56px;height:4px;background:var(--accent);border-radius:2px;margin-bottom:18px}
+@media (min-width:900px){[data-h2]{font-size:54px;margin-bottom:44px}}
+[data-days]{background:var(--ground);padding:72px 22px}
+[data-days-in]{max-width:1120px;margin:0 auto}
+[data-cards]{display:grid;gap:20px}
+[data-card]{background:var(--ground);border:1px solid var(--line);border-radius:20px;padding:26px;box-shadow:0 8px 32px rgba(36,24,18,.08)}
+[data-card="hot"]{background:linear-gradient(160deg,#D14428 0%,var(--accent) 52%,var(--accent-deep) 100%);border-color:var(--accent);color:var(--ink-invert)}
+[data-badge]{display:inline-block;padding:7px 16px;border-radius:999px;background:var(--band);color:var(--ink-soft);font-family:'Golos Text',sans-serif;font-weight:500;font-size:18px;letter-spacing:.1em;text-transform:uppercase;line-height:1.2}
+[data-card="hot"] [data-badge]{background:var(--on-accent);color:var(--accent-deep)}
+[data-dayname]{margin-top:16px;font-family:'Literata',serif;font-weight:600;font-size:30px;line-height:1.25;color:var(--ink)}
+[data-card="hot"] [data-dayname]{color:var(--ink-invert)}
+[data-cardtop]{display:flex;align-items:center;gap:14px}
+[data-ico]{flex:none;display:flex;align-items:center;justify-content:center;width:52px;height:52px;border-radius:14px;background:var(--band);color:var(--accent)}
+[data-card="hot"] [data-ico]{background:rgba(255,255,255,.16);color:var(--on-accent)}
+[data-card] p[data-body]{margin-top:16px;font-size:27px;line-height:1.5;color:var(--ink);max-width:520px}
+[data-card="hot"] p[data-body]{color:var(--ink-invert)}
+[data-keep]{margin-top:56px;display:grid;grid-template-columns:1fr;gap:18px;padding:0;list-style:none}
+[data-keep] li{display:flex;gap:16px;align-items:flex-start;background:var(--band);border:1px solid var(--line);border-radius:20px;padding:24px;font-size:25px;line-height:1.4;color:var(--ink)}
+[data-keep] li::before{content:"";flex:none;width:10px;height:10px;border-radius:999px;background:var(--accent);margin-top:14px}
+@media (min-width:900px){
+  [data-days]{padding:128px 40px}
+  [data-cards]{grid-template-columns:repeat(3,1fr);gap:28px;align-items:start}
+  [data-card]{padding:36px}
+  [data-card="hot"]{padding:52px 36px}
+  [data-dayname]{font-size:34px}
+  [data-card] p[data-body]{font-size:28px}
+  [data-keep]{grid-template-columns:repeat(3,1fr);gap:24px}
+  [data-keep] li{font-size:27px;padding:30px}
+}
+[data-reviews]{background:var(--ground);padding:72px 22px}
+[data-rev-in]{max-width:1120px;margin:0 auto}
+[data-revcards]{display:flex;flex-direction:column;max-width:900px}
+[data-revcards] p{padding:26px 0;border-top:1px solid var(--line);font-family:'Literata',serif;font-weight:400;font-size:27px;line-height:1.35;color:var(--ink)}
+[data-revlist]{margin-top:0;display:flex;flex-direction:column;padding:0;list-style:none;max-width:900px}
+[data-revlist] li{padding:20px 0;border-top:1px solid var(--line);font-size:22px;line-height:1.5;color:var(--ink)}
+[data-revlist] li:last-child{border-bottom:1px solid var(--line)}
+[data-revsrc]{margin-top:26px;font-size:20px;line-height:1.5;color:var(--ink-soft)}
+[data-price]{background:var(--band);padding:96px 22px}
+[data-price-in]{max-width:1120px;margin:0 auto}
+[data-bigprice]{font-family:'Literata',serif;font-weight:600;font-size:48px;line-height:1.1;color:var(--ink)}
+[data-nextprice]{margin-top:14px;font-family:'Literata',serif;font-weight:600;font-size:48px;line-height:1.1;color:var(--ink-soft)}
+[data-giftbox]{margin-top:34px;background:var(--ground);border-radius:20px;padding:26px;max-width:760px;font-size:24px;line-height:1.5;color:var(--ink)}
+[data-logi]{margin-top:44px;display:flex;flex-direction:column;gap:18px;max-width:760px;padding:0;list-style:none}
+[data-logi] li{position:relative;padding-left:24px;font-size:22px;line-height:1.5;color:var(--ink)}
+[data-logi] li::before{content:"";position:absolute;left:0;top:14px;width:9px;height:9px;border-radius:999px;background:var(--accent)}
+[data-foot]{background:var(--ground);padding:44px 22px 120px;font-size:20px;line-height:1.5;color:var(--ink-soft)}
+[data-sticky]{display:none}
+@media (max-width:899px){
+  [data-sticky][data-on="1"]{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:20;align-items:center;justify-content:space-between;gap:14px;padding:12px 16px;background:var(--ground);border-top:1px solid var(--line)}
+  [data-sticky] a{height:56px;padding:0 22px;font-size:20px;border-radius:12px;margin:0;width:auto;max-width:none}
+  [data-sticky] a span{display:none}
+}
+@media (min-width:900px){
+  [data-reviews]{padding:128px 40px}
+  [data-revcards] p{font-size:34px;padding:32px 0}
+  [data-revlist] li{font-size:24px;padding:24px 0}
+  [data-price]{padding:160px 40px}
+  [data-bigprice]{font-size:72px}
+  [data-nextprice]{font-size:60px}
+  [data-giftbox]{font-size:27px;padding:34px}
+  [data-logi] li{font-size:24px}
+  [data-foot]{padding:60px 40px 80px;font-size:21px}
+}
+[data-author]{background:var(--band);padding:72px 22px 0}
+[data-author-in]{max-width:1120px;margin:0 auto;display:flex;flex-direction:column;align-items:flex-start}
+[data-avtor]{display:block;width:100%;max-width:420px;height:auto;margin:0 auto}
+[data-aname]{margin-top:24px;font-family:'Literata',serif;font-weight:600;font-size:34px;line-height:1.2;color:var(--ink)}
+[data-regalia]{margin-top:22px;display:flex;flex-direction:column;gap:16px;max-width:640px;padding:0;list-style:none}
+[data-regalia] li{font-size:24px;line-height:1.45;color:var(--ink);padding-left:22px;position:relative}
+[data-regalia] li::before{content:"";position:absolute;left:0;top:13px;width:9px;height:9px;border-radius:999px;background:var(--accent)}
+@media (min-width:900px){
+  [data-author]{padding:128px 40px 0}
+  [data-author-in]{display:grid;grid-template-columns:minmax(0,420px) minmax(0,1fr);column-gap:56px;align-items:end}
+  [data-avtor]{max-width:none;margin:0;align-self:end}
+  [data-atext]{padding-bottom:128px}
+  [data-aname]{margin-top:0;font-size:48px}
+  [data-regalia] li{font-size:27px}
+}
+[data-dark]{background:linear-gradient(165deg,#3A241A 0%,var(--ground-dark) 58%,#1B120D 100%);color:var(--ink-invert);padding:96px 22px}
+[data-dark] [data-h2]{color:var(--ink-invert)}
+[data-dark-in]{max-width:1120px;margin:0 auto}
+[data-q]{display:flex;flex-direction:column;gap:14px;max-width:640px}
+[data-q] p{font-family:'Literata',serif;font-weight:400;font-style:italic;font-size:30px;line-height:1.35;color:var(--ink);background:var(--ground);border-radius:16px;padding:22px 24px}
+[data-turn]{margin-top:34px;max-width:640px;background:linear-gradient(150deg,#D14428 0%,var(--accent) 55%,var(--accent-deep) 100%);color:var(--on-accent);border-radius:20px;padding:26px}
+[data-turn] b{display:block;font-family:'Literata',serif;font-weight:600;font-size:32px;line-height:1.25}
+[data-turn] span{display:block;margin-top:12px;font-size:24px;line-height:1.5}
+[data-turnq]{display:block;margin-top:18px;background:var(--on-accent);color:var(--accent-deep);border-radius:14px;padding:18px 22px;font-family:'Literata',serif;font-weight:600;font-style:italic;font-size:30px;line-height:1.25}
+@media (min-width:900px){[data-turnq]{font-size:38px;padding:22px 28px}}
+@media (min-width:900px){
+  [data-dark]{padding:160px 40px}
+  [data-q]{gap:18px;max-width:820px}
+  [data-q] p{font-size:32px;padding:26px 30px}
+  [data-turn]{margin-top:44px;max-width:820px;padding:36px 38px}
+  [data-turn] b{font-size:34px}
+  [data-turn] span{font-size:24px}
+}
+[data-band]{display:grid;grid-template-columns:1fr;background:var(--ground);border:1px solid var(--line);border-radius:20px;overflow:hidden}
+[data-numrow]{display:flex;flex-direction:column;align-items:flex-start;gap:4px;padding:22px 24px;border-top:1px solid var(--line)}
+[data-numrow]:first-child{border-top:0}
+[data-numrow] b{font-family:'Literata',serif;font-weight:600;font-size:48px;line-height:1.1;color:var(--accent)}
+[data-numrow] span{font-size:28px;line-height:1.35;color:var(--ink)}
+@media (min-width:900px){
+  [data-nums]{padding:128px 40px}
+  [data-band]{grid-template-columns:repeat(3,1fr)}
+  [data-numrow]{border-top:0;border-left:1px solid var(--line);padding:40px 36px;gap:8px}
+  [data-numrow]:first-child{border-left:0}
+  [data-numrow] b{font-size:68px}
+  [data-numrow] span{font-size:30px}
+}
+[data-btn]:hover{background:linear-gradient(180deg,var(--accent) 0%,var(--accent-deep) 100%);color:var(--on-accent)}
+
+@media (max-width:899px){
+  [data-col]{align-items:center;text-align:center}
+  [data-viola]{max-width:32ch}
+  [data-bonus]{text-align:left}
+  [data-figrow]{width:100%;display:flex;justify-content:center}
+  [data-figclip]{width:100%;max-width:520px;height:290px;margin:0 auto;overflow:hidden;justify-content:center;align-items:flex-start}
+  [data-geroy]{width:230%;height:auto;max-width:none;margin:-40px 0 0;flex:none}
+}
+@media (min-width:900px){
+  [data-hero]{position:relative;max-width:1120px;margin:0 auto;padding:96px 40px 120px}
+  [data-col]{max-width:600px}
+  [data-name]{font-size:88px!important}
+  [data-date]{font-size:26px!important}
+  [data-lead]{font-size:32px!important;max-width:22ch!important}
+  [data-viola]{font-size:22px!important;max-width:26ch!important}
+  [data-price]{font-size:60px!important}
+  [data-btn]{width:auto}
+  [data-figrow]{position:absolute;right:0;bottom:0;width:auto;margin:0}
+  [data-figclip]{--fh:min(760px,64vw);height:min(560px,47vw);width:min(400px,34vw);margin-right:-40px}
+}
+</style>
+</helmet>
 <header data-hero="1">
   <div data-col="1">
     <span style="display:inline-block;white-space:nowrap;width:fit-content;padding:10px 20px;background:var(--accent);border:0;border-radius:999px;font-family:'Golos Text',sans-serif;font-weight:500;font-size:19px;letter-spacing:.12em;text-transform:uppercase;color:var(--on-accent);line-height:1.2">Терапевтический уикенд</span>
@@ -45,9 +201,9 @@
     <div data-timer="1" style="margin-top:14px;width:100%;max-width:520px;display:flex;align-items:center;gap:14px;padding:12px 16px;background:var(--band);border:1px solid var(--line);border-radius:14px;text-align:left">
       <span style="font-family:'Golos Text',sans-serif;font-weight:500;font-size:21px;line-height:1.3;color:var(--ink)">До закрытия подарка<br>4 сентября</span>
       <span style="margin-left:auto;display:flex;gap:10px;font-family:'Literata',serif;font-weight:600;color:var(--ink)">
-        <span style="display:flex;flex-direction:column;align-items:center;min-width:52px"><span style="font-size:38px;line-height:1.05"><span data-cd="d">—</span></span><span style="font-family:'Golos Text',sans-serif;font-weight:400;font-size:19px;color:var(--ink-soft)"><span data-cd="dl">—</span></span></span>
-        <span style="display:flex;flex-direction:column;align-items:center;min-width:52px"><span style="font-size:38px;line-height:1.05"><span data-cd="h">—</span></span><span style="font-family:'Golos Text',sans-serif;font-weight:400;font-size:19px;color:var(--ink-soft)"><span data-cd="hl">—</span></span></span>
-        <span style="display:flex;flex-direction:column;align-items:center;min-width:52px"><span style="font-size:38px;line-height:1.05"><span data-cd="m">—</span></span><span style="font-family:'Golos Text',sans-serif;font-weight:400;font-size:19px;color:var(--ink-soft)"><span data-cd="ml">—</span></span></span>
+        <span style="display:flex;flex-direction:column;align-items:center;min-width:52px"><span style="font-size:38px;line-height:1.05">{{ dd }}</span><span style="font-family:'Golos Text',sans-serif;font-weight:400;font-size:19px;color:var(--ink-soft)">{{ ddLabel }}</span></span>
+        <span style="display:flex;flex-direction:column;align-items:center;min-width:52px"><span style="font-size:38px;line-height:1.05">{{ hh }}</span><span style="font-family:'Golos Text',sans-serif;font-weight:400;font-size:19px;color:var(--ink-soft)">{{ hhLabel }}</span></span>
+        <span style="display:flex;flex-direction:column;align-items:center;min-width:52px"><span style="font-size:38px;line-height:1.05">{{ mm }}</span><span style="font-family:'Golos Text',sans-serif;font-weight:400;font-size:19px;color:var(--ink-soft)">{{ mmLabel }}</span></span>
       </span>
     </div>
 
@@ -119,7 +275,7 @@
 
 <section data-author="1">
   <div data-author-in="1">
-    <picture><source type="image/webp" srcset="/neudobnye/assets/img/avtor-sm.webp?v=002c1cd1 560w, /neudobnye/assets/img/avtor.webp?v=04cb7523 840w" sizes="(max-width: 899px) 86vw, 420px"><img data-avtor="1" src="/neudobnye/assets/img/avtor-sm.jpg?v=1320ca73" alt="Виола Маро" width="560" height="747" loading="lazy" decoding="async"></picture>
+    <img data-avtor="1" src="./assets/viola-cutout-beige.png" width="840" height="1120" alt="Виола Маро" loading="lazy">
     <div data-atext="1">
       <h2 data-h2="1">Кто ведёт</h2>
       <p data-aname="1">Виола Маро — психолог, психотерапевт</p>
@@ -188,72 +344,52 @@
 
 <footer data-foot="1">Три дня не заменяют личную терапию и приём врача.</footer>
 
-<div data-sticky="1" data-on="0">
+<div data-sticky="1" data-on="{{ sticky }}">
   <span style="font-family:'Literata',serif;font-weight:600;font-size:26px;color:var(--ink)">3 500 ₽</span>
   <a data-btn="1" href="#">Занять место</a>
 </div>
-</main>
 
-<footer class="ft" aria-label="Реквизиты и документы">
-  <div class="ft-in">
-    <div class="ft-grid">
-
-      <div class="ft-col">
-        <p class="ft-org">Организатор программ Виолы&nbsp;Маро</p>
-        <p class="ft-legal">
-          ИП Нижевясова Анна Станиславовна<br>
-          ОГРНИП 321695200039136<br>
-          ИНН 690503942107<br>
-          Зарегистрирована Межрайонной ИФНС России №&nbsp;10 по&nbsp;Тверской области
-        </p>
-      </div>
-
-      <div class="ft-col">
-        <p class="ft-label"><span class="ft-ico" aria-hidden="true">✉</span>e-mail</p>
-        <a href="mailto:mg.ananizh@gmail.com">mg.ananizh@gmail.com</a>
-      </div>
-
-      <div class="ft-col">
-        <p class="ft-label"><span class="ft-ico" aria-hidden="true">✈</span>Служба заботы в&nbsp;Telegram</p>
-        <a href="https://t.me/violamaroteam" target="_blank" rel="noopener">@violamaroteam</a>
-        <p class="ft-hours">пн–пт, 10:00–18:00&nbsp;МСК</p>
-      </div>
-
-      <nav class="ft-col ft-docs" aria-label="Правовые документы">
-        <p class="ft-label">Документы</p>
-        <a href="/offer">Публичная оферта</a>
-        <a href="/offer-prilozhenie">Приложение № 1 к Публичной оферте</a>
-        <a href="/privacy">Политика обработки персональных данных</a>
-        <a href="/consent">Согласие на обработку персональных данных</a>
-        <a href="/consent-ads">Согласие на рекламные и информационные сообщения</a>
-        <a href="/terms">Пользовательское соглашение</a>
-      </nav>
-
-    </div>
-
-    <p class="ft-disclaimer">
-      Информация на&nbsp;сайте носит информационно-просветительский характер,
-      не&nbsp;является медицинской услугой и&nbsp;не&nbsp;заменяет консультацию специалиста. 18+
-    </p>
-    <p class="ft-copy">
-      © Нижевясова А.&nbsp;С., 2026. Все права защищены. Любое использование или
-      копирование материалов сайта, элементов дизайна и&nbsp;оформления допускается
-      только с&nbsp;письменного разрешения правообладателя и&nbsp;со&nbsp;ссылкой на&nbsp;источник.
-    </p>
-    <p class="ft-note" id="meta-note">* Meta признана экстремистской организацией в&nbsp;России</p>
-  </div>
-</footer>
-
-<div class="cookie-bar" id="cookie-bar" hidden>
-  <p>
-    Мы используем файлы cookie, чтобы сайт работал корректно и&nbsp;чтобы понимать,
-    какие материалы вам полезны. Продолжая пользоваться сайтом, вы&nbsp;соглашаетесь
-    с&nbsp;их&nbsp;использованием.
-    <a href="/privacy#cookie">Подробнее</a>
-  </p>
-  <button type="button" id="cookie-ok">Хорошо</button>
-</div>
-
-<script src="/neudobnye/assets/site.js?v=ef4649f7"></script>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:420,&quot;height&quot;:900}}">class Component extends DCLogic {
+  state = { left: null, sticky: '0' };
+  componentDidMount() {
+    this.tick();
+    this.t = setInterval(() => this.tick(), 30000);
+    this.onScroll = () => {
+      const on = window.scrollY > window.innerHeight * 0.9 ? '1' : '0';
+      if (on !== this.state.sticky) this.setState({ sticky: on });
+    };
+    window.addEventListener('scroll', this.onScroll, { passive: true });
+    this.onScroll();
+  }
+  componentWillUnmount() { clearInterval(this.t); window.removeEventListener('scroll', this.onScroll); }
+  tick() {
+    const end = new Date(2026, 8, 4, 23, 59, 59);
+    const ms = Math.max(0, end - new Date());
+    this.setState({ left: {
+      d: Math.floor(ms / 86400000),
+      h: Math.floor(ms / 3600000) % 24,
+      m: Math.floor(ms / 60000) % 60
+    }});
+  }
+  plural(n, forms) {
+    if (typeof n !== 'number') return forms[2];
+    const a = Math.abs(n) % 100, b = a % 10;
+    if (a > 10 && a < 20) return forms[2];
+    if (b === 1) return forms[0];
+    if (b >= 2 && b <= 4) return forms[1];
+    return forms[2];
+  }
+  renderVals() {
+    const l = this.state.left || { d: '—', h: '—', m: '—' };
+    return {
+      sticky: this.state.sticky,
+      dd: String(l.d), hh: String(l.h), mm: String(l.m),
+      ddLabel: this.plural(l.d, ['день', 'дня', 'дней']),
+      hhLabel: this.plural(l.h, ['час', 'часа', 'часов']),
+      mmLabel: this.plural(l.m, ['минута', 'минуты', 'минут'])
+    };
+  }
+}</script>
 </body>
 </html>

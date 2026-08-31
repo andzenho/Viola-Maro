@@ -673,69 +673,46 @@ def build_images():
     print("  картинки: %d файлов, %.0f КБ" % (len(made), total / 1024))
 
 
-def build_cutout():
-    """Портрет без фона для первого экрана «Неудобных».
+def build_avtor_photo():
+    """Портрет для экрана «Кто ведёт». Вырезка на бежевом фоне.
 
-    Страница светлая насквозь (решение продюсера 15.08, зафиксировано
-    в produkt/lending-strategiya-dizayna.md), поэтому кадр с тёмной
-    студийной средой сюда не годится: он тянет за собой тёмный план,
-    которого на странице быть не должно. Берётся вырезка.
-
-    Формат — WebP с альфой. JPEG прозрачности не знает вовсе, а PNG
-    того же качества весит вчетверо больше: у этого снимка 1,7 МБ
-    против 90 КБ. PNG кладётся один, узкий, как запасной для браузеров
-    без WebP — таких почти не осталось, и тащить им полный размер незачем.
-
-    Поля вырезки обрезаются по альфе: в присланном файле слева и справа
-    остаются прозрачные полосы, из-за которых портрет на странице встаёт
-    меньше, чем занимает место.
+    В исходнике это PNG на 1,6 МБ. Отдаётся WebP, JPEG остаётся запасным:
+    прозрачности в кадре нет, фон залит, и PNG тут не нужен никому.
     """
     from PIL import Image
-    src = os.path.join(SRC, "assets", "viola-cutout.png")
+    src = os.path.join(SRC, "assets", "viola-cutout-beige.png")
     outdir = os.path.join(OUT, "assets", "img")
     os.makedirs(outdir, exist_ok=True)
 
-    im = Image.open(src).convert("RGBA")
-    im = im.crop(im.getchannel("A").getbbox())
-
+    im = Image.open(src).convert("RGB")
     made = []
-    for w in CUTOUT_WIDTHS:
+    for w in AVTOR_WIDTHS:
         r = im.resize((w, round(im.height * w / im.width)), Image.LANCZOS)
-        path = os.path.join(outdir, "viola%s.webp" % ("-sm" if w == min(CUTOUT_WIDTHS) else ""))
-        r.save(path, quality=88, method=6)
-        made.append(path)
+        suffix = "-sm" if w == min(AVTOR_WIDTHS) else ""
+        for ext, kw in (("webp", {"quality": 86, "method": 6}),
+                        ("jpg", {"quality": 84, "optimize": True, "progressive": True})):
+            path = os.path.join(outdir, "avtor%s.%s" % (suffix, ext))
+            r.save(path, **kw)
+            made.append(path)
 
-    # Запасной PNG для браузеров без WebP. Таких почти не осталось,
-    # поэтому он узкий и квантованный: полноцветный весил 601 КБ,
-    # больше самой страницы, ради доли процента посетителей. 255 цветов
-    # с альфой на фотографии в 420 px глазом не отличаются, а файл
-    # выходит в девять раз легче.
-    small = im.resize((PNG_WIDTH, round(im.height * PNG_WIDTH / im.width)), Image.LANCZOS)
-    png = os.path.join(outdir, "viola-sm.png")
-    small.quantize(colors=255, method=Image.FASTOCTREE).save(png, optimize=True)
-    made.append(png)
-
-    total = sum(os.path.getsize(p) for p in made)
-    print("  портрет без фона: %d файлов, %.0f КБ" % (len(made), total / 1024))
+    print("  портрет автора: %d файлов, %.0f КБ"
+          % (len(made), sum(os.path.getsize(x) for x in made) / 1024))
 
 
-CUTOUT_WIDTHS = (560, 1020)
-PNG_WIDTH = 420
+AVTOR_WIDTHS = (560, 840)
 
 
-def cutout_picture():
-    lo, hi = CUTOUT_WIDTHS
-    return ('<picture>\n'
-            '        <source type="image/webp" '
-            'srcset="/assets/img/viola-sm.webp %dw, /assets/img/viola.webp %dw" '
-            'sizes="(max-width: 900px) 78vw, 42vw">\n'
-            '        <img src="/assets/img/viola-sm.png" alt="Виола Маро" '
-            'width="%d" height="%d" fetchpriority="high" decoding="async">\n'
-            '      </picture>' % (lo, hi, PNG_WIDTH, round(PNG_WIDTH * 1419 / 955)))
+def avtor_picture():
+    lo, hi = AVTOR_WIDTHS
+    return ('<picture>'
+            '<source type="image/webp" '
+            'srcset="/assets/img/avtor-sm.webp %dw, /assets/img/avtor.webp %dw" '
+            'sizes="(max-width: 899px) 86vw, 420px">'
+            '<img data-avtor="1" src="/assets/img/avtor-sm.jpg" alt="Виола Маро" '
+            'width="%d" height="%d" loading="lazy" decoding="async">'
+            '</picture>' % (lo, hi, lo, round(lo * 1448 / 1086)))
 
 
-# Ширины подставляются те, что реально собраны: они зависят от кропа,
-# а зашитые руками разъезжались с ним и давали 404 на первом экране.
 MOBILE_WIDTHS = ()
 DESKTOP_WIDTHS = ()
 
@@ -1631,74 +1608,133 @@ def build_landing():
 # то, что обязано совпадать на всех страницах сайта.
 
 
-def pay_buttons():
-    """Две кнопки оплаты. Одна пара на страницу, вставляется дважды.
-
-    Кнопки одного веса и стоят рядом: способ платежа — не выбор
-    «лучше и хуже», и подсказывать один другому странице незачем.
-    У каждой своя подпись, потому что различаются они условиями,
-    а не важностью.
-    """
-    rub = NEUD_PAY_RUB or "#"
-    intl = NEUD_PAY_INTL or "#"
-    ext = ' target="_blank" rel="noopener"'
-    return (
-        '<div class="n-pay">\n'
-        '        <div class="n-pay-one">\n'
-        '          <a class="n-btn" href="%s"%s>Оплатить в&nbsp;рублях'
-        '<span class="n-arrow" aria-hidden="true">→</span></a>\n'
-        '          <p class="n-pay-note">есть рассрочка</p>\n'
-        '        </div>\n'
-        '        <div class="n-pay-one">\n'
-        '          <a class="n-btn" href="%s"%s>Оплатить с&nbsp;зарубежной карты'
-        '<span class="n-arrow" aria-hidden="true">→</span></a>\n'
-        '          <p class="n-pay-note">принимаются карты любой страны</p>\n'
-        '        </div>\n'
-        '      </div>'
-        % (rub, ext if NEUD_PAY_RUB else "", intl, ext if NEUD_PAY_INTL else "")
-    )
-
-
-# Повторная кнопка после каждого крупного экрана. Якорь, а не оплата:
-# способ платежа человек выбирает уже на экране цены, когда цену увидел.
 CTA_NEUD = ('<a class="n-btn n-cta" href="#bilet">Приобрести билет'
             '<span class="n-arrow" aria-hidden="true">→</span></a>')
 
 
+# Обратный отсчёт и липкая панель. В исходнике DesignCraft это состояние
+# компонента; здесь то же самое обычным скриптом, без сборки и зависимостей.
+#
+# Дата стоит в двух местах: здесь и в тексте страницы («до 4 сентября»).
+# Меняете срок — меняете оба.
+NEUD_JS = """
+(function () {
+  'use strict';
+
+  var box = document.querySelector('[data-timer]');
+  if (box) {
+    var end = new Date(2026, 8, 4, 23, 59, 59);
+    var cells = {};
+    ['d', 'dl', 'h', 'hl', 'm', 'ml'].forEach(function (k) {
+      cells[k] = box.querySelector('[data-cd="' + k + '"]');
+    });
+    var plural = function (n, forms) {
+      var a = Math.abs(n) % 100, b = a % 10;
+      if (a > 10 && a < 20) return forms[2];
+      if (b === 1) return forms[0];
+      if (b >= 2 && b <= 4) return forms[1];
+      return forms[2];
+    };
+    var timer;
+    var tick = function () {
+      var ms = end - new Date();
+      /* Срок вышел — полоса убирается целиком. Нули читаются как сломанная
+         страница, а подарок к этому моменту и правда закрыт. */
+      if (ms <= 0) { box.hidden = true; clearInterval(timer); return; }
+      var d = Math.floor(ms / 86400000),
+          h = Math.floor(ms / 3600000) % 24,
+          m = Math.floor(ms / 60000) % 60;
+      cells.d.textContent = d; cells.dl.textContent = plural(d, ['день', 'дня', 'дней']);
+      cells.h.textContent = h; cells.hl.textContent = plural(h, ['час', 'часа', 'часов']);
+      cells.m.textContent = m; cells.ml.textContent = plural(m, ['минута', 'минуты', 'минут']);
+    };
+    tick();
+    timer = setInterval(tick, 30000);
+  }
+
+  var bar = document.querySelector('[data-sticky]');
+  if (bar) {
+    var on = null;
+    var scroll = function () {
+      var v = window.scrollY > window.innerHeight * 0.9 ? '1' : '0';
+      if (v !== on) { on = v; bar.setAttribute('data-on', v); }
+    };
+    window.addEventListener('scroll', scroll, { passive: true });
+    scroll();
+  }
+})();
+"""
+
+# Стиль лендинга приходит из исходника, а не из build-assets. Заполняется
+# в build_neudobnye(), поэтому build_css() обязан идти после сборки страницы.
+NEUD_CSS = ""
+
+
 def build_neudobnye():
-    body = read(os.path.join(BUILD_ASSETS, "neudobnye.html"))
+    """Страница события. Собирается из исходника DesignCraft.
 
-    # Комментарии из исходника в готовую страницу не едут. Дело не в весе:
-    # в шапке файла объяснены метки {{PAY}} и {{CTA}}, и подстановка
-    # заменила бы их прямо внутри комментария — в выдаче осталась бы
-    # ссылка-двойник, которую никто не видит и никто не поправит.
-    body = re.sub(r"<!--.*?-->", "", body, flags=re.S)
-    body = re.sub(r"\n{3,}", "\n\n", body)
+    Лендинг полностью переработан заказчиком 31.08: своя палитра
+    с терракотовым акцентом, засечная Literata, счётчик мест и обратный
+    отсчёт. К прежней версии страницы отношения не имеет, поэтому
+    build-assets/neudobnye.html и neudobnye.css сняты.
 
-    for mark, repl in (("{{PAY}}", pay_buttons()), ("{{CTA}}", CTA_NEUD),
-                       ("{{HERO}}", cutout_picture())):
-        if mark not in body:
-            raise ValueError("в разметке «Неудобных» нет метки %s" % mark)
-        body = body.replace(mark, repl)
+    Сборщик делает четыре вещи и больше ничего: вынимает стиль и разметку,
+    снимает внешние ссылки на шрифты, разворачивает шаблонные подстановки
+    в обычный скрипт и подставляет настоящие адреса картинок и оплаты.
+    Вёрстку заказчика не трогает: правки по ней идут отдельно и осознанно,
+    иначе следующий экспорт из DesignCraft их затрёт.
+    """
+    global NEUD_CSS
+    raw = read(os.path.join(SRC, "Лендинг Неудобные v5.dc.html"))
 
-    body = collect_state_styles(body)   # style-hover → классы в site.css
+    NEUD_CSS = re.search(r"<style>(.*?)</style>", raw, re.S).group(1).strip()
+    # Константы неиспользуемых картинок: объявлены, нигде не читаются.
+    NEUD_CSS = re.sub(r'\s*--foto-(geroy|avtor):\s*url\("[^"]*"\);', "", NEUD_CSS)
+
+    body = raw[raw.index("</helmet>") + len("</helmet>"):]
+    body = re.sub(r"<script.*?</script>", "", body, flags=re.S)
+    body = body[:body.index("</x-dc>")]
+    body = re.sub(r"</?x-dc[^>]*>", "", body).strip()
+
+    # ── подстановки шаблона → разметка под обычный скрипт ──────────────
+    for mark, cell in (("dd", "d"), ("hh", "h"), ("mm", "m"),
+                       ("ddLabel", "dl"), ("hhLabel", "hl"), ("mmLabel", "ml")):
+        token = "{{ %s }}" % mark
+        if token not in body:
+            raise ValueError("в исходнике нет метки %s" % token)
+        body = body.replace(token, '<span data-cd="%s">—</span>' % cell)
+    body = body.replace('data-on="{{ sticky }}"', 'data-on="0"')
+
+    left = re.findall(r"\{\{[^}]*\}\}", body)
+    if left:
+        raise ValueError("остались нераскрытые подстановки: %s" % left[:3])
+
+    # ── портрет автора ─────────────────────────────────────────────────
+    if body.count('<img data-avtor="1"') != 1:
+        raise ValueError("ожидался один портрет автора")
+    body = re.sub(r'<img data-avtor="1"[^>]*>', lambda _m: avtor_picture(), body, count=1)
+
+    # ── адреса оплаты вместо заглушек ──────────────────────────────────
+    n_btn = body.count('data-btn="1" href="#"')
+    if NEUD_PAY_RUB:
+        body = body.replace('data-btn="1" href="#"',
+                            'data-btn="1" href="%s" target="_blank" rel="noopener"'
+                            % NEUD_PAY_RUB)
 
     page = head(
-        "Неудобные. Три дня для эмпатов с Виолой Маро",
-        "11–13 сентября, онлайн. Лекция «Цена непрожитой жизни», аудиомедитация "
-        "«Мне можно» и живой разбор ваших случаев. Билет 3 000 ₽, и эти 3 000 ₽ "
-        "засчитываются в оплату практикума «Прикладная эмпатия».",
+        "Неудобные. Терапевтический уикенд Виолы Маро 11–13 сентября",
+        "Три дня 11–13 сентября: лекция о жизненных ролях, авторская медитация "
+        "и прямой эфир с Виолой Маро. Записи остаются навсегда. 3 500 ₽ до 4 сентября.",
         "/assets/site.css")
-    page += body.strip() + "\n"
+    page += '<main id="main">\n' + body + "\n</main>\n"
     page += footer_html() + COOKIE_HTML
     page += '\n<script src="/assets/site.js"></script>\n</body>\n</html>\n'
     write(os.path.join(OUT, "index.html"), page)
 
-    print("  index.html: страница события «Неудобные»")
-    if not (NEUD_PAY_RUB and NEUD_PAY_INTL):
-        empty = ", ".join(n for n, v in (("NEUD_PAY_RUB", NEUD_PAY_RUB),
-                                         ("NEUD_PAY_INTL", NEUD_PAY_INTL)) if not v)
-        print("  ВНИМАНИЕ: кнопки оплаты никуда не ведут — пусто в %s" % empty)
+    print("  index.html: страница события «Неудобные», исходник v5")
+    if not NEUD_PAY_RUB:
+        print("  ВНИМАНИЕ: %d кнопки «Занять место» никуда не ведут "
+              "— пусто в NEUD_PAY_RUB" % n_btn)
     return page
 
 
@@ -1763,6 +1799,42 @@ FONT_FACES = [
 ]
 
 
+# Literata — засечный шрифт нового лендинга события. У остальных страниц
+# сайта его нет, поэтому список отдельный: в общий FONT_FACES он попадать
+# не должен, иначе практикум начнёт таскать 250 КБ, которых не использует.
+#
+# Начертания сняты с Google Fonts и подшиты файлами. Исходник события
+# грузил их ссылкой, а на этом сайте внешних запросов не бывает ни одного:
+# страница обязана открываться из России без VPN, ради этого из лендинга
+# практикума в своё время убрали ровно такую же ссылку.
+LITERATA_FACES = [
+    ("Literata", "Literata-cyrillic-ext-400-italic.woff2", "400", "italic",
+     "U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F"),
+    ("Literata", "Literata-cyrillic-400-italic.woff2", "400", "italic",
+     "U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116"),
+    ("Literata", "Literata-latin-ext-400-italic.woff2", "400", "italic",
+     "U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF"),
+    ("Literata", "Literata-latin-400-italic.woff2", "400", "italic",
+     "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD"),
+    ("Literata", "Literata-cyrillic-ext-400.woff2", "400", "normal",
+     "U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F"),
+    ("Literata", "Literata-cyrillic-400.woff2", "400", "normal",
+     "U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116"),
+    ("Literata", "Literata-latin-ext-400.woff2", "400", "normal",
+     "U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF"),
+    ("Literata", "Literata-latin-400.woff2", "400", "normal",
+     "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD"),
+    ("Literata", "Literata-cyrillic-ext-600.woff2", "600", "normal",
+     "U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F"),
+    ("Literata", "Literata-cyrillic-600.woff2", "600", "normal",
+     "U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116"),
+    ("Literata", "Literata-latin-ext-600.woff2", "600", "normal",
+     "U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF"),
+    ("Literata", "Literata-latin-600.woff2", "600", "normal",
+     "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD"),
+]
+
+
 def font_css():
     out = []
     for fam, fname, weight, urange in FONT_FACES:
@@ -1770,6 +1842,11 @@ def font_css():
             "@font-face{font-family:'%s';font-style:normal;font-weight:%s;font-display:swap;"
             "src:url(/assets/fonts/%s) format('woff2');unicode-range:%s}"
             % (fam, weight, fname, urange))
+    for fam, fname, weight, style, urange in (LITERATA_FACES if MODE == "neudobnye" else []):
+        out.append(
+            "@font-face{font-family:'%s';font-style:%s;font-weight:%s;font-display:swap;"
+            "src:url(/assets/fonts/%s) format('woff2');unicode-range:%s}"
+            % (fam, style, weight, fname, urange))
     return "\n".join(out)
 
 
@@ -1777,11 +1854,14 @@ def copy_fonts():
     dst = os.path.join(OUT, "assets", "fonts")
     os.makedirs(dst, exist_ok=True)
     total = 0
-    for _fam, fname, _w, _u in FONT_FACES:
+    names = [f[1] for f in FONT_FACES]
+    if MODE == "neudobnye":
+        names += [f[1] for f in LITERATA_FACES]
+    for fname in names:
         s = os.path.join(BUILD_ASSETS, "fonts", fname)
         shutil.copy2(s, os.path.join(dst, fname))
         total += os.path.getsize(s)
-    print("  шрифты: %d файлов, %.0f КБ" % (len(FONT_FACES), total / 1024))
+    print("  шрифты: %d файлов, %.0f КБ" % (len(names), total / 1024))
 
 
 # ──────────────────────────────────────────────────────────────────── CSS ──
@@ -1789,7 +1869,7 @@ def copy_fonts():
 def build_css():
     css = font_css() + "\n\n" + read(os.path.join(BUILD_ASSETS, "base.css"))
     if MODE == "neudobnye":
-        css += "\n\n" + read(os.path.join(BUILD_ASSETS, "neudobnye.css"))
+        css += "\n\n/* ── событие «Неудобные», стиль из исходника ── */\n" + NEUD_CSS
     css += "\n\n/* состояния наведения и фокуса, перенесённые из инлайновых стилей */\n"
     css += hover_css() + "\n"
     write(os.path.join(OUT, "assets", "site.css"), css)
@@ -1798,6 +1878,8 @@ def build_css():
 
 def build_js():
     js = read(os.path.join(BUILD_ASSETS, "site.js")) + "\n" + COOKIE_JS
+    if MODE == "neudobnye":
+        js += "\n" + NEUD_JS
     write(os.path.join(OUT, "assets", "site.js"), js)
 
 
@@ -2077,10 +2159,8 @@ def main():
         print("  индексация запрещена")
     copy_fonts()
     if MODE == "neudobnye":
-        # Первый экран светлый, студийный кадр с тёмной средой сюда не идёт:
-        # он тянул бы за собой тёмный план, которого на странице быть не должно.
-        build_cutout()
-        build_neudobnye()   # заполняет HOVER_RULES
+        build_avtor_photo()
+        build_neudobnye()
     else:
         build_images()
         build_landing()      # заполняет HOVER_RULES

@@ -429,3 +429,50 @@
     initAnalytics();
   });
 })();
+
+
+(function () {
+  'use strict';
+
+  var box = document.querySelector('[data-timer]');
+  if (box) {
+    var end = new Date(2026, 8, 4, 23, 59, 59);
+    var cells = {};
+    ['d', 'dl', 'h', 'hl', 'm', 'ml'].forEach(function (k) {
+      cells[k] = box.querySelector('[data-cd="' + k + '"]');
+    });
+    var plural = function (n, forms) {
+      var a = Math.abs(n) % 100, b = a % 10;
+      if (a > 10 && a < 20) return forms[2];
+      if (b === 1) return forms[0];
+      if (b >= 2 && b <= 4) return forms[1];
+      return forms[2];
+    };
+    var timer;
+    var tick = function () {
+      var ms = end - new Date();
+      /* Срок вышел — полоса убирается целиком. Нули читаются как сломанная
+         страница, а подарок к этому моменту и правда закрыт. */
+      if (ms <= 0) { box.hidden = true; clearInterval(timer); return; }
+      var d = Math.floor(ms / 86400000),
+          h = Math.floor(ms / 3600000) % 24,
+          m = Math.floor(ms / 60000) % 60;
+      cells.d.textContent = d; cells.dl.textContent = plural(d, ['день', 'дня', 'дней']);
+      cells.h.textContent = h; cells.hl.textContent = plural(h, ['час', 'часа', 'часов']);
+      cells.m.textContent = m; cells.ml.textContent = plural(m, ['минута', 'минуты', 'минут']);
+    };
+    tick();
+    timer = setInterval(tick, 30000);
+  }
+
+  var bar = document.querySelector('[data-sticky]');
+  if (bar) {
+    var on = null;
+    var scroll = function () {
+      var v = window.scrollY > window.innerHeight * 0.9 ? '1' : '0';
+      if (v !== on) { on = v; bar.setAttribute('data-on', v); }
+    };
+    window.addEventListener('scroll', scroll, { passive: true });
+    scroll();
+  }
+})();

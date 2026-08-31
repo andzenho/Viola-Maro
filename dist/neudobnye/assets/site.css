@@ -5,6 +5,18 @@
 @font-face{font-family:'Prata';font-style:normal;font-weight:400;font-display:swap;src:url(/neudobnye/assets/fonts/Prata-cyrillic-ext.woff2) format('woff2');unicode-range:U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F}
 @font-face{font-family:'Prata';font-style:normal;font-weight:400;font-display:swap;src:url(/neudobnye/assets/fonts/Prata-cyrillic.woff2) format('woff2');unicode-range:U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116}
 @font-face{font-family:'Prata';font-style:normal;font-weight:400;font-display:swap;src:url(/neudobnye/assets/fonts/Prata-latin.woff2) format('woff2');unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}
+@font-face{font-family:'Literata';font-style:italic;font-weight:400;font-display:swap;src:url(/neudobnye/assets/fonts/Literata-cyrillic-ext-400-italic.woff2) format('woff2');unicode-range:U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F}
+@font-face{font-family:'Literata';font-style:italic;font-weight:400;font-display:swap;src:url(/neudobnye/assets/fonts/Literata-cyrillic-400-italic.woff2) format('woff2');unicode-range:U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116}
+@font-face{font-family:'Literata';font-style:italic;font-weight:400;font-display:swap;src:url(/neudobnye/assets/fonts/Literata-latin-ext-400-italic.woff2) format('woff2');unicode-range:U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF}
+@font-face{font-family:'Literata';font-style:italic;font-weight:400;font-display:swap;src:url(/neudobnye/assets/fonts/Literata-latin-400-italic.woff2) format('woff2');unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}
+@font-face{font-family:'Literata';font-style:normal;font-weight:400;font-display:swap;src:url(/neudobnye/assets/fonts/Literata-cyrillic-ext-400.woff2) format('woff2');unicode-range:U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F}
+@font-face{font-family:'Literata';font-style:normal;font-weight:400;font-display:swap;src:url(/neudobnye/assets/fonts/Literata-cyrillic-400.woff2) format('woff2');unicode-range:U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116}
+@font-face{font-family:'Literata';font-style:normal;font-weight:400;font-display:swap;src:url(/neudobnye/assets/fonts/Literata-latin-ext-400.woff2) format('woff2');unicode-range:U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF}
+@font-face{font-family:'Literata';font-style:normal;font-weight:400;font-display:swap;src:url(/neudobnye/assets/fonts/Literata-latin-400.woff2) format('woff2');unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}
+@font-face{font-family:'Literata';font-style:normal;font-weight:600;font-display:swap;src:url(/neudobnye/assets/fonts/Literata-cyrillic-ext-600.woff2) format('woff2');unicode-range:U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F}
+@font-face{font-family:'Literata';font-style:normal;font-weight:600;font-display:swap;src:url(/neudobnye/assets/fonts/Literata-cyrillic-600.woff2) format('woff2');unicode-range:U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116}
+@font-face{font-family:'Literata';font-style:normal;font-weight:600;font-display:swap;src:url(/neudobnye/assets/fonts/Literata-latin-ext-600.woff2) format('woff2');unicode-range:U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF}
+@font-face{font-family:'Literata';font-style:normal;font-weight:600;font-display:swap;src:url(/neudobnye/assets/fonts/Literata-latin-600.woff2) format('woff2');unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}
 
 /* ─────────────────────────────────────────────────────────── основа ── */
 
@@ -539,667 +551,162 @@ body.modal-open { overflow: hidden; }
 }
 
 
-/* ══════════════════════════════════════════════ «Неудобные» ══ */
-/*
-   Страница события. Своих красок не заводит: палитра, кегли, радиусы,
-   тени и кнопки взяты с лендинга практикума — те же значения, только
-   вынесены в классы, а не разложены по инлайновым стилям.
-
-   Подключается к site.css только в режиме --mode neudobnye.
-
-   ── Светлая насквозь. Решение продюсера, зафиксировано
-   в produkt/lending-strategiya-dizayna.md: тёмных секций на странице
-   нет ни одной, включая первый экран и финал. Цвет по странице несут
-   кнопки — заливка у них та же тёмная, что была у секций, и повторяется
-   ритмом действия сверху донизу. Это буквально её образ: «зажечь свет
-   во всех своих комнатах», страница из плотного выходит в светлое
-   и дальше в нём остаётся.
-
-   Следствие, которое ужесточает всё остальное: фон больше не делит
-   страницу на планы, и ошибку набора цветной плашкой не прикрыть.
-   Иерархию целиком несёт типографика.
-
-   ── Бронза не носит текст. #C9A87F на светлом даёт 3,85:1 и в буквы
-   не идёт никогда: только линии, рамки и подложки. Акцентный текст —
-   затемнённая бронза #8A5A2B, 6,4:1.
-
-   ── Аудитория читает с телефона и ей 45–55: ни один текст не опускается
-   ниже 17 px, на узком экране всё подрастает, кнопки во всю ширину
-   и не мельче 64 px.
-*/
-
-/* ─────────────────────────────────────────────────── каркас ── */
-
-.n-sec {
-  padding: clamp(56px, 8vw, 104px) clamp(14px, 4vw, 40px);
-  background: #FBF7F1;
+/* ── событие «Неудобные», стиль из исходника ── */
+:root{
+  /* КОНСТАНТЫ */
+  --kassa: "#";
+  --ground:#FFFFFF; --band:#FBF4EA; --ground-dark:#241812;
+  --ink:#14101A; --ink-soft:#55505C; --ink-invert:#FBF4EA; --ink-invert-soft:#C9BDB2;
+  --line:#EDE3D6; --accent:#B8371D; --accent-deep:#962C16; --accent-lite:#E8734F;
+  --on-accent:#FFFFFF; --ph:#F0E8DE;
 }
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--ground);color:var(--ink);font-family:'Golos Text',sans-serif;font-weight:400;font-size:20px;line-height:1.6;-webkit-font-smoothing:antialiased;text-wrap:pretty}
+a{color:var(--accent-deep);text-decoration:none}
+a:hover{color:var(--accent)}
+h1,h2,h3,p,ul{margin:0}
 
-/* Через один — на полтона теплее. Это вся смена планов, какая
-   на странице есть: секции различает оттенок ground, не заливка. */
-.n-sec--tint { background: linear-gradient(180deg, #F5EFE6 0%, #F1E8DB 100%); }
-
-.n-in { max-width: 1020px; margin: 0 auto; }
-.n-in--mid { max-width: 780px; }
-.n-in--narrow { max-width: 680px; }
-
-.n-stack { display: flex; flex-direction: column; }
-.n-gap-l { gap: clamp(28px, 3.6vw, 40px); }
-.n-gap-m { gap: clamp(18px, 2.2vw, 24px); }
-
-/* ────────────────────────────────────────── типографика ── */
-
-.n-eyebrow {
-  margin: 0;
-  font-size: 13px;
-  font-weight: 700;
-  letter-spacing: .18em;
-  text-transform: uppercase;
-  line-height: 1.5;
-  color: #8A5A2B;
+[data-hero]{padding:24px 22px 48px;overflow-x:clip}
+[data-col]{display:flex;flex-direction:column;align-items:flex-start}
+[data-figclip]{--fh:236px;height:165px;width:160px;margin-left:auto;margin-right:-20px;overflow:hidden;display:flex;justify-content:flex-end;align-items:flex-start;background:none;border:0;border-radius:0;box-shadow:none;padding:0}
+[data-geroy]{display:block;height:var(--fh);width:auto;max-width:none;margin-right:calc(var(--fh) * -.101 - 18px);background:none;border:0;border-radius:0;box-shadow:none;padding:0}
+[data-btn]{display:inline-flex;align-items:center;justify-content:center;height:82px;padding:0 44px;width:100%;max-width:520px;background:linear-gradient(180deg,#D14428 0%,var(--accent) 52%,var(--accent-deep) 100%);color:var(--on-accent);border-radius:12px;font-family:'Golos Text',sans-serif;font-weight:500;font-size:27px;letter-spacing:.01em;border-radius:14px;border-bottom:4px solid var(--accent-deep);box-shadow:0 0 0 8px rgba(184,55,29,.13), 0 20px 40px rgba(184,55,29,.36);transition:transform .12s ease}
+[data-btn]:active{transform:translateY(2px)}
+[data-btn]{margin-left:auto;margin-right:auto;align-self:center}
+[data-nums]{background:linear-gradient(180deg,#FFFCF7 0%,var(--band) 40%,#F6EADA 100%);padding:72px 22px}
+[data-nums-in]{max-width:1120px;margin:0 auto}
+[data-h2]{font-family:'Literata',serif;font-weight:600;font-size:38px;line-height:1.2;letter-spacing:-.01em;color:var(--ink);margin-bottom:30px;max-width:20ch}
+[data-h2]::before{content:"";display:block;width:56px;height:4px;background:var(--accent);border-radius:2px;margin-bottom:18px}
+@media (min-width:900px){[data-h2]{font-size:54px;margin-bottom:44px}}
+[data-days]{background:var(--ground);padding:72px 22px}
+[data-days-in]{max-width:1120px;margin:0 auto}
+[data-cards]{display:grid;gap:20px}
+[data-card]{background:var(--ground);border:1px solid var(--line);border-radius:20px;padding:26px;box-shadow:0 8px 32px rgba(36,24,18,.08)}
+[data-card="hot"]{background:linear-gradient(160deg,#D14428 0%,var(--accent) 52%,var(--accent-deep) 100%);border-color:var(--accent);color:var(--ink-invert)}
+[data-badge]{display:inline-block;padding:7px 16px;border-radius:999px;background:var(--band);color:var(--ink-soft);font-family:'Golos Text',sans-serif;font-weight:500;font-size:18px;letter-spacing:.1em;text-transform:uppercase;line-height:1.2}
+[data-card="hot"] [data-badge]{background:var(--on-accent);color:var(--accent-deep)}
+[data-dayname]{margin-top:16px;font-family:'Literata',serif;font-weight:600;font-size:30px;line-height:1.25;color:var(--ink)}
+[data-card="hot"] [data-dayname]{color:var(--ink-invert)}
+[data-cardtop]{display:flex;align-items:center;gap:14px}
+[data-ico]{flex:none;display:flex;align-items:center;justify-content:center;width:52px;height:52px;border-radius:14px;background:var(--band);color:var(--accent)}
+[data-card="hot"] [data-ico]{background:rgba(255,255,255,.16);color:var(--on-accent)}
+[data-card] p[data-body]{margin-top:16px;font-size:27px;line-height:1.5;color:var(--ink);max-width:520px}
+[data-card="hot"] p[data-body]{color:var(--ink-invert)}
+[data-keep]{margin-top:56px;display:grid;grid-template-columns:1fr;gap:18px;padding:0;list-style:none}
+[data-keep] li{display:flex;gap:16px;align-items:flex-start;background:var(--band);border:1px solid var(--line);border-radius:20px;padding:24px;font-size:25px;line-height:1.4;color:var(--ink)}
+[data-keep] li::before{content:"";flex:none;width:10px;height:10px;border-radius:999px;background:var(--accent);margin-top:14px}
+@media (min-width:900px){
+  [data-days]{padding:128px 40px}
+  [data-cards]{grid-template-columns:repeat(3,1fr);gap:28px;align-items:start}
+  [data-card]{padding:36px}
+  [data-card="hot"]{padding:52px 36px}
+  [data-dayname]{font-size:34px}
+  [data-card] p[data-body]{font-size:28px}
+  [data-keep]{grid-template-columns:repeat(3,1fr);gap:24px}
+  [data-keep] li{font-size:27px;padding:30px}
 }
-
-/* Надстрочник разнесён по краям строки: три факта о событии стоят
-   не через точку, а по своим местам, и строка сама держит ширину
-   текстовой колонки. */
-.n-eyebrow--wide {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  gap: 6px 18px;
+[data-reviews]{background:var(--ground);padding:72px 22px}
+[data-rev-in]{max-width:1120px;margin:0 auto}
+[data-revcards]{display:flex;flex-direction:column;max-width:900px}
+[data-revcards] p{padding:26px 0;border-top:1px solid var(--line);font-family:'Literata',serif;font-weight:400;font-size:27px;line-height:1.35;color:var(--ink)}
+[data-revlist]{margin-top:0;display:flex;flex-direction:column;padding:0;list-style:none;max-width:900px}
+[data-revlist] li{padding:20px 0;border-top:1px solid var(--line);font-size:22px;line-height:1.5;color:var(--ink)}
+[data-revlist] li:last-child{border-bottom:1px solid var(--line)}
+[data-revsrc]{margin-top:26px;font-size:20px;line-height:1.5;color:var(--ink-soft)}
+[data-price]{background:var(--band);padding:96px 22px}
+[data-price-in]{max-width:1120px;margin:0 auto}
+[data-bigprice]{font-family:'Literata',serif;font-weight:600;font-size:48px;line-height:1.1;color:var(--ink)}
+[data-nextprice]{margin-top:14px;font-family:'Literata',serif;font-weight:600;font-size:48px;line-height:1.1;color:var(--ink-soft)}
+[data-giftbox]{margin-top:34px;background:var(--ground);border-radius:20px;padding:26px;max-width:760px;font-size:24px;line-height:1.5;color:var(--ink)}
+[data-logi]{margin-top:44px;display:flex;flex-direction:column;gap:18px;max-width:760px;padding:0;list-style:none}
+[data-logi] li{position:relative;padding-left:24px;font-size:22px;line-height:1.5;color:var(--ink)}
+[data-logi] li::before{content:"";position:absolute;left:0;top:14px;width:9px;height:9px;border-radius:999px;background:var(--accent)}
+[data-foot]{background:var(--ground);padding:44px 22px 120px;font-size:20px;line-height:1.5;color:var(--ink-soft)}
+[data-sticky]{display:none}
+@media (max-width:899px){
+  [data-sticky][data-on="1"]{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:20;align-items:center;justify-content:space-between;gap:14px;padding:12px 16px;background:var(--ground);border-top:1px solid var(--line)}
+  [data-sticky] a{height:56px;padding:0 22px;font-size:20px;border-radius:12px;margin:0;width:auto;max-width:none}
+  [data-sticky] a span{display:none}
 }
-
-.n-name {
-  margin: 0;
-  font-family: 'Prata', Georgia, serif;
-  font-weight: 400;
-  font-size: clamp(46px, 7.2vw, 96px);
-  line-height: 1;
-  letter-spacing: .02em;
-  color: #2E2521;
+@media (min-width:900px){
+  [data-reviews]{padding:128px 40px}
+  [data-revcards] p{font-size:34px;padding:32px 0}
+  [data-revlist] li{font-size:24px;padding:24px 0}
+  [data-price]{padding:160px 40px}
+  [data-bigprice]{font-size:72px}
+  [data-nextprice]{font-size:60px}
+  [data-giftbox]{font-size:27px;padding:34px}
+  [data-logi] li{font-size:24px}
+  [data-foot]{padding:60px 40px 80px;font-size:21px}
 }
-
-.n-offer {
-  margin: 0;
-  font-weight: 700;
-  letter-spacing: -.022em;
-  font-size: clamp(25px, 2.9vw, 38px);
-  line-height: 1.2;
-  color: #2E2521;
-  text-wrap: pretty;
+[data-author]{background:var(--band);padding:72px 22px 0}
+[data-author-in]{max-width:1120px;margin:0 auto;display:flex;flex-direction:column;align-items:flex-start}
+[data-avtor]{display:block;width:100%;max-width:420px;height:auto;margin:0 auto}
+[data-aname]{margin-top:24px;font-family:'Literata',serif;font-weight:600;font-size:34px;line-height:1.2;color:var(--ink)}
+[data-regalia]{margin-top:22px;display:flex;flex-direction:column;gap:16px;max-width:640px;padding:0;list-style:none}
+[data-regalia] li{font-size:24px;line-height:1.45;color:var(--ink);padding-left:22px;position:relative}
+[data-regalia] li::before{content:"";position:absolute;left:0;top:13px;width:9px;height:9px;border-radius:999px;background:var(--accent)}
+@media (min-width:900px){
+  [data-author]{padding:128px 40px 0}
+  [data-author-in]{display:grid;grid-template-columns:minmax(0,420px) minmax(0,1fr);column-gap:56px;align-items:end}
+  [data-avtor]{max-width:none;margin:0;align-self:end}
+  [data-atext]{padding-bottom:128px}
+  [data-aname]{margin-top:0;font-size:48px}
+  [data-regalia] li{font-size:27px}
 }
-
-.n-lead {
-  margin: 0;
-  font-size: clamp(18px, 1.9vw, 21px);
-  font-weight: 500;
-  line-height: 1.5;
-  color: #4A3F38;
+[data-dark]{background:linear-gradient(165deg,#3A241A 0%,var(--ground-dark) 58%,#1B120D 100%);color:var(--ink-invert);padding:96px 22px}
+[data-dark] [data-h2]{color:var(--ink-invert)}
+[data-dark-in]{max-width:1120px;margin:0 auto}
+[data-q]{display:flex;flex-direction:column;gap:14px;max-width:640px}
+[data-q] p{font-family:'Literata',serif;font-weight:400;font-style:italic;font-size:30px;line-height:1.35;color:var(--ink);background:var(--ground);border-radius:16px;padding:22px 24px}
+[data-turn]{margin-top:34px;max-width:640px;background:linear-gradient(150deg,#D14428 0%,var(--accent) 55%,var(--accent-deep) 100%);color:var(--on-accent);border-radius:20px;padding:26px}
+[data-turn] b{display:block;font-family:'Literata',serif;font-weight:600;font-size:32px;line-height:1.25}
+[data-turn] span{display:block;margin-top:12px;font-size:24px;line-height:1.5}
+[data-turnq]{display:block;margin-top:18px;background:var(--on-accent);color:var(--accent-deep);border-radius:14px;padding:18px 22px;font-family:'Literata',serif;font-weight:600;font-style:italic;font-size:30px;line-height:1.25}
+@media (min-width:900px){[data-turnq]{font-size:38px;padding:22px 28px}}
+@media (min-width:900px){
+  [data-dark]{padding:160px 40px}
+  [data-q]{gap:18px;max-width:820px}
+  [data-q] p{font-size:32px;padding:26px 30px}
+  [data-turn]{margin-top:44px;max-width:820px;padding:36px 38px}
+  [data-turn] b{font-size:34px}
+  [data-turn] span{font-size:24px}
 }
-
-.n-h2 {
-  margin: 0;
-  font-weight: 700;
-  letter-spacing: -.025em;
-  font-size: clamp(32px, 4.8vw, 54px);
-  line-height: 1.1;
-  color: #2E2521;
-  text-wrap: balance;
+[data-band]{display:grid;grid-template-columns:1fr;background:var(--ground);border:1px solid var(--line);border-radius:20px;overflow:hidden}
+[data-numrow]{display:flex;flex-direction:column;align-items:flex-start;gap:4px;padding:22px 24px;border-top:1px solid var(--line)}
+[data-numrow]:first-child{border-top:0}
+[data-numrow] b{font-family:'Literata',serif;font-weight:600;font-size:48px;line-height:1.1;color:var(--accent)}
+[data-numrow] span{font-size:28px;line-height:1.35;color:var(--ink)}
+@media (min-width:900px){
+  [data-nums]{padding:128px 40px}
+  [data-band]{grid-template-columns:repeat(3,1fr)}
+  [data-numrow]{border-top:0;border-left:1px solid var(--line);padding:40px 36px;gap:8px}
+  [data-numrow]:first-child{border-left:0}
+  [data-numrow] b{font-size:68px}
+  [data-numrow] span{font-size:30px}
 }
+[data-btn]:hover{background:linear-gradient(180deg,var(--accent) 0%,var(--accent-deep) 100%);color:var(--on-accent)}
 
-.n-h3 {
-  margin: 0;
-  font-weight: 700;
-  letter-spacing: -.02em;
-  font-size: clamp(23px, 2.4vw, 27px);
-  line-height: 1.28;
-  color: #2E2521;
-  text-wrap: pretty;
+@media (max-width:899px){
+  [data-col]{align-items:center;text-align:center}
+  [data-viola]{max-width:32ch}
+  [data-bonus]{text-align:left}
+  [data-figrow]{width:100%;display:flex;justify-content:center}
+  [data-figclip]{width:100%;max-width:520px;height:290px;margin:0 auto;overflow:hidden;justify-content:center;align-items:flex-start}
+  [data-geroy]{width:230%;height:auto;max-width:none;margin:-40px 0 0;flex:none}
 }
-
-.n-p {
-  margin: 0;
-  font-size: 18.5px;
-  line-height: 1.62;
-  color: #3B322C;
-  text-wrap: pretty;
+@media (min-width:900px){
+  [data-hero]{position:relative;max-width:1120px;margin:0 auto;padding:96px 40px 120px}
+  [data-col]{max-width:600px}
+  [data-name]{font-size:88px!important}
+  [data-date]{font-size:26px!important}
+  [data-lead]{font-size:32px!important;max-width:22ch!important}
+  [data-viola]{font-size:22px!important;max-width:26ch!important}
+  [data-price]{font-size:60px!important}
+  [data-btn]{width:auto}
+  [data-figrow]{position:absolute;right:0;bottom:0;width:auto;margin:0}
+  [data-figclip]{--fh:min(760px,64vw);height:min(560px,47vw);width:min(400px,34vw);margin-right:-40px}
 }
-.n-p b { color: #2E2521; font-weight: 700; }
-
-.n-note { margin: 0; font-size: 16.5px; line-height: 1.55; color: #6E6158; }
-
-/* Подпись перед списком. Набрана так же, как «С чем выйдете:» в той же
-   карточке: обе вводят содержимое, и разводить их по разным стилям
-   значит сказать, что они разного рода. Двоеточие в источнике есть
-   и остаётся — капслок с разрядкой его отрывал от слова. */
-.n-label {
-  margin: 0;
-  font-size: 17.5px;
-  font-weight: 700;
-  line-height: 1.4;
-  color: #2E2521;
-}
-
-.n-tg {
-  color: #6B4E2C;
-  font-weight: 600;
-  text-decoration: underline;
-  text-decoration-color: rgba(163, 131, 95, .6);
-  text-underline-offset: .2em;
-  white-space: nowrap;
-}
-.n-tg:hover { color: #2E2521; }
-
-/* ────────────────────────────────────────── первый экран ── */
-/*
-   Портрет — вырезка без фона. На светлой странице студийный кадр
-   с тёмной средой тянул бы за собой тёмный план, которого здесь быть
-   не должно.
-
-   Вырезка на голом светлом повисает, поэтому под ней лежит тёплое
-   пятно: оно даёт фигуре опору и заодно возвращает странице каплю
-   цвета, которую отняла отмена тёмной шапки.
-*/
-
-.n-hero {
-  background:
-    radial-gradient(80% 60% at 82% 88%, rgba(232, 213, 183, .5) 0%, rgba(232, 213, 183, 0) 62%),
-    linear-gradient(180deg, #FDFAF5 0%, #F7F0E5 100%);
-  padding-bottom: 0;
-  overflow: hidden;
-}
-
-/* Имя события идёт во всю ширину, а не в текстовую колонку: в Prata
-   оно шире колонки и вылезало на портрет. Ниже колонки расходятся —
-   текст слева, Виола справа. */
-.n-hero-in {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, .74fr);
-  grid-template-areas:
-    "top   top"
-    "bottom photo";
-  column-gap: clamp(20px, 4vw, 56px);
-  row-gap: clamp(22px, 2.8vw, 34px);
-  align-items: end;
-}
-
-/* Обёртка нужна только на телефоне, где группы переставляются местами.
-   На широком экране она раскрывается, и её дети становятся ячейками
-   сетки напрямую. */
-.n-hero-copy { display: contents; }
-
-.n-hero-top { grid-area: top; }
-.n-hero-bottom { grid-area: bottom; padding-bottom: clamp(56px, 8vw, 104px); }
-
-.n-hero-top,
-.n-hero-bottom {
-  display: flex;
-  flex-direction: column;
-  gap: clamp(16px, 2.2vw, 24px);
-}
-
-.n-hero-act { display: flex; flex-direction: column; align-items: flex-start; gap: 12px; }
-.n-hero-act .n-cta { align-self: flex-start; }
-
-.n-under-btn { margin: 0; font-size: 17px; line-height: 1.5; color: #5C5149; }
-
-.n-hero-photo { grid-area: photo; position: relative; align-self: end; }
-
-/* Тёплое пятно под фигурой. Мягкий эллипс, не плашка: у плашки есть
-   край, а край под вырезкой читается как ошибка обтравки. */
-.n-hero-photo::before {
-  content: "";
-  position: absolute;
-  left: 50%;
-  bottom: -4%;
-  width: 152%;
-  height: 104%;
-  transform: translateX(-50%);
-  border-radius: 50%;
-  background: radial-gradient(closest-side,
-    rgba(221, 194, 152, .92) 0%,
-    rgba(226, 202, 165, .72) 42%,
-    rgba(232, 212, 182, .34) 66%,
-    rgba(236, 219, 193, 0) 82%);
-}
-
-.n-hero-photo picture,
-.n-hero-photo img {
-  position: relative;
-  display: block;
-  width: 100%;
-  height: auto;
-}
-
-/* ──────────────────────────────────────────────── кнопки ── */
-/*
-   Кнопки — единственные цветные пятна страницы, и держат весь цвет.
-   Заливка тёмная, текст светлый: белое на бронзе даёт 4,27:1
-   и в кнопку не годится, а тёмная заливка даёт 12:1.
-*/
-
-.n-btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 14px;
-  box-sizing: border-box;
-  min-height: 64px;
-  padding: 19px 32px;
-  border: none;
-  border-radius: 999px;
-  font-family: inherit;
-  font-weight: 700;
-  font-size: clamp(18px, 1.9vw, 20px);
-  letter-spacing: .01em;
-  line-height: 1.25;
-  text-align: center;
-  text-decoration: none;
-  cursor: pointer;
-  background: linear-gradient(165deg, #4E3C31 0%, #2B211C 100%);
-  color: #F6F0E8;
-  box-shadow: 0 16px 34px -14px rgba(43, 33, 28, .5),
-              0 0 0 1px rgba(43, 33, 28, .06),
-              inset 0 1px 0 rgba(255, 255, 255, .14);
-  transition: transform .2s ease, box-shadow .2s ease, filter .2s ease;
-}
-.n-btn:hover { transform: translateY(-3px); filter: brightness(1.08); }
-.n-btn:active { transform: translateY(-1px); }
-
-.n-arrow {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 32px;
-  height: 32px;
-  flex: none;
-  border-radius: 50%;
-  background: linear-gradient(180deg, #F0DCBB, #C29A6C);
-  color: #2A211C;
-  font-size: 15px;
-  font-weight: 400;
-  line-height: 1;
-}
-
-.n-cta { align-self: center; }
-
-/* Две кнопки оплаты рядом и одного веса: способ платежа — это не выбор
-   «лучше и хуже», и подсказывать один другому странице незачем. */
-.n-pay {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 16px 18px;
-  width: 100%;
-}
-
-/* Колонки сетки тянутся до общей высоты, кнопка внутри забирает всё
-   свободное. Иначе «Оплатить с зарубежной карты» переносится на две
-   строки, становится выше соседа, и пара одного веса перестаёт быть
-   парой одного веса. */
-.n-pay-one { display: flex; flex-direction: column; align-items: stretch; gap: 9px; }
-.n-pay-one .n-btn { width: 100%; flex: 1; }
-
-.n-pay-note {
-  margin: 0;
-  text-align: center;
-  font-size: 16.5px;
-  line-height: 1.4;
-  color: #6E6158;
-}
-
-/* ───────────────────────────────────────────────── цитаты ── */
-/*
-   Слова подписчиц набираются как цитата, а не как текст страницы:
-   это чужая прямая речь, и присваивать её вёрсткой нельзя. Линия
-   слева — бронзой; бронза здесь работает линией, как ей и положено.
-*/
-
-.n-quote {
-  margin: 0;
-  padding: clamp(16px, 2vw, 20px) clamp(18px, 2.4vw, 26px);
-  border-left: 3px solid #C9A87F;
-  border-radius: 0 12px 12px 0;
-  background: linear-gradient(180deg, #FFFFFF 0%, #FDF9F3 100%);
-  box-shadow: 0 1px 2px rgba(60, 48, 40, .04), 0 14px 30px -24px rgba(60, 48, 40, .34);
-}
-.n-quote p {
-  margin: 0;
-  font-size: 19px;
-  line-height: 1.55;
-  color: #3B322C;
-  font-style: italic;
-}
-
-/* Реплика Виолы крупнее и без курсива: это её голос, а не выписка. */
-.n-quote--viola {
-  border-left-width: 4px;
-  padding: clamp(20px, 2.6vw, 28px) clamp(20px, 2.8vw, 30px);
-}
-.n-quote--viola p {
-  font-style: normal;
-  font-size: clamp(20px, 2.1vw, 24px);
-  font-weight: 600;
-  line-height: 1.45;
-  color: #2E2521;
-}
-
-/* Несущее утверждение экрана. То, ради чего экран написан, и набрано
-   соответственно: заметно крупнее тела и с воздухом вокруг. На светлой
-   странице выделить его больше нечем — плашек тут нет, иерархию несёт
-   только набор. */
-.n-say {
-  margin: clamp(6px, 1.4vw, 14px) 0;
-  font-size: clamp(22px, 2.5vw, 28px);
-  line-height: 1.34;
-  letter-spacing: -.012em;
-  color: #3B322C;
-}
-.n-say b { color: #2E2521; }
-
-/* Реплика, которой человек сам называет своё состояние. Стоит
-   отдельной строкой, потому что в абзаце она теряется. */
-.n-punch {
-  margin: clamp(10px, 2vw, 20px) 0;
-  font-family: 'Prata', Georgia, serif;
-  font-weight: 400;
-  font-size: clamp(31px, 4.2vw, 52px);
-  line-height: 1.16;
-  letter-spacing: -.01em;
-  color: #2E2521;
-}
-
-/* ────────────────────────────────────────────── три дня ── */
-
-/* Три блока подряд, а не три колонки рядом. В колонках на 265 px
-   каждый день выходил лентой в двадцать строк, а заголовки трёх
-   карточек вставали на разной высоте, потому что мета переносилась
-   по-разному.
-
-   Блоком во всю ширину день делится надвое: слева дата и название,
-   справа содержание. Строка выходит вдвое короче, глазу есть за что
-   зацепиться, и порядок дней читается сверху вниз, как он и идёт. */
-.n-days {
-  display: flex;
-  flex-direction: column;
-  gap: 18px;
-}
-
-.n-day {
-  display: grid;
-  grid-template-columns: minmax(0, 290px) minmax(0, 1fr);
-  column-gap: clamp(28px, 4vw, 56px);
-  row-gap: 14px;
-  align-items: start;
-  padding: clamp(24px, 3vw, 36px) clamp(24px, 3vw, 40px);
-  background: linear-gradient(180deg, #FFFFFF 0%, #FDFAF6 100%);
-  border: 1px solid #E9DFD2;
-  border-top: 3px solid #C9A87F;
-  border-radius: 14px;
-  box-shadow: 0 1px 2px rgba(60, 48, 40, .04), 0 18px 38px -26px rgba(60, 48, 40, .38);
-}
-
-.n-day-head { display: flex; flex-direction: column; gap: 10px; }
-.n-day-body { display: flex; flex-direction: column; gap: 14px; }
-
-/* Дата — первое, что человек ищет в карточке дня, и раньше она лежала
-   одной строкой вместе с длительностью и форматом. Три факта в строку
-   читались как один, и ни один не читался.
-
-   Теперь дата стоит отдельно и крупно, чернильным: по ней сверяются
-   с календарём. Остальное уходит второй строкой бронзой — это уточнения
-   к дате, а не равные ей факты. */
-.n-daydate {
-  margin: 0;
-  font-size: clamp(21px, 2.2vw, 25px);
-  font-weight: 700;
-  letter-spacing: -.02em;
-  line-height: 1.15;
-  color: #2E2521;
-}
-
-.n-daymeta {
-  margin: -6px 0 0;
-  font-size: 15.5px;
-  font-weight: 600;
-  line-height: 1.4;
-  color: #8A5A2B;
-}
-
-.n-dash { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 10px; }
-.n-dash li {
-  position: relative;
-  padding-left: 22px;
-  font-size: 17.5px;
-  line-height: 1.55;
-  color: #3B322C;
-}
-/* Тире рисуется псевдоэлементом, а не стоит в тексте: так оно не
-   попадает в выделение и не читается вслух. Цвет — затемнённая бронза:
-   светлая давала 3,4:1, а знак этот всё-таки читают глазами. */
-.n-dash li::before {
-  content: "—";
-  position: absolute;
-  left: 0;
-  color: #8A5A2B;
-}
-
-.n-out {
-  margin: 0;
-  padding-top: 14px;
-  border-top: 1px solid #EDE4D8;
-  font-size: 17.5px;
-  line-height: 1.55;
-  color: #3B322C;
-}
-.n-out b { color: #2E2521; }
-
-/* ──────────────────────────────────────────────── состав ── */
-
-.n-keeps { display: flex; flex-direction: column; }
-
-.n-keep {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  padding: clamp(16px, 2vw, 20px) 0;
-  border-top: 1px solid #E4DACD;
-}
-.n-keep:last-child { border-bottom: 1px solid #E4DACD; }
-
-/* Строка про доступ — не шестой пункт списка, и висеть вплотную
-   к нему не должна. */
-.n-keeps + .n-note { margin-top: clamp(4px, 1.2vw, 10px); }
-
-.n-keep-t { margin: 0; font-size: 19.5px; font-weight: 700; line-height: 1.35; color: #2E2521; }
-.n-keep-d { margin: 0; font-size: 17.5px; line-height: 1.5; color: #5C5149; }
-
-/* ──────────────────────────────────────────────── цена ── */
-
-/* Заголовок, цена и кнопки стоят одним столбиком по центру. Это
-   единственный экран, где страница просит человека принять решение,
-   и центр здесь работает: взгляду некуда уйти, всё нужное на одной оси.
-   Прозу ниже центрировать нельзя, длинный текст по центру не читается,
-   поэтому карточки остаются по левому краю. */
-.n-pricetop {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  gap: clamp(18px, 2.4vw, 26px);
-  padding-bottom: clamp(6px, 1.4vw, 14px);
-}
-.n-pricetop .n-pay { max-width: 720px; }
-/* Подпись последней кнопки не должна упираться в карточку ниже. */
-.n-pricetop + .n-note-block { margin-top: clamp(6px, 1.6vw, 14px); }
-
-/* Цифра чернильная, не акцентная: цена, выкрашенная в цвет, начинает
-   кричать, а акцент на странице тратится на действие. */
-.n-price {
-  margin: 0;
-  font-weight: 700;
-  letter-spacing: -.03em;
-  font-size: clamp(60px, 9vw, 104px);
-  line-height: .95;
-  color: #2E2521;
-}
-
-.n-note-block {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  padding: clamp(20px, 2.6vw, 28px) clamp(20px, 2.8vw, 30px);
-  background: linear-gradient(180deg, #FFFFFF 0%, #FDFAF6 100%);
-  border: 1px solid #E9DFD2;
-  border-radius: 16px;
-  box-shadow: 0 1px 2px rgba(60, 48, 40, .04), 0 16px 34px -26px rgba(60, 48, 40, .34);
-}
-
-.n-close {
-  margin: 0;
-  font-size: clamp(20px, 2.1vw, 23px);
-  font-weight: 600;
-  line-height: 1.45;
-  color: #2E2521;
-}
-
-/* ───────────────────────────────────────────── вопросы ── */
-/*
-   Аккордеон: вопрос виден всегда целиком, ответ раскрывается. Это
-   продающий экран, а не служебный — по ca-master у этой аудитории
-   тормозит тревога, и снимают её именно ответы.
-*/
-
-.n-faq { display: flex; flex-direction: column; gap: 12px; }
-
-.n-qa {
-  background: linear-gradient(180deg, #FFFFFF 0%, #FDFAF6 100%);
-  border: 1px solid #E9DFD2;
-  border-radius: 14px;
-  box-shadow: 0 1px 2px rgba(60, 48, 40, .04), 0 14px 30px -26px rgba(60, 48, 40, .32);
-}
-
-.n-qa summary {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 16px;
-  padding: clamp(18px, 2.4vw, 24px) clamp(18px, 2.6vw, 28px);
-  cursor: pointer;
-  list-style: none;
-  font-size: clamp(18.5px, 2vw, 21px);
-  font-weight: 700;
-  letter-spacing: -.015em;
-  line-height: 1.35;
-  color: #2E2521;
-}
-.n-qa summary::-webkit-details-marker { display: none; }
-
-/* Знак раскрытия рисуется псевдоэлементом, а не символом в тексте:
-   так он не попадает в выделение и не читается вслух скринридером. */
-.n-qa summary::after {
-  content: "";
-  flex: none;
-  width: 13px;
-  height: 13px;
-  margin-top: .42em;
-  border-right: 2.5px solid #8A5A2B;
-  border-bottom: 2.5px solid #8A5A2B;
-  transform: rotate(45deg);
-  transition: transform .2s ease;
-}
-.n-qa[open] summary::after { transform: rotate(-135deg); }
-
-.n-qa .n-a {
-  margin: 0;
-  padding: 0 clamp(18px, 2.6vw, 28px) clamp(20px, 2.6vw, 26px);
-  font-size: 18.5px;
-  line-height: 1.62;
-  color: #4A3F38;
-}
-
-/* ───────────────────────────────────────────── телефон ── */
-/*
-   Ниже 900 px кегли подрастают, а не уменьшаются, кнопки идут во всю
-   ширину. На первом экране портрет встаёт между именем события и
-   оффером: имя человек видит сразу, Виолу следом, и ни то ни другое
-   не уезжает за сгиб.
-*/
-
-@media (max-width: 900px) {
-  .n-hero-in { display: flex; flex-direction: column; gap: 0; }
-  .n-hero-top { order: 1; gap: 14px; }
-  .n-hero-photo { order: 2; align-self: center; width: min(86%, 420px); margin: clamp(22px, 6vw, 34px) 0 clamp(20px, 5vw, 32px); }
-  .n-hero-bottom { order: 3; gap: 18px; padding-bottom: clamp(48px, 9vw, 72px); }
-  .n-hero-act { align-self: stretch; }
-  .n-hero-act .n-btn { width: 100%; }
-  .n-under-btn { text-align: center; }
-}
-
-@media (max-width: 760px) {
-  .n-p, .n-out, .n-dash li, .n-qa .n-a, .n-keep-d { font-size: 19px; }
-
-  /* Шаги между уровнями на узком экране приходится делать крупнее:
-     на 390 px разница в два-три пункта глазом не читается, и несущее
-     утверждение сливается с обычным абзацем. */
-  .n-say { font-size: 25px; }
-  .n-punch { font-size: 33px; }
-  .n-h3 { font-size: 24px; }
-  .n-daydate { font-size: 22px; }
-  .n-label { font-size: 18.5px; }
-  .n-note, .n-pay-note, .n-under-btn { font-size: 17.5px; }
-  .n-lead { font-size: 19px; }
-  .n-quote p { font-size: 19.5px; }
-  .n-keep-t { font-size: 20px; }
-  .n-daymeta { font-size: 16px; }
-  .n-eyebrow { font-size: 13.5px; letter-spacing: .14em; }
-  /* Разнести три факта по краям строки на телефоне некуда: они
-     не помещаются, и «онлайн» падал на вторую строку сиротой. Формат
-     события уходит первой строкой целиком, даты и «онлайн» встают
-     второй парой через разделитель. */
-  .n-eyebrow--wide { justify-content: flex-start; gap: 4px 10px; }
-  .n-eyebrow--wide span:first-child { flex: 1 0 100%; }
-  .n-eyebrow--wide span:nth-child(2)::after { content: " ·"; color: #A3835F; }
-
-  .n-btn {
-    width: 100%;
-    min-height: 66px;
-    padding: 18px 20px;
-    font-size: 19px;
-    gap: 12px;
-  }
-  .n-cta { align-self: stretch; }
-  .n-day { grid-template-columns: 1fr; row-gap: 16px; }
-
-  /* В столбик подпись оказывается ровно между двумя кнопками, и к какой
-     она относится, непонятно. Расстояние решает: к своей кнопке подпись
-     жмётся, между парами воздух втрое больше. Плюс общая минимальная
-     высота — «Оплатить с зарубежной карты» переносится на две строки,
-     и без неё пара выглядит как главная кнопка и второстепенная. */
-  .n-pay { grid-template-columns: 1fr; row-gap: 26px; }
-  .n-pay-one { gap: 8px; }
-  .n-pay .n-btn { min-height: 78px; padding-left: 18px; padding-right: 18px; }
-}
-
-/* Отступы под липкую панель, которой на этой странице нет.
-
-   base.css держит их для лендинга практикума: там внизу висит панель
-   с ценой и кнопкой, и под неё зарезервировано 76 px у body, 96 px
-   у подвала и смещение у cookie-полосы. Здесь панели нет, и всё это
-   оборачивается полутора сотнями пустых пикселей под подвалом.
-   Снимается только в этом режиме: base.css общий, трогать его нельзя. */
-
-@media (max-width: 760px) {
-  body { padding-bottom: 0; }
-  .ft { padding-bottom: clamp(40px, 7vw, 64px); }
-  .cookie-bar { bottom: 12px; }
-}
-
-@media (max-width: 380px) {
-  .n-name { font-size: 42px; }
-  .n-offer { font-size: 24px; }
-  .n-h2 { font-size: 30px; }
-}
-
 
 /* состояния наведения и фокуса, перенесённые из инлайновых стилей */
 
