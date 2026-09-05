@@ -1402,13 +1402,13 @@ def build_landing():
         tpl = tpl.replace('href="#tarify"',
                           'href="#bron" data-open-form="Бронь места" data-pay="bron"')
 
-        tpl = tpl.replace("от 14&nbsp;900&nbsp;₽", "Бронь " + BOOKING_AMOUNT)
+        tpl = tpl.replace("от 17&nbsp;900&nbsp;₽", "Бронь " + BOOKING_AMOUNT)
         tpl = tpl.replace(
             "В «С Виолой» пятьдесят мест. Оплатить можно сразу или частями&nbsp;— "
             "рассрочка до&nbsp;12&nbsp;месяцев для&nbsp;СНГ.",
             "Бронь %s закрепляет за&nbsp;вами место, цену и&nbsp;бонусы. "
             "Остаток&nbsp;— до&nbsp;%s." % (BOOKING_AMOUNT, BOOKING_DEADLINE))
-        tpl = tpl.replace("Цена предзаписи действует до&nbsp;4&nbsp;сентября",
+        tpl = tpl.replace("Продажи закрываются 29&nbsp;сентября в&nbsp;23:59",
                           "Бронь засчитывается в&nbsp;стоимость участия")
 
         # Заголовок прямо называет, что это за страница.
@@ -1455,7 +1455,7 @@ def build_landing():
                           'href="#zapis" data-open-form="Предзапись"')
 
         # Липкая панель: вместо цены — состояние набора.
-        tpl = tpl.replace("от 14&nbsp;900&nbsp;₽", "Предзапись открыта")
+        tpl = tpl.replace("от 17&nbsp;900&nbsp;₽", "Предзапись открыта")
         tpl = tpl.replace(
             '<span style="font-size: 17px; font-weight: 600; color: #2E2521;">',
             '<span style="font-size: 16px; font-weight: 700; color: #2E2521;">', 1)
@@ -1466,7 +1466,7 @@ def build_landing():
             "рассрочка до&nbsp;12&nbsp;месяцев для&nbsp;СНГ.",
             "Предзапись открыта. Цена закрепляется за&nbsp;вами до&nbsp;4&nbsp;сентября, "
             "дальше она выше.")
-        tpl = tpl.replace("Цена предзаписи действует до&nbsp;4&nbsp;сентября",
+        tpl = tpl.replace("Продажи закрываются 29&nbsp;сентября в&nbsp;23:59",
                           "Заявка бесплатна и&nbsp;ни&nbsp;к&nbsp;чему не&nbsp;обязывает")
 
     if MODE == "zayavka":
@@ -1492,7 +1492,7 @@ def build_landing():
             "с&nbsp;командой: ответим на&nbsp;вопросы и&nbsp;поможем оплатить безопасно.")
 
         # Липкая панель обещала переход к оплате — теперь ведёт к заявке.
-        tpl = tpl.replace("Цена предзаписи действует до&nbsp;4&nbsp;сентября",
+        tpl = tpl.replace("Продажи закрываются 29&nbsp;сентября в&nbsp;23:59",
                           "Оплату проводим вместе с&nbsp;командой")
 
     # Контакты команды — отдельным экраном перед финальным призывом,
