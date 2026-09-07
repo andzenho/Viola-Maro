@@ -184,20 +184,18 @@ CHANNEL_URL = "https://t.me/+iIqJoSn2UBU3Yzky"
 NEUD_PAY_RUB = ""    # оплата в рублях (в ней же рассрочка)
 NEUD_PAY_INTL = ""   # оплата с зарубежной карты
 
-# Два разных срока, и путать их нельзя.
-#
-#   подарки  — до 23 августа, дальше сгорают. На него же идёт таймер.
-#   цена     — до 4 сентября держится самой низкой, дальше растёт.
+# Со второго окна подарки и цена заканчиваются одной датой — 18 сентября,
+# отдельных сроков больше нет: до неё держится цена второго окна и
+# действуют подарки, на неё же идёт таймер под первым экраном предзаписи
+# (он прячется, когда отметка пройдена).
 #
 # Даты цены живут в исходном шаблоне (карточки тарифов, финальный экран)
-# и здесь не трогаются. Здесь только про подарки.
+# и здесь не трогаются. Здесь только про подарки: в их блоках стоит
+# «тем, кто оплатит до 18 сентября».
 #
 # Правовые документы не трогаются вовсе: в Приложении № 1 свои даты,
 # менять их может только юрист.
-# Дат у подарков на страницах больше нет: в блоках стоит просто
-# «за раннюю оплату». Срок остался только у счётчика под первым экраном
-# предзаписи — он тикает до этой отметки и прячется, когда она пройдена.
-GIFT_ISO = "2026-08-23T23:59:59+03:00"
+GIFT_ISO = "2026-09-18T23:59:59+03:00"
 
 ABS_ROOTS = ["assets/"] + [url for _s, url, _t in DOCS]
 
@@ -870,7 +868,7 @@ PRE_FOR_REQUEST = [
     ("Закрытый канал Виолы",
      "подкасты и материалы, которых нет в открытом доступе. Новое вы видите там первыми."),
     ("Вход по самой низкой цене",
-     "она закрепляется за вами до 4&nbsp;сентября."),
+     "она закрепляется за вами до 18&nbsp;сентября."),
     ("Право сказать, что включить в программу",
      "в канале спросим, чего вам не хватает, и соберём из ваших ответов часть программы."),
     ("Разговор с командой Виолы Маро",
@@ -886,6 +884,9 @@ PRE_FOR_EARLY = [
      "и как из неё выходят."),
     ("Большой мастер-класс на узнавание себя",
      "там подробно разобрано то, что тест показал коротко."),
+    ("Событие «Неудобные» 11–13&nbsp;сентября",
+     "терапевтический уикенд Виолы, он стоит 3&nbsp;000&nbsp;₽ и входит в подарок. "
+     "Кто оплатит после 13&nbsp;сентября, получит полную запись."),
 ]
 
 
@@ -978,7 +979,7 @@ def gifts_block():
     return ('<div style="display: flex; flex-direction: column; gap: 13px; margin-top: 4px; '
             'padding-top: 18px; border-top: 1px solid rgba(246,240,232,.16);">'
             '<div style="font-size: 12px; letter-spacing: .18em; text-transform: uppercase; '
-            'color: #E9C98F;">За раннюю оплату</div>'
+            'color: #E9C98F;">Тем, кто оплатит до 18 сентября</div>'
             + rows + "</div>")
 
 
@@ -1102,8 +1103,8 @@ def pre_benefits_screen():
 
       <div style="background: linear-gradient(165deg, #4A392F 0%%, #2B211C 100%%); border: 1px solid #33271F; border-radius: 16px; box-shadow: 0 20px 44px -24px rgba(43,33,28,.7), inset 0 1px 0 rgba(255,255,255,.1); padding: clamp(24px, 3.4vw, 36px); display: flex; flex-direction: column; gap: 18px;">
         <div style="display: flex; flex-direction: column; gap: 6px;">
-          <div style="font-size: 12px; letter-spacing: .18em; text-transform: uppercase; color: #E9C98F;">За раннюю оплату</div>
-          <p style="margin: 0; font-size: 19px; font-weight: 600; line-height: 1.35; color: #F6F0E8;">Три подарка сверх программы</p>
+          <div style="font-size: 12px; letter-spacing: .18em; text-transform: uppercase; color: #E9C98F;">Тем, кто оплатит до 18 сентября</div>
+          <p style="margin: 0; font-size: 19px; font-weight: 600; line-height: 1.35; color: #F6F0E8;">Четыре подарка сверх программы</p>
         </div>
         <div style="display: flex; flex-direction: column; gap: 14px;">%(dark)s</div>
       </div>
@@ -1112,7 +1113,7 @@ def pre_benefits_screen():
 
     <div style="align-self: center; max-width: 54ch; text-align: center; display: flex; flex-direction: column; gap: 8px;">
       <p style="margin: 0; font-size: 17px; line-height: 1.55; color: #2E2521;">Оплату оформляет команда: после заявки она свяжется с&nbsp;вами.</p>
-      <p style="margin: 0; font-size: 17px; line-height: 1.55; color: #5C5149;">С 5&nbsp;сентября цена становится выше.</p>
+      <p style="margin: 0; font-size: 17px; line-height: 1.55; color: #5C5149;">С 19&nbsp;сентября цена становится выше.</p>
     </div>
 
     %(cta)s
@@ -1216,7 +1217,7 @@ def pre_contents_screen():
 TIMER_SCREEN = """
 <div data-screen-label="01b Срок предзаписи" id="srok" style="background: linear-gradient(180deg, #2B211C 0%, #241C18 100%); border-top: 1px solid rgba(246,240,232,.12); padding: clamp(20px, 3vw, 30px) clamp(14px, 4vw, 40px);">
   <div style="max-width: 1020px; margin: 0 auto; display: flex; flex-direction: column; align-items: center; text-align: center; gap: clamp(12px, 2vw, 16px);">
-    <p style="margin: 0; max-width: 34ch; font-size: clamp(15px, 1.7vw, 17px); font-weight: 700; line-height: 1.4; color: #F6F0E8;">До&nbsp;конца подарков за&nbsp;раннюю оплату</p>
+    <p style="margin: 0; max-width: 34ch; font-size: clamp(15px, 1.7vw, 17px); font-weight: 700; line-height: 1.4; color: #F6F0E8;">До&nbsp;конца подарков</p>
     <div id="countdown" style="display: flex; align-items: flex-start; gap: clamp(10px, 2vw, 18px);" data-deadline="__DEADLINE__">
       <div style="display: flex; flex-direction: column; align-items: center; gap: 3px; min-width: 54px;"><span data-cd="d" style="font-size: clamp(26px, 4vw, 34px); font-weight: 700; letter-spacing: -.02em; line-height: 1; color: #F0DCBB; font-variant-numeric: tabular-nums;">—</span><span style="font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: #B8AA9C;">дней</span></div>
       <div style="display: flex; flex-direction: column; align-items: center; gap: 3px; min-width: 54px;"><span data-cd="h" style="font-size: clamp(26px, 4vw, 34px); font-weight: 700; letter-spacing: -.02em; line-height: 1; color: #F0DCBB; font-variant-numeric: tabular-nums;">—</span><span style="font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: #B8AA9C;">часов</span></div>
@@ -1578,7 +1579,7 @@ def build_landing():
         tpl = tpl.replace(
             "В «С Виолой» пятьдесят мест. Оплатить можно сразу или частями&nbsp;— "
             "рассрочка до&nbsp;12&nbsp;месяцев для&nbsp;СНГ.",
-            "Предзапись открыта. Цена закрепляется за&nbsp;вами до&nbsp;4&nbsp;сентября, "
+            "Предзапись открыта. Цена закрепляется за&nbsp;вами до&nbsp;18&nbsp;сентября, "
             "дальше она выше.")
         tpl = tpl.replace("Продажи закрываются 29&nbsp;сентября в&nbsp;23:59",
                           "Заявка бесплатна и&nbsp;ни&nbsp;к&nbsp;чему не&nbsp;обязывает")

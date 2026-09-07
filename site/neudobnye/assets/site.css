@@ -1,0 +1,793 @@
+@font-face{font-family:'Golos Text';font-style:normal;font-weight:400 700;font-display:swap;src:url(/Viola-Maro/neudobnye/assets/fonts/GolosText-cyrillic-ext.woff2) format('woff2');unicode-range:U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F}
+@font-face{font-family:'Golos Text';font-style:normal;font-weight:400 700;font-display:swap;src:url(/Viola-Maro/neudobnye/assets/fonts/GolosText-cyrillic.woff2) format('woff2');unicode-range:U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116}
+@font-face{font-family:'Golos Text';font-style:normal;font-weight:400 700;font-display:swap;src:url(/Viola-Maro/neudobnye/assets/fonts/GolosText-latin-ext.woff2) format('woff2');unicode-range:U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF}
+@font-face{font-family:'Golos Text';font-style:normal;font-weight:400 700;font-display:swap;src:url(/Viola-Maro/neudobnye/assets/fonts/GolosText-latin.woff2) format('woff2');unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}
+@font-face{font-family:'Prata';font-style:normal;font-weight:400;font-display:swap;src:url(/Viola-Maro/neudobnye/assets/fonts/Prata-cyrillic-ext.woff2) format('woff2');unicode-range:U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F}
+@font-face{font-family:'Prata';font-style:normal;font-weight:400;font-display:swap;src:url(/Viola-Maro/neudobnye/assets/fonts/Prata-cyrillic.woff2) format('woff2');unicode-range:U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116}
+@font-face{font-family:'Prata';font-style:normal;font-weight:400;font-display:swap;src:url(/Viola-Maro/neudobnye/assets/fonts/Prata-latin.woff2) format('woff2');unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}
+@font-face{font-family:'Literata';font-style:italic;font-weight:400;font-display:swap;src:url(/Viola-Maro/neudobnye/assets/fonts/Literata-cyrillic-ext-400-italic.woff2) format('woff2');unicode-range:U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F}
+@font-face{font-family:'Literata';font-style:italic;font-weight:400;font-display:swap;src:url(/Viola-Maro/neudobnye/assets/fonts/Literata-cyrillic-400-italic.woff2) format('woff2');unicode-range:U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116}
+@font-face{font-family:'Literata';font-style:italic;font-weight:400;font-display:swap;src:url(/Viola-Maro/neudobnye/assets/fonts/Literata-latin-ext-400-italic.woff2) format('woff2');unicode-range:U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF}
+@font-face{font-family:'Literata';font-style:italic;font-weight:400;font-display:swap;src:url(/Viola-Maro/neudobnye/assets/fonts/Literata-latin-400-italic.woff2) format('woff2');unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}
+@font-face{font-family:'Literata';font-style:normal;font-weight:400;font-display:swap;src:url(/Viola-Maro/neudobnye/assets/fonts/Literata-cyrillic-ext-400.woff2) format('woff2');unicode-range:U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F}
+@font-face{font-family:'Literata';font-style:normal;font-weight:400;font-display:swap;src:url(/Viola-Maro/neudobnye/assets/fonts/Literata-cyrillic-400.woff2) format('woff2');unicode-range:U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116}
+@font-face{font-family:'Literata';font-style:normal;font-weight:400;font-display:swap;src:url(/Viola-Maro/neudobnye/assets/fonts/Literata-latin-ext-400.woff2) format('woff2');unicode-range:U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF}
+@font-face{font-family:'Literata';font-style:normal;font-weight:400;font-display:swap;src:url(/Viola-Maro/neudobnye/assets/fonts/Literata-latin-400.woff2) format('woff2');unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}
+@font-face{font-family:'Literata';font-style:normal;font-weight:600;font-display:swap;src:url(/Viola-Maro/neudobnye/assets/fonts/Literata-cyrillic-ext-600.woff2) format('woff2');unicode-range:U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F}
+@font-face{font-family:'Literata';font-style:normal;font-weight:600;font-display:swap;src:url(/Viola-Maro/neudobnye/assets/fonts/Literata-cyrillic-600.woff2) format('woff2');unicode-range:U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116}
+@font-face{font-family:'Literata';font-style:normal;font-weight:600;font-display:swap;src:url(/Viola-Maro/neudobnye/assets/fonts/Literata-latin-ext-600.woff2) format('woff2');unicode-range:U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF}
+@font-face{font-family:'Literata';font-style:normal;font-weight:600;font-display:swap;src:url(/Viola-Maro/neudobnye/assets/fonts/Literata-latin-600.woff2) format('woff2');unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}
+
+/* ─────────────────────────────────────────────────────────── основа ── */
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  background: #F7F2EA;
+  color: #2E2521;
+  font-family: 'Golos Text', system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  font-size: 20px;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+a { color: #3B2E28; }
+a:hover { color: #A3835F; }
+
+img, picture, svg { max-width: 100%; }
+
+:focus-visible {
+  outline: 3px solid #8A5A2B;
+  outline-offset: 3px;
+  border-radius: 3px;
+}
+
+.skip {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  z-index: 999;
+  background: #241C18;
+  color: #F6F0E8;
+  padding: 14px 22px;
+  border-radius: 0 0 10px 0;
+  font-weight: 600;
+  text-decoration: none;
+}
+.skip:focus { left: 0; }
+
+/* сноска-звёздочка у упоминания соцсети */
+.fn {
+  color: #8A5A2B;
+  text-decoration: none;
+  font-weight: 700;
+  padding: 0 1px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: .001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .001ms !important;
+  }
+}
+
+/* Высота первого экрана — минимум, а не жёсткий размер. В разметке стоит
+   height, и на низком окне текст переставал помещаться в свою же коробку:
+   кадр обрезан по overflow, и шапка или кнопка уезжали за край. Особенно
+   после того, как надзаголовок вырос на строку с плашкой «Предзапись».
+   Теперь экран растягивается под текст, а на нормальных окнах ведёт себя
+   как прежде. */
+[data-hero-stage] {
+  height: auto !important;
+  min-height: clamp(600px, 94vh, 960px);
+}
+
+/* Текст лежал абсолютом поверх фото, а абсолют не задаёт высоту родителю:
+   одного min-height на кадре не хватало — экран оставался 600 px, и низ
+   с кнопкой срезался. Возвращаем текст в поток, фото и вуали остаются
+   абсолютными слоями под ним. Свой min-height текст берёт у кадра,
+   поэтому на высоких экранах шапка и кнопка расходятся по краям
+   ровно как раньше. */
+[data-hero-copy] {
+  position: relative !important;
+  inset: auto !important;
+  min-height: inherit;
+}
+
+/* ───────────────────────────────────── первый экран: кадр портрета ── */
+
+[data-hero-photo] picture,
+[data-hero-photo] img {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+[data-hero-photo] img {
+  object-fit: cover;
+  object-position: 100% 50%;   /* кадр прижат вправо: слева ложится текст */
+}
+
+/* Привязка к лицу. object-position: P% ставит точку P% изображения ровно
+   в P% рамки — при любом её размере. Кадр вырезан так, что лицо стоит
+   на 74% ширины и 22% высоты, поэтому те же числа здесь удерживают его
+   на 74%/22% экрана: и на узком телефоне, и на широком, и на низком.
+   Меняются только вместе с MOBILE_CROP в build.py. */
+@media (max-width: 760px) {
+  [data-hero-photo] img { object-position: 74% 22%; }
+}
+
+/* Нижний текст на телефоне ложится на портрет, поэтому вуаль снизу поднята
+   чуть выше исходной. Не глухая заливка: портрет обязан остаться светлым
+   и узнаваемым, тёмной делается только полоса под самим текстом. */
+@media (max-width: 760px) {
+  [data-hero-veil] + [data-hero-veil] {
+    background: linear-gradient(to top,
+      rgba(36, 28, 24, .9) 0%,
+      rgba(36, 28, 24, .72) 26%,
+      rgba(36, 28, 24, .28) 46%,
+      rgba(36, 28, 24, 0) 64%) !important;
+  }
+}
+
+/* ─────────────────────────── адаптив, перенесённый из исходной сборки ── */
+
+@media (max-width: 860px) {
+  [data-week-card] { grid-template-columns: 1fr !important; }
+  [data-week-rail-line] { display: none; }
+}
+
+@media (max-width: 720px) {
+  [data-week-rail] { grid-template-columns: 1fr 1fr !important; gap: 10px 14px; padding: 16px 14px !important; }
+  [data-rail-item] { flex-direction: row !important; align-items: center !important; text-align: left !important; gap: 10px !important; flex-wrap: nowrap; }
+  [data-rail-item] > span:first-child { width: 34px !important; height: 34px !important; border-width: 2px !important; }
+  [data-rail-item] > span:first-child svg { width: 16px; height: 16px; }
+  [data-rail-num] { display: none; }
+  [data-rail-item] > span:last-child { font-size: 14px !important; line-height: 1.25 !important; }
+}
+
+@media (max-width: 1024px) {
+  [data-hero-copy] h1 { font-size: clamp(40px, 5.4vw, 50px) !important; }
+  [data-hero-copy] > div:last-child { max-width: 100% !important; }
+  [data-hero-copy] > div:last-child > p:first-child { font-size: clamp(23px, 3.1vw, 29px) !important; line-height: 1.22 !important; max-width: 72% !important; }
+  [data-hero-copy] > div:last-child > p:nth-child(2) { font-size: 17px !important; max-width: 78% !important; }
+}
+
+@media (max-width: 1020px) {
+  [data-new-card="last"] { grid-column: 1 / -1 !important; }
+}
+
+@media (max-width: 760px) {
+  [data-sticky-bar] { display: flex !important; }
+  body { padding-bottom: 76px; }
+  /* Высота первого экрана задана в vh, а на телефоне vh меняется, когда при
+     скролле прячется адресная строка: экран становится выше, кадр внутри
+     пересчитывается и портрет заметно «наезжает». svh считается от экрана
+     с раскрытой панелью и при скролле не меняется. Браузеры, которые svh
+     не знают, правило целиком пропустят и останутся на прежнем vh. */
+  [data-hero-stage] { min-height: clamp(600px, 94svh, 960px); }
+  /* Текстовая колонка держится левее портрета: заголовок и обещание живут
+     в левых двух третях, справа остаётся видна сама Виола. Кегль заголовка
+     чуть меньше исходного — иначе в узкой колонке он ломается на обрубки. */
+  [data-hero-copy] > div:first-child { max-width: 100% !important; }
+  /* Кадр без надставок ставит Виолу крупно, и хвост заголовка проходит
+     по подсвеченным волосам — фон там даёт 1.65:1. Притемнять кадр не
+     будем: плотная тень у самих букв держит контраст, не трогая портрет. */
+  [data-hero-copy] h1 {
+    max-width: 76% !important;
+    text-shadow: 0 1px 2px rgba(18, 12, 8, .95), 0 2px 12px rgba(18, 12, 8, .9),
+                 0 6px 30px rgba(18, 12, 8, .85) !important;
+  }
+  /* Плашка лежит на ней же — своя подложка делается плотнее. */
+  [data-hero-copy] > div:last-child > p:nth-child(2) {
+    background: rgba(24, 18, 14, .82) !important;
+  }
+  [data-hero-copy] > div:last-child { max-width: 100% !important; }
+  [data-hero-copy] h1 { font-size: 40px !important; }
+  [data-hero-copy] > div:first-child > div:first-child { font-size: 13px !important; }
+  /* Обещание частью ложится на подсвеченные волосы, где фон даёт всего
+     2.5:1. Притушить портрет нельзя — он и так главный герой экрана,
+     поэтому плотная тень у самих букв: она держит контраст, не трогая кадр. */
+  [data-hero-copy] > div:last-child > p:first-child {
+    font-size: 23px !important;
+    line-height: 1.24 !important;
+    max-width: 58% !important;
+    text-shadow: 0 1px 2px rgba(18, 12, 8, .95), 0 2px 10px rgba(18, 12, 8, .9),
+                 0 4px 24px rgba(18, 12, 8, .8) !important;
+  }
+  [data-hero-copy] > div:last-child > p:nth-child(2) { font-size: 16.5px !important; max-width: 74% !important; }
+  [data-hero-copy] a { padding: 16px 22px 16px 27px !important; font-size: 16.5px !important; }
+  [data-hero-copy] a > span { width: 32px !important; height: 32px !important; font-size: 16px !important; }
+  [data-hero-copy] > div:last-child > div span:last-child { font-size: 15px !important; }
+  body { font-size: 20px; }
+  [style*="font-size: 13px"] { font-size: 14px !important; }
+  [style*="font-size: 14px"] { font-size: 15px !important; }
+  [style*="font-size: 15px"] { font-size: 16px !important; }
+  [style*="font-size: 15.5px"] { font-size: 16px !important; }
+  [style*="font-size: 16px"] { font-size: 17.5px !important; }
+  [style*="font-size: 16.5px"] { font-size: 18px !important; }
+  [style*="font-size: 17px"] { font-size: 18.5px !important; }
+  [style*="font-size: 18px"] { font-size: 19.5px !important; }
+  [style*="font-size: 18.5px"] { font-size: 20px !important; }
+  [style*="font-size: 19px"] { font-size: 21px !important; }
+  [style*="font-size: 20px"] { font-size: 22px !important; }
+  [style*="font-size: 21px"] { font-size: 23px !important; }
+  [data-rail-item] > span:last-child { font-size: 15.5px !important; }
+}
+
+/* ───────────────────────────────────────────── форма заявки в модалке ── */
+
+.modal[hidden] { display: none !important; }
+body.modal-open { overflow: hidden; }
+
+.cb-err {
+  font-size: 14px;
+  line-height: 1.4;
+  color: #8A2B2B;
+}
+
+/* поле-приманка: убрано из потока, из табуляции и из озвучки */
+.hp {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+#form-submit[disabled] {
+  opacity: .45;
+  cursor: not-allowed;
+  transform: none !important;
+  filter: none !important;
+}
+
+/* ─────────────────────────────────────────────────────────── подвал ── */
+
+.ft {
+  background: linear-gradient(180deg, #F7F2EA 0%, #F1EAE0 100%);
+  border-top: 1px solid #E4DACD;
+  color: #574C44;
+  font-size: 15.5px;
+  line-height: 1.6;
+  padding: clamp(44px, 5vw, 72px) clamp(14px, 4vw, 40px) clamp(40px, 5vw, 64px);
+}
+
+.ft-in { max-width: 1020px; margin: 0 auto; }
+
+.ft-grid {
+  display: grid;
+  grid-template-columns: 1.6fr .9fr 1.1fr 1.25fr;
+  gap: clamp(22px, 3vw, 40px);
+  align-items: start;
+}
+
+.ft-col { min-width: 0; display: flex; flex-direction: column; gap: 8px; }
+
+.ft-org {
+  margin: 0;
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: -.01em;
+  color: #2E2521;
+  line-height: 1.35;
+}
+
+.ft-legal { margin: 0; color: #574C44; }
+
+.ft-label {
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  font-size: 12px;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: #8A5A2B;
+}
+
+.ft-ico {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: linear-gradient(160deg, #4A392F, #2B211C);
+  color: #F0DCBB;
+  font-size: 11px;
+  letter-spacing: 0;
+  flex: none;
+}
+
+.ft-hours { margin: 2px 0 0; color: #6E6158; font-size: 14.5px; }
+
+.ft a {
+  color: #4A392F;
+  text-decoration: underline;
+  text-decoration-color: rgba(163, 131, 95, .6);
+  text-decoration-thickness: 1px;
+  text-underline-offset: .22em;
+  width: fit-content;
+}
+.ft a:hover { color: #2E2521; text-decoration-color: #4A392F; }
+
+.ft-docs { gap: 10px; }
+.ft-docs a { font-size: 16px; line-height: 1.4; text-wrap: pretty; }
+
+.ft-disclaimer,
+.ft-copy,
+.ft-note {
+  max-width: 900px;
+  margin-inline: auto;
+  text-align: center;
+}
+
+.ft-disclaimer {
+  margin-top: clamp(32px, 4vw, 56px);
+  padding-top: clamp(24px, 3vw, 36px);
+  border-top: 1px solid #E4DACD;
+  font-size: 15px;
+  color: #574C44;
+}
+
+.ft-copy { margin-top: 18px; font-size: 13.5px; color: #6E6158; }
+.ft-note { margin-top: 14px; font-size: 13px; color: #6E6158; scroll-margin-top: 40vh; }
+
+@media (max-width: 900px) {
+  .ft-grid { grid-template-columns: 1fr 1fr; }
+}
+
+@media (max-width: 560px) {
+  .ft-grid { grid-template-columns: 1fr; gap: 26px; }
+  .ft-disclaimer, .ft-copy, .ft-note { text-align: left; }
+}
+
+/* на телефоне ссылки в подвале — полноценные цели для пальца */
+@media (max-width: 760px) {
+  .ft-docs { gap: 2px; }
+  .ft-docs a,
+  .ft-col > a { display: block; padding: 11px 0; width: auto; }
+}
+
+@media (max-width: 760px) {
+  .ft { padding-bottom: 96px; }
+}
+
+/* ───────────────────────────────────────────────── cookie-полоса ── */
+
+.cookie-bar {
+  position: fixed;
+  left: 12px;
+  right: 12px;
+  bottom: 12px;
+  z-index: 80;
+  display: flex;
+  gap: 14px 20px;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  max-width: 1020px;
+  margin: 0 auto;
+  padding: 16px 20px;
+  border-radius: 14px;
+  background: linear-gradient(165deg, #3B2E28 0%, #241C18 100%);
+  border: 1px solid rgba(246, 240, 232, .14);
+  color: #E6DCCF;
+  font-size: 15px;
+  line-height: 1.5;
+  box-shadow: 0 18px 44px -18px rgba(0, 0, 0, .7);
+}
+
+.cookie-bar[hidden] { display: none; }
+.cookie-bar p { margin: 0; flex: 1 1 320px; }
+.cookie-bar a { color: #F0DCBB; }
+
+.cookie-bar button {
+  flex: 0 0 auto;
+  min-height: 48px;
+  padding: 12px 30px;
+  border: 0;
+  border-radius: 999px;
+  background: linear-gradient(180deg, #F0DCBB, #C29A6C);
+  color: #2A211C;
+  font-family: inherit;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.cookie-bar button:hover { filter: brightness(1.06); }
+
+@media (max-width: 760px) {
+  .cookie-bar { bottom: 88px; }
+}
+
+/* ────────────────────────────────────────── правовые страницы ── */
+
+.doc-top {
+  background: linear-gradient(160deg, #4A3A31 0%, #3B2E28 55%, #241C18 100%);
+  color: #F6F0E8;
+  padding: 18px clamp(14px, 4vw, 40px);
+}
+
+.doc-top-in { max-width: 860px; margin: 0 auto; }
+
+.doc-back {
+  color: #F0DCBB;
+  text-decoration: none;
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: .01em;
+  border-bottom: 1px solid rgba(240, 220, 187, .4);
+}
+.doc-back:hover { color: #FFFFFF; border-bottom-color: #FFFFFF; }
+
+.doc {
+  background: linear-gradient(180deg, #FBF7F1 0%, #F3EBE0 100%);
+  padding: clamp(28px, 5vw, 64px) clamp(12px, 4vw, 40px) clamp(48px, 6vw, 88px);
+}
+
+.doc-in {
+  max-width: 860px;
+  margin: 0 auto;
+  background: #FFFFFF;
+  border: 1px solid #E9DFD2;
+  border-radius: 18px;
+  box-shadow: 0 1px 2px rgba(60, 48, 40, .04), 0 22px 48px -30px rgba(60, 48, 40, .35);
+  padding: clamp(24px, 4vw, 56px) clamp(18px, 4vw, 56px);
+  font-size: 17.5px;
+  line-height: 1.68;
+  color: #332B26;
+}
+
+.doc-in h1 {
+  margin: 0 0 26px;
+  font-size: clamp(28px, 4vw, 40px);
+  font-weight: 700;
+  letter-spacing: -.02em;
+  line-height: 1.15;
+  color: #2E2521;
+  text-wrap: balance;
+}
+
+.anchor { display: block; height: 0; scroll-margin-top: 24px; }
+
+.doc-in h2 {
+  margin: 44px 0 14px;
+  scroll-margin-top: 24px;
+  font-size: clamp(21px, 2.4vw, 26px);
+  font-weight: 700;
+  letter-spacing: -.015em;
+  line-height: 1.25;
+  color: #2E2521;
+  text-wrap: balance;
+}
+
+.doc-in h3 {
+  margin: 32px 0 10px;
+  font-size: clamp(18px, 2vw, 20.5px);
+  font-weight: 700;
+  line-height: 1.3;
+  color: #2E2521;
+}
+
+.doc-in p { margin: 0 0 14px; text-wrap: pretty; }
+.doc-in strong { color: #2E2521; }
+.doc-in em { color: #574C44; }
+
+.doc-in ul, .doc-in ol { margin: 0 0 16px; padding-left: 22px; }
+.doc-in li { margin: 0 0 7px; }
+.doc-in li::marker { color: #A3835F; }
+
+.doc-in hr {
+  margin: 34px 0;
+  border: 0;
+  height: 1px;
+  background: linear-gradient(90deg, #C9A87F, rgba(228, 218, 205, .25));
+}
+
+.doc-in blockquote {
+  margin: 0 0 18px;
+  padding: 14px 20px;
+  border-left: 3px solid #C9A87F;
+  background: #FBF6EE;
+  border-radius: 0 10px 10px 0;
+  color: #574C44;
+}
+.doc-in blockquote p:last-child { margin-bottom: 0; }
+
+.doc-in a { color: #4A392F; text-decoration: underline; text-underline-offset: .18em; }
+.doc-in a:hover { color: #8A5A2B; }
+
+.tw {
+  overflow-x: auto;
+  margin: 0 0 20px;
+  border: 1px solid #E9DFD2;
+  border-radius: 12px;
+  -webkit-overflow-scrolling: touch;
+}
+
+.doc-in table {
+  border-collapse: collapse;
+  width: 100%;
+  min-width: 460px;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+.doc-in th, .doc-in td {
+  padding: 11px 14px;
+  text-align: left;
+  vertical-align: top;
+  border-bottom: 1px solid #EDE4D8;
+}
+
+.doc-in thead th {
+  background: #F6EFE5;
+  color: #2E2521;
+  font-weight: 700;
+}
+
+.doc-in tbody tr:last-child td { border-bottom: 0; }
+
+/* ──────────────────────────────────────────────────────────── печать ── */
+
+@media print {
+  .skip, .cookie-bar, [data-sticky-bar], .doc-top, .modal { display: none !important; }
+  body { background: #fff; font-size: 12pt; padding-bottom: 0; }
+  .doc, .doc-in { background: #fff; box-shadow: none; border: 0; padding: 0; }
+  .doc-in h2, .doc-in h3 { break-after: avoid; }
+  .doc-in table, .tw { break-inside: auto; overflow: visible; border: 0; }
+  .doc-in tr { break-inside: avoid; }
+  .ft { background: #fff; }
+  a { text-decoration: underline; }
+}
+
+
+/* ── событие «Неудобные», стиль из исходника ── */
+:root{
+  /* КОНСТАНТЫ */
+  --kassa: "#";
+  --ground:#FFFFFF; --band:#FBF4EA; --ground-dark:#241812;
+  --ink:#14101A; --ink-soft:#55505C; --ink-invert:#FBF4EA; --ink-invert-soft:#C9BDB2;
+  --line:#EDE3D6; --accent:#B8371D; --accent-deep:#962C16; --accent-lite:#E8734F;
+  --on-accent:#FFFFFF; --ph:#F0E8DE;
+}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--ground);color:var(--ink);font-family:'Golos Text',sans-serif;font-weight:400;font-size:20px;line-height:1.6;-webkit-font-smoothing:antialiased;text-wrap:pretty}
+a{color:var(--accent-deep);text-decoration:none}
+a:hover{color:var(--accent)}
+h1,h2,h3,p,ul{margin:0}
+
+[data-hero]{padding:24px 22px 48px;overflow-x:clip}
+
+}
+[data-col]{display:flex;flex-direction:column;align-items:flex-start}
+[data-figclip]{--fh:236px;height:165px;width:160px;margin-left:auto;margin-right:-20px;overflow:hidden;display:flex;justify-content:flex-end;align-items:flex-start;background:none;border:0;border-radius:0;box-shadow:none;padding:0}
+[data-geroy]{display:block;height:var(--fh);width:auto;max-width:none;margin-right:calc(var(--fh) * -.101 - 18px);background:none;border:0;border-radius:0;box-shadow:none;padding:0}
+[data-btn]{display:inline-flex;align-items:center;justify-content:center;height:82px;padding:0 44px;width:100%;max-width:520px;background:linear-gradient(180deg,#D14428 0%,var(--accent) 52%,var(--accent-deep) 100%);color:var(--on-accent);border-radius:12px;font-family:'Golos Text',sans-serif;font-weight:500;font-size:27px;letter-spacing:.01em;border-radius:14px;border-bottom:4px solid var(--accent-deep);box-shadow:0 0 0 8px rgba(184,55,29,.13), 0 20px 40px rgba(184,55,29,.36);transition:transform .12s ease}
+[data-btn]:active{transform:translateY(2px)}
+[data-btn]{margin-left:auto;margin-right:auto;align-self:center}
+[data-nums]{background:linear-gradient(180deg,#FFFCF7 0%,var(--band) 40%,#F6EADA 100%);padding:72px 22px}
+[data-nums-in]{max-width:1120px;margin:0 auto}
+[data-h2]{font-family:'Literata',serif;font-weight:600;font-size:38px;line-height:1.2;letter-spacing:-.01em;color:var(--ink);margin-bottom:30px;max-width:20ch}
+[data-h2]::before{content:"";display:block;width:56px;height:4px;background:var(--accent);border-radius:2px;margin-bottom:18px}
+@media (min-width:900px){[data-h2]{font-size:54px;margin-bottom:44px}}
+[data-days]{background:var(--ground);padding:72px 22px}
+[data-days-in]{max-width:1120px;margin:0 auto}
+[data-cards]{display:grid;gap:20px}
+[data-card]{background:var(--ground);border:1px solid var(--line);border-radius:20px;padding:26px;box-shadow:0 8px 32px rgba(36,24,18,.08)}
+[data-card="hot"]{background:linear-gradient(160deg,#D14428 0%,var(--accent) 52%,var(--accent-deep) 100%);border-color:var(--accent);color:var(--ink-invert)}
+[data-badge]{display:inline-block;padding:7px 16px;border-radius:999px;background:var(--band);color:var(--ink-soft);font-family:'Golos Text',sans-serif;font-weight:500;font-size:18px;letter-spacing:.1em;text-transform:uppercase;line-height:1.2}
+[data-card="hot"] [data-badge]{background:var(--on-accent);color:var(--accent-deep)}
+[data-dayname]{margin-top:16px;font-family:'Literata',serif;font-weight:600;font-size:30px;line-height:1.25;color:var(--ink)}
+[data-card="hot"] [data-dayname]{color:var(--ink-invert)}
+[data-cardtop]{display:flex;align-items:center;gap:14px}
+[data-ico]{flex:none;display:flex;align-items:center;justify-content:center;width:52px;height:52px;border-radius:14px;background:var(--band);color:var(--accent)}
+[data-card="hot"] [data-ico]{background:rgba(255,255,255,.16);color:var(--on-accent)}
+[data-card] p[data-body]{margin-top:16px;font-size:27px;line-height:1.5;color:var(--ink);max-width:520px}
+[data-card="hot"] p[data-body]{color:var(--ink-invert)}
+[data-keep]{margin-top:56px;display:grid;grid-template-columns:1fr;gap:18px;padding:0;list-style:none}
+[data-keep] li{display:flex;gap:16px;align-items:flex-start;background:var(--band);border:1px solid var(--line);border-radius:20px;padding:24px;font-size:25px;line-height:1.4;color:var(--ink)}
+[data-keep] li::before{content:"";flex:none;width:10px;height:10px;border-radius:999px;background:var(--accent);margin-top:14px}
+@media (min-width:900px){
+  [data-days]{padding:128px 40px}
+  [data-cards]{grid-template-columns:repeat(3,1fr);gap:28px;align-items:start}
+  [data-card]{padding:36px}
+  [data-card="hot"]{padding:52px 36px}
+  [data-dayname]{font-size:34px}
+  [data-card] p[data-body]{font-size:28px}
+  [data-keep]{grid-template-columns:repeat(3,1fr);gap:24px}
+  [data-keep] li{font-size:27px;padding:30px}
+}
+[data-reviews]{background:var(--ground);padding:72px 22px}
+[data-rev-in]{max-width:1120px;margin:0 auto}
+[data-revcards]{display:flex;flex-direction:column;max-width:900px}
+[data-revcards] p{padding:26px 0;border-top:1px solid var(--line);font-family:'Literata',serif;font-weight:400;font-size:27px;line-height:1.35;color:var(--ink)}
+[data-revlist]{margin-top:0;display:flex;flex-direction:column;padding:0;list-style:none;max-width:900px}
+[data-revlist] li{padding:20px 0;border-top:1px solid var(--line);font-size:22px;line-height:1.5;color:var(--ink)}
+[data-revlist] li:last-child{border-bottom:1px solid var(--line)}
+[data-revsrc]{margin-top:26px;font-size:20px;line-height:1.5;color:var(--ink-soft)}
+[data-price]{background:var(--band);padding:96px 22px}
+[data-price-in]{max-width:1120px;margin:0 auto}
+[data-bigprice]{font-family:'Literata',serif;font-weight:600;font-size:48px;line-height:1.1;color:var(--ink)}
+[data-nextprice]{margin-top:14px;font-family:'Literata',serif;font-weight:600;font-size:48px;line-height:1.1;color:var(--ink-soft)}
+[data-giftbox]{margin-top:34px;background:var(--ground);border-radius:20px;padding:26px;max-width:760px;font-size:24px;line-height:1.5;color:var(--ink)}
+[data-logi]{margin-top:44px;display:flex;flex-direction:column;gap:18px;max-width:760px;padding:0;list-style:none}
+[data-logi] li{position:relative;padding-left:24px;font-size:22px;line-height:1.5;color:var(--ink)}
+[data-logi] li::before{content:"";position:absolute;left:0;top:14px;width:9px;height:9px;border-radius:999px;background:var(--accent)}
+[data-foot]{background:var(--ground);padding:44px 22px 120px;font-size:20px;line-height:1.5;color:var(--ink-soft)}
+[data-sticky]{display:none}
+@media (max-width:899px){
+  [data-sticky][data-on="1"]{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:20;align-items:center;justify-content:space-between;gap:14px;padding:12px 16px;background:var(--ground);border-top:1px solid var(--line)}
+  [data-sticky] a{height:56px;padding:0 22px;font-size:20px;border-radius:12px;margin:0;width:auto;max-width:none}
+  [data-sticky] a span{display:none}
+}
+@media (min-width:900px){
+  [data-reviews]{padding:128px 40px}
+  [data-revcards] p{font-size:34px;padding:32px 0}
+  [data-revlist] li{font-size:24px;padding:24px 0}
+  [data-price]{padding:160px 40px}
+  [data-bigprice]{font-size:72px}
+  [data-nextprice]{font-size:60px}
+  [data-giftbox]{font-size:27px;padding:34px}
+  [data-logi] li{font-size:24px}
+  [data-foot]{padding:60px 40px 80px;font-size:21px}
+}
+[data-author]{background:var(--band);padding:72px 22px 0}
+[data-author-in]{max-width:1120px;margin:0 auto;display:flex;flex-direction:column;align-items:flex-start}
+[data-avtor]{display:block;width:100%;max-width:420px;height:auto;margin:0 auto}
+[data-aname]{margin-top:24px;font-family:'Literata',serif;font-weight:600;font-size:34px;line-height:1.2;color:var(--ink)}
+[data-regalia]{margin-top:22px;display:flex;flex-direction:column;gap:16px;max-width:640px;padding:0;list-style:none}
+[data-regalia] li{font-size:24px;line-height:1.45;color:var(--ink);padding-left:22px;position:relative}
+[data-regalia] li::before{content:"";position:absolute;left:0;top:13px;width:9px;height:9px;border-radius:999px;background:var(--accent)}
+@media (min-width:900px){
+  [data-author]{padding:128px 40px 0}
+  [data-author-in]{display:grid;grid-template-columns:minmax(0,420px) minmax(0,1fr);column-gap:56px;align-items:end}
+  [data-avtor]{max-width:none;margin:0;align-self:end}
+  [data-atext]{padding-bottom:128px}
+  [data-aname]{margin-top:0;font-size:48px}
+  [data-regalia] li{font-size:27px}
+}
+[data-dark]{background:linear-gradient(165deg,#3A241A 0%,var(--ground-dark) 58%,#1B120D 100%);color:var(--ink-invert);padding:96px 22px}
+[data-dark] [data-h2]{color:var(--ink-invert)}
+[data-dark-in]{max-width:1120px;margin:0 auto}
+[data-q]{display:flex;flex-direction:column;gap:14px;max-width:640px}
+[data-q] p{font-family:'Literata',serif;font-weight:400;font-style:italic;font-size:30px;line-height:1.35;color:var(--ink);background:var(--ground);border-radius:16px;padding:22px 24px}
+[data-turn]{margin-top:34px;max-width:640px;background:linear-gradient(150deg,#D14428 0%,var(--accent) 55%,var(--accent-deep) 100%);color:var(--on-accent);border-radius:20px;padding:26px}
+[data-turn] b{display:block;font-family:'Literata',serif;font-weight:600;font-size:32px;line-height:1.25}
+[data-turn] span{display:block;margin-top:12px;font-size:24px;line-height:1.5}
+[data-turnq]{display:block;margin-top:18px;background:var(--on-accent);color:var(--accent-deep);border-radius:14px;padding:18px 22px;font-family:'Literata',serif;font-weight:600;font-style:italic;font-size:30px;line-height:1.25}
+@media (min-width:900px){[data-turnq]{font-size:38px;padding:22px 28px}}
+@media (min-width:900px){
+  [data-dark]{padding:160px 40px}
+  [data-q]{gap:18px;max-width:820px}
+  [data-q] p{font-size:32px;padding:26px 30px}
+  [data-turn]{margin-top:44px;max-width:820px;padding:36px 38px}
+  [data-turn] b{font-size:34px}
+  [data-turn] span{font-size:24px}
+}
+[data-band]{display:grid;grid-template-columns:1fr;background:var(--ground);border:1px solid var(--line);border-radius:20px;overflow:hidden}
+[data-numrow]{display:flex;flex-direction:column;align-items:flex-start;gap:4px;padding:22px 24px;border-top:1px solid var(--line)}
+[data-numrow]:first-child{border-top:0}
+[data-numrow] b{font-family:'Literata',serif;font-weight:600;font-size:48px;line-height:1.1;color:var(--accent)}
+[data-numrow] span{font-size:28px;line-height:1.35;color:var(--ink)}
+@media (min-width:900px){
+  [data-nums]{padding:128px 40px}
+  [data-band]{grid-template-columns:repeat(3,1fr)}
+  [data-numrow]{border-top:0;border-left:1px solid var(--line);padding:40px 36px;gap:8px}
+  [data-numrow]:first-child{border-left:0}
+  [data-numrow] b{font-size:68px}
+  [data-numrow] span{font-size:30px}
+}
+[data-btn]:hover{background:linear-gradient(180deg,var(--accent) 0%,var(--accent-deep) 100%);color:var(--on-accent)}
+
+@media (max-width:899px){
+  [data-col]{align-items:center;text-align:center}
+  [data-viola]{max-width:32ch}
+  [data-bonus]{text-align:left}
+  [data-figrow]{width:100%;display:flex;justify-content:center}
+  [data-figclip]{width:100%;max-width:520px;height:290px;margin:0 auto;overflow:hidden;justify-content:center;align-items:flex-start}
+  [data-geroy]{width:230%;height:auto;max-width:none;margin:-40px 0 0;flex:none}
+}
+@media (min-width:900px){
+  [data-hero]{position:relative;max-width:1120px;margin:0 auto}
+  [data-col]{max-width:600px}
+  [data-name]{font-size:88px!important}
+  [data-date]{font-size:26px!important}
+  [data-lead]{font-size:32px!important;max-width:22ch!important}
+  [data-viola]{font-size:22px!important;max-width:26ch!important}
+  [data-price]{font-size:60px!important}
+  [data-btn]{width:auto}
+  [data-figrow]{position:absolute;right:0;bottom:0;width:auto;margin:0}
+  [data-figclip]{--fh:min(760px,64vw);height:min(560px,47vw);width:min(400px,34vw);margin-right:-40px}
+}
+
+/* ══════════════════ Портрет на первом экране ══════════════════════════
+   Как на лендинге практикума: текст слева, эксперт справа, оба на одном
+   экране, в том числе на телефоне.
+
+   Кадр-окно [data-figclip] и портрет [data-geroy] описаны в таблице выше
+   заказчиком, элемента в разметке не было и правила стояли вхолостую.
+   Здесь они получают элемент и раскладку.
+
+   ── Про лицо. Оно измерено по снимку, а не прикинуто: по горизонтали
+   занимает 32,4–65,2% кадра, по вертикали 3,8–31,1%. Отсюда правило:
+   текст может ложиться на пустые поля вырезки и на плечо, но в эту
+   рамку заходить не должен. Ширина текстовой колонки подобрана под неё
+   и проверена замером на 360, 390, 430 и 768 px. ═══════════════════ */
+
+:root{ --face-x:49%; --face-y:17.5%; }
+
+/* Обёртка <picture> растворяется: правила заказчика написаны на сам img,
+   и лишняя коробка между ними всё бы поломала. */
+[data-figclip] picture{display:contents}
+
+[data-heropart]{display:flex;flex-direction:column;align-items:inherit;width:100%}
+
+/* ── телефон и планшет: текст слева, Виола справа ──────────────────────
+   Первый экран делится на три полосы. Сверху во всю ширину имя события
+   и дата. Под ними обещание слева и портрет справа — они и составляют
+   пару «текст слева, эксперт справа». Ниже, снова во всю ширину,
+   продающая часть: подарок, кнопка, места, таймер.
+
+   Почему так, а не портретом во всю высоту первого экрана: текста здесь
+   на тысячу с лишним пикселей, и портрет, прижатый к низу, оказывался
+   рядом со счётчиком мест, а не рядом с именем. Рядом с именем он
+   и должен быть.
+
+   Кадр вылезает за правый край намеренно. Лицо на снимке стоит по центру
+   кадра, и чтобы оно оказалось справа на экране, картинку сдвигают вправо,
+   пряча часть за краем. Ширина колонки текста подобрана под измеренную
+   рамку лица и проверена замером на 360, 390, 430, 768 и 899 px:
+   ни одна строка в рамку не заходит. */
+@media (max-width:899px){
+  [data-hero]{display:grid;overflow:clip;padding:24px 22px 40px;
+    grid-template-columns:minmax(0,1fr) min(40%,250px);
+    grid-template-areas:"top top" "mid pic" "rest rest";
+    column-gap:14px;align-items:start}
+
+  [data-hero] [data-col]{display:contents}
+
+  [data-heropart="top"]{grid-area:top;align-items:flex-start;text-align:left}
+  [data-heropart="mid"]{grid-area:mid;align-items:flex-start;text-align:left;
+    margin-top:20px}
+  [data-heropart="rest"]{grid-area:rest;align-items:flex-start;text-align:left;
+    margin-top:24px}
+
+  [data-figrow]{grid-area:pic;width:100%;margin:0;display:block}
+  [data-figclip]{width:min(168%,330px);max-width:none;height:auto;
+    margin:14px -42% 0 0;overflow:visible;display:block}
+  [data-geroy]{width:100%;height:auto;max-width:none;margin:0;flex:none;
+    /* Холст снимка обрывается по бедро, и на белом это читается как
+       случайный обрез. Мягкий сход внизу превращает обрыв в приём. */
+    -webkit-mask-image:linear-gradient(to bottom,#000 76%,transparent 99%);
+    mask-image:linear-gradient(to bottom,#000 76%,transparent 99%)}
+
+  /* Продающий блок и кнопки — во всю ширину, портрет до них не достаёт. */
+  [data-bonus]{max-width:none!important}
+  [data-btn]{max-width:none}
+}
+
+/* Узкий телефон: кегли левой колонки под её ширину. Выше 660 px колонка
+   уже достаточно широкая и трогать набор незачем. */
+@media (max-width:659px){
+  /* Имя идёт во всю ширину, но в 56 px оно шире экрана телефона
+     и упиралось в правый край. Кегль привязан к ширине окна: 13,3vw —
+     та доля, при которой слово встаёт в колонку с полями уже на 360 px
+     и не мельчает там, где места хватает. */
+  [data-name]{font-size:min(56px,13.3vw)!important}
+  /* Ужимается только то, что делит строку с портретом. */
+  [data-lead]{font-size:26px!important;max-width:none!important}
+  [data-viola]{font-size:19px!important;max-width:none!important}
+}
+
+/* состояния наведения и фокуса, перенесённые из инлайновых стилей */
+
