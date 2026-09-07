@@ -1617,12 +1617,13 @@ def build_landing():
     if MODE in ("pay", "zayavka"):
         # Та же мысль под тарифами: это момент, когда человек решается
         # платить, и именно тогда полезно знать, кто ему напишет.
-        курс = ('<p style="margin: 0; font-size: 16px;">Цены в&nbsp;долларах '
-                'и&nbsp;евро справочные: оплата идёт в&nbsp;рублях по&nbsp;курсу '
-                'на&nbsp;день оплаты.</p>')
-        if курс not in tpl:
-            raise ValueError("не найдена сноска о курсе под тарифами")
-        tpl = tpl.replace(курс, курс + care_note("16px"), 1)
+        # Сноски о курсе валют больше нет, заметка встаёт в её контейнер.
+        низ_тарифов = ('<div style="max-width: 760px; align-self: center; '
+                       'display: flex; flex-direction: column; gap: 12px; '
+                       'text-align: center; color: #5C5149;">')
+        if низ_тарифов not in tpl:
+            raise ValueError("не найден блок под тарифами")
+        tpl = tpl.replace(низ_тарифов, низ_тарифов + care_note("16px"), 1)
 
     # ── сноска про Meta у самого упоминания (требование правового ТЗ) ──────
     # На странице брони экран с этим упоминанием не выводится, и сноска
