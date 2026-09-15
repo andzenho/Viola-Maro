@@ -282,16 +282,26 @@
 
     /* text/plain, а не application/json: так запрос считается «простым»
        и браузер не шлёт предварительный OPTIONS, на который Apps Script
-       отвечать не умеет. Тело при этом остаётся JSON. */
+       отвечать не умеет. Тело при этом остаётся JSON.
+
+       redirect: 'manual' — принципиально. Apps Script отвечает кодом 302
+       на script.googleusercontent.com, а этот домен в ряде стран
+       заблокирован (Индонезия, периодически РФ): сам POST доходит
+       и строка записывается, а чтение ответа по редиректу падает —
+       и форма зря показывала «не удалось сохранить» человеку, чья
+       заявка уже лежала в таблице. Останавливаемся на самом 302:
+       он приходит только после того, как doPost отработал. Тело ответа
+       при этом не прочитать, но всё, что doPost мог бы отклонить
+       (имя, контакт, согласия, секрет), проверено до отправки. */
     fetch(LEAD_ENDPOINT, {
       method: 'POST',
       headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-      body: JSON.stringify(payload)
+      body: JSON.stringify(payload),
+      redirect: 'manual'
     }).then(function (res) {
-      return res.json();
-    }).then(function (body) {
-      /* Apps Script всегда отвечает 200, результат лежит в теле. */
-      if (!body || body.ok !== true) throw new Error(body && body.error);
+      /* opaqueredirect — это и есть 302 от Apps Script; res.ok — на
+         случай, если Google когда-нибудь начнёт отвечать без редиректа. */
+      if (res.type !== 'opaqueredirect' && !res.ok) throw new Error('HTTP ' + res.status);
       goToPayment();
     }).catch(function () {
       /* Записать не вышло. Продажу не блокируем: даём уйти на оплату
