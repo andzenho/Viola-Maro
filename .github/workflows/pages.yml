@@ -1,10 +1,4 @@
-name: Публикация на GitHub Pages
-
-# Превью-сборка. Живёт по адресу вида
-#   https://andzenho.github.io/Viola-Maro/
-# Поэтому собирается с префиксом подпути и с запретом индексации: пока не
-# заполнены почтовый адрес ИП и не куплен домен, правовым страницам нечего
-# делать в поиске. Для боевого домена сборка идёт без обоих флагов.
+name: Редиректы со старого GitHub Pages
 
 on:
   push:
@@ -26,33 +20,14 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: actions/setup-python@v5
-        with:
-          python-version: '3.12'
-
-      - name: Установить Pillow
-        run: pip install --quiet pillow
-
-      - name: Собрать сайт с оплатой
-        run: python3 build.py --base /Viola-Maro --noindex
-
-      - name: Собрать версию предзаписи
-        run: python3 build.py --mode pre --out site/pre --base /Viola-Maro/pre --noindex
-
-      - name: Собрать страницу брони
-        run: python3 build.py --mode bron --out site/bron --base /Viola-Maro/bron --noindex
-
-      - name: Собрать страницу заявки
-        run: python3 build.py --mode zayavka --out site/zayavka --base /Viola-Maro/zayavka --noindex
-
-      - name: Собрать событие «Неудобные»
-        run: python3 build.py --mode neudobnye --out site/neudobnye --base /Viola-Maro/neudobnye --noindex
+      - name: Собрать страницы редиректов
+        run: python3 build_redirects.py
 
       - uses: actions/configure-pages@v5
 
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: site
+          path: redirect-site
 
   deploy:
     needs: build
