@@ -868,7 +868,7 @@ PRE_FOR_REQUEST = [
     ("Закрытый канал Виолы",
      "подкасты и материалы, которых нет в открытом доступе. Новое вы видите там первыми."),
     ("Вход по самой низкой цене",
-     "она закрепляется за вами до 18&nbsp;сентября."),
+     "она закрепляется за вами до 25&nbsp;сентября."),
     ("Право сказать, что включить в программу",
      "в канале спросим, чего вам не хватает, и соберём из ваших ответов часть программы."),
     ("Разговор с командой Виолы Маро",
@@ -1113,7 +1113,7 @@ def pre_benefits_screen():
 
     <div style="align-self: center; max-width: 54ch; text-align: center; display: flex; flex-direction: column; gap: 8px;">
       <p style="margin: 0; font-size: 17px; line-height: 1.55; color: #2E2521;">Оплату оформляет команда: после заявки она свяжется с&nbsp;вами.</p>
-      <p style="margin: 0; font-size: 17px; line-height: 1.55; color: #5C5149;">С 19&nbsp;сентября цена становится выше.</p>
+      <p style="margin: 0; font-size: 17px; line-height: 1.55; color: #5C5149;">С 26&nbsp;сентября цена становится выше.</p>
     </div>
 
     %(cta)s
@@ -1517,7 +1517,7 @@ def build_landing():
         tpl = tpl.replace('href="#tarify"',
                           'href="#bron" data-open-form="Бронь места" data-pay="bron"')
 
-        tpl = tpl.replace("от 17&nbsp;900&nbsp;₽", "Бронь " + BOOKING_AMOUNT)
+        tpl = tpl.replace("от 19&nbsp;900&nbsp;₽", "Бронь " + BOOKING_AMOUNT)
         tpl = tpl.replace(
             "В «С Виолой» пятьдесят мест. Оплатить можно сразу или частями&nbsp;— "
             "рассрочка до&nbsp;12&nbsp;месяцев для&nbsp;СНГ.",
@@ -1570,7 +1570,7 @@ def build_landing():
                           'href="#zapis" data-open-form="Предзапись"')
 
         # Липкая панель: вместо цены — состояние набора.
-        tpl = tpl.replace("от 17&nbsp;900&nbsp;₽", "Предзапись открыта")
+        tpl = tpl.replace("от 19&nbsp;900&nbsp;₽", "Предзапись открыта")
         tpl = tpl.replace(
             '<span style="font-size: 17px; font-weight: 600; color: #2E2521;">',
             '<span style="font-size: 16px; font-weight: 700; color: #2E2521;">', 1)
@@ -1579,7 +1579,7 @@ def build_landing():
         tpl = tpl.replace(
             "В «С Виолой» пятьдесят мест. Оплатить можно сразу или частями&nbsp;— "
             "рассрочка до&nbsp;12&nbsp;месяцев для&nbsp;СНГ.",
-            "Предзапись открыта. Цена закрепляется за&nbsp;вами до&nbsp;18&nbsp;сентября, "
+            "Предзапись открыта. Цена закрепляется за&nbsp;вами до&nbsp;25&nbsp;сентября, "
             "дальше она выше.")
         tpl = tpl.replace("Продажи закрываются 29&nbsp;сентября в&nbsp;23:59",
                           "Заявка бесплатна и&nbsp;ни&nbsp;к&nbsp;чему не&nbsp;обязывает")
